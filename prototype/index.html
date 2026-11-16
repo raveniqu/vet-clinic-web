@@ -1,0 +1,2938 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full bg-slate-50 text-slate-900 antialiased">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VETCARE+ | ระบบบริหารจัดการคลินิกสัตวแพทย์ (ERP)</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Noto Sans Thai -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS v4 Browser Build -->
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="h-full overflow-hidden flex flex-col bg-slate-900">
+
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <header class="h-16 bg-slate-900 text-white border-b border-slate-800 flex items-center justify-between px-4 sm:px-6 z-30 shrink-0">
+    <div class="flex items-center gap-4">
+      <button id="btn-toggle-sidebar" class="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition cursor-pointer">
+        <i data-lucide="menu" class="w-5 h-5"></i>
+      </button>
+      
+      <!-- Clinic Brand -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-emerald-400 flex items-center justify-center shadow-md shadow-teal-500/20 text-white font-extrabold text-xl">
+          <i data-lucide="paw-print" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-lg tracking-tight text-white">VETCARE<span class="text-teal-400">+</span></span>
+            <span class="text-[10px] uppercase font-semibold bg-teal-500/20 text-teal-300 border border-teal-500/30 px-1.5 py-0.5 rounded">Pro ERP</span>
+          </div>
+          <p class="text-xs text-slate-400">ระบบบริหารจัดการคลินิกสัตวแพทย์แบบบูรณาการ</p>
+        </div>
+      </div>
+
+      <!-- Branch Selector Pill -->
+      <div class="hidden md:flex items-center ml-4 pl-4 border-l border-slate-800">
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700/60 text-xs font-medium text-slate-300">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <i data-lucide="building-2" class="w-3.5 h-3.5 text-teal-400"></i>
+          <span>สาขาหลักทองหล่อ-สุขุมวิท 71</span>
+          <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400 ml-1"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center Quick Search Bar -->
+    <div class="hidden xl:flex items-center max-w-md w-full mx-8">
+      <div class="relative w-full">
+        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+        <input type="text" id="global-search-input" 
+          placeholder="ค้นหาด่วนทั่วทั้งระบบ (ลูกค้า, สัตว์เลี้ยง, เลขไมโครชิป, บัตรคิว, โรค)..." 
+          class="w-full bg-slate-800/80 text-sm text-slate-200 placeholder-slate-400 pl-10 pr-12 py-2 rounded-xl border border-slate-700 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition">
+        <kbd class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-400 bg-slate-700 px-1.5 py-0.5 rounded border border-slate-600">⌘K</kbd>
+
+        <!-- Global Search Dropdown Results -->
+        <div id="global-search-dropdown" class="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200 max-h-[460px] overflow-y-auto hidden z-50 text-slate-900 divide-y divide-slate-100">
+        </div>
+      </div>
+    </div>
+
+    <!-- Right User Controls -->
+    <div class="flex items-center gap-3">
+      <!-- Quick Queue Counter (Domain 02 Live) -->
+      <button onclick="switchMainView('queue')" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-teal-950/60 hover:bg-teal-900/80 border border-teal-800/60 text-xs text-teal-300 transition cursor-pointer">
+        <i data-lucide="clock" class="w-3.5 h-3.5 text-teal-400"></i>
+        <span>รอตรวจขณะนี้: <strong class="text-white font-bold" id="badge-queue-count">0</strong> เคส</span>
+      </button>
+
+      <!-- Quick Action Button -->
+      <button onclick="openQuickActionSheet()" class="flex items-center gap-2 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white text-xs font-semibold px-3.5 py-2 rounded-lg shadow-sm shadow-teal-500/25 transition active:scale-95 cursor-pointer">
+        <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+        <span class="hidden sm:inline">+ รับเคส / นัดหมาย / ตรวจ</span>
+        <span class="sm:hidden">+ เพิ่ม</span>
+      </button>
+
+      <!-- Notification -->
+      <button class="relative p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition">
+        <i data-lucide="bell" class="w-5 h-5"></i>
+        <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-slate-900"></span>
+      </button>
+
+      <!-- User Avatar / Profile -->
+      <div class="flex items-center gap-3 pl-2 sm:pl-3 border-l border-slate-800">
+        <div class="w-9 h-9 rounded-full bg-slate-700 border border-teal-500/40 flex items-center justify-center font-bold text-teal-300 text-sm overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=100&auto=format&fit=crop&q=80" alt="Doctor Avatar" class="w-full h-full object-cover">
+        </div>
+        <div class="hidden lg:block text-left">
+          <div class="text-xs font-semibold text-white leading-tight">น.สพ. วุฒิชัย เจริญสุข</div>
+          <div class="text-[11px] text-teal-400 font-medium">สัตวแพทย์เวร / เจ้าหน้าที่คลินิก</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN BODY CONTAINER ================= -->
+  <div class="flex-1 flex overflow-hidden bg-slate-100">
+    
+    <!-- ================= SIDEBAR NAVIGATION (PRODUCTION-READY REALISTIC WORKFLOW) ================= -->
+    <aside id="main-sidebar" class="w-64 bg-slate-900 text-slate-300 border-r border-slate-800 flex flex-col shrink-0 overflow-y-auto transition-all duration-300 z-20">
+      
+      <!-- Nav Group: หน้าร้าน & ทะเบียน (Front Desk - Domain 01 & 02) -->
+      <div class="px-4 pt-4 pb-2">
+        <div class="text-[11px] font-bold uppercase tracking-wider text-teal-400/80 mb-2 px-3 flex items-center gap-2">
+          <span>งานบริการหน้าร้าน & ทะเบียน</span>
+        </div>
+        <nav class="space-y-1">
+          <!-- Active Menu 1: ข้อมูลเจ้าของสัตว์ (Domain 01) -->
+          <a href="javascript:void(0)" onclick="switchMainView('owners')" id="nav-owners" class="nav-item group flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg bg-teal-600/15 text-teal-300 border-l-2 border-teal-500 transition">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="users" class="w-4 h-4 text-teal-400"></i>
+              <span>ข้อมูลเจ้าของ (Owners)</span>
+            </div>
+            <span id="badge-owners-count" class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-teal-500/20 text-teal-300">0</span>
+          </a>
+
+          <!-- Active Menu 2: ข้อมูลสัตว์เลี้ยง (Domain 01) -->
+          <a href="javascript:void(0)" onclick="switchMainView('pets')" id="nav-pets" class="nav-item group flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="dog" class="w-4 h-4 text-slate-400 group-hover:text-teal-400 transition"></i>
+              <span>ข้อมูลสัตว์เลี้ยง (Pets)</span>
+            </div>
+            <span id="badge-pets-count" class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-slate-800 text-slate-400">0</span>
+          </a>
+
+          <!-- Active Menu 3: รับเคส & จัดคิวตรวจ (Domain 02) -->
+          <a href="javascript:void(0)" onclick="switchMainView('queue')" id="nav-queue" class="nav-item group flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="clipboard-list" class="w-4 h-4 text-slate-400 group-hover:text-teal-400 transition"></i>
+              <span>รับเคส & จัดคิวตรวจ (Queue)</span>
+            </div>
+            <span id="badge-sidebar-queue" class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300">0</span>
+          </a>
+
+          <!-- Active Menu 4: ตารางนัดหมาย (Domain 02) -->
+          <a href="javascript:void(0)" onclick="switchMainView('appointments')" id="nav-appointments" class="nav-item group flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="calendar" class="w-4 h-4 text-slate-400 group-hover:text-teal-400 transition"></i>
+              <span>ตารางนัดหมาย (Appointments)</span>
+            </div>
+            <span id="badge-sidebar-appointments" class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-slate-800 text-slate-400">0</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Nav Group: งานตรวจรักษา & เวชระเบียน (Clinical Care - Domain 03 Focus) -->
+      <div class="px-4 pt-3 pb-2 border-t border-slate-800/80">
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 px-3 flex items-center gap-2">
+          <span>งานตรวจรักษา & เวชระเบียน</span>
+        </div>
+        <nav class="space-y-1">
+          <!-- Active Menu 5: ห้องตรวจ & EMR (Domain 03) -->
+          <a href="javascript:void(0)" onclick="switchMainView('emr')" id="nav-emr" class="nav-item group flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="stethoscope" class="w-4 h-4 text-slate-400 group-hover:text-teal-400 transition"></i>
+              <span>ห้องตรวจ & EMR (SOAP)</span>
+            </div>
+            <span id="badge-sidebar-emr" class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">ตรวจอยู่</span>
+          </a>
+
+          <!-- Active Menu 8: ห้องแล็บ & X-Ray (Domain 05) -->
+          <a href="javascript:void(0)" onclick="switchMainView('lab')" id="nav-lab" class="nav-item group flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="flask-conical" class="w-4 h-4 text-slate-400 group-hover:text-teal-400 transition"></i>
+              <span>ห้องแล็บ & X-Ray (Lab)</span>
+            </div>
+            <span id="badge-sidebar-lab" class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300">0 รอผล</span>
+          </a>
+          <!-- Active Menu 9: ห้องผ่าตัด & หัตถการ (Domain 06) -->
+          <a href="javascript:void(0)" onclick="switchMainView('surgery')" id="nav-surgery" class="nav-item group flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="scissors" class="w-4 h-4 text-slate-400 group-hover:text-teal-400 transition"></i>
+              <span>ห้องผ่าตัด & หัตถการ (Surgery)</span>
+            </div>
+            <span id="badge-sidebar-surgery" class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300">0 ผ่าตัด</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Nav Group: เภสัชกรรม & คลังยา (Pharmacy & Stock - Domain 04 Focus) -->
+      <div class="px-4 pt-3 pb-2 border-t border-slate-800/80">
+        <div class="text-[11px] font-bold uppercase tracking-wider text-teal-400/80 mb-2 px-3 flex items-center gap-2">
+          <span>เภสัชกรรม & คลังสินค้า</span>
+        </div>
+        <nav class="space-y-1">
+          <!-- Active Menu 6: ห้องจ่ายยา (Domain 04) -->
+          <a href="javascript:void(0)" onclick="switchMainView('pharmacy')" id="nav-pharmacy" class="nav-item group flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="pill" class="w-4 h-4 text-slate-400 group-hover:text-teal-400 transition"></i>
+              <span>ห้องจ่ายยา (Dispensing)</span>
+            </div>
+            <span id="badge-sidebar-pharmacy" class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300">0 รอจ่าย</span>
+          </a>
+
+          <!-- Active Menu 7: คลังยาและเวชภัณฑ์ (Domain 04) -->
+          <a href="javascript:void(0)" onclick="switchMainView('inventory')" id="nav-inventory" class="nav-item group flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="boxes" class="w-4 h-4 text-slate-400 group-hover:text-teal-400 transition"></i>
+              <span>คลังเวชภัณฑ์ (Inventory)</span>
+            </div>
+            <span id="badge-sidebar-inventory" class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-slate-800 text-slate-400">0</span>
+          </a>
+
+          <!-- Active Menu 10: จัดซื้อ & ผู้จำหน่าย (Domain 09) -->
+          <a href="javascript:void(0)" onclick="switchMainView('procurement')" id="nav-procurement" class="nav-item group flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="truck" class="w-4 h-4 text-slate-400 group-hover:text-teal-400 transition"></i>
+              <span>จัดซื้อ & ผู้จำหน่าย (Procure)</span>
+            </div>
+            <span id="badge-sidebar-procurement" class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300">2 ใบสั่ง</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Nav Group: การเงิน & ลูกค้าสัมพันธ์ -->
+      <div class="px-4 pt-3 pb-2 border-t border-slate-800/80">
+        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2 px-3 flex items-center gap-2">
+          <span>การเงิน & บริการลูกค้า</span>
+        </div>
+        <nav class="space-y-1">
+          <a href="javascript:void(0)" id="nav-billing" onclick="switchMainView('billing')" class="nav-item group flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="receipt" class="w-4 h-4 text-slate-400"></i>
+              <span>จุดชำระเงิน (Cashier)</span>
+            </div>
+            <span id="badge-sidebar-billing" class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">2 รอชำระ</span>
+          </a>
+          <a href="javascript:void(0)" id="nav-crm" onclick="switchMainView('crm')" class="nav-item group flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="bell-ring" class="w-4 h-4 text-slate-400"></i>
+              <span>เตือนวัคซีน & CRM (Care)</span>
+            </div>
+            <span id="badge-sidebar-crm" class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">3 เตือนนัด</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Nav Group: บุคลากรและการตั้งค่าระบบ -->
+      <div class="px-4 pt-3 pb-6 border-t border-slate-800/80 mt-auto">
+        <nav class="space-y-1">
+          <!-- Active Menu 11: บุคลากร & ตารางเวร (Domain 10) -->
+          <a href="javascript:void(0)" onclick="switchMainView('staff')" id="nav-staff" class="nav-item group flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="badge-check" class="w-4 h-4 text-slate-400 group-hover:text-teal-400 transition"></i>
+              <span>บุคลากร & ตารางเวร (Staff)</span>
+            </div>
+            <span id="badge-sidebar-staff" class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">4 ประจำการ</span>
+          </a>
+          <a href="javascript:void(0)" onclick="showToast('ตั้งค่าระบบคลินิก', 'ฐานข้อมูลสายพันธุ์ ประเภทสัตว์ และแค็ตตาล็อกบริการ', 'info')" class="nav-item flex items-center gap-2.5 px-3 py-2 text-xs font-medium rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition">
+            <i data-lucide="settings" class="w-4 h-4 text-slate-400"></i>
+            <span>ตั้งค่าคลินิก (Settings)</span>
+          </a>
+        </nav>
+      </div>
+    </aside>
+
+    <!-- ================= MAIN CONTENT VIEWPORT ================= -->
+    <main class="flex-1 flex flex-col overflow-y-auto bg-slate-50 min-w-0">
+      
+      <!-- TOP ACTION & DYNAMIC METRICS HEADER BAR -->
+      <section class="bg-white border-b border-slate-200 px-6 py-5 shrink-0 shadow-xs">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 text-xs text-slate-500 font-medium mb-1">
+              <span>ระบบบริหารจัดการคลินิก</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
+              <span id="breadcrumb-current-view" class="text-teal-700 font-semibold">ห้องตรวจสัตวแพทย์ & บันทึก SOAP (EMR)</span>
+            </div>
+            <h1 id="page-heading-title" class="text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-2.5">
+              <span>ห้องตรวจ & เวชระเบียน EMR (SOAP)</span>
+              <span id="page-heading-badge" class="text-xs font-medium bg-teal-50 text-teal-700 border border-teal-200 px-2 py-0.5 rounded-full">Domain 03 Clinical</span>
+            </h1>
+          </div>
+
+          <!-- Dynamic Action Buttons Area -->
+          <div id="dynamic-action-buttons" class="flex items-center gap-2.5 flex-wrap">
+            <!-- Buttons injected based on currentView -->
+          </div>
+        </div>
+
+        <!-- Dynamic Metric KPI Cards -->
+        <div id="dynamic-metric-cards" class="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-5">
+          <!-- Injected dynamically -->
+        </div>
+      </section>
+
+      <!-- FILTER & TAB SWITCHER BAR -->
+      <section class="bg-white border-b border-slate-200 px-6 py-3.5 shrink-0">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          
+          <!-- Search & Filter Controls -->
+          <div id="view-filters-container" class="flex items-center gap-2.5 flex-1 max-w-2xl flex-wrap sm:flex-nowrap">
+            <div class="relative w-full sm:w-80">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+              <input type="text" id="view-filter-search" oninput="renderCurrentView()"
+                placeholder="ค้นหาชื่อ, เบอร์โทร, สายพันธุ์, รหัส, ข้อวินิจฉัย..." 
+                class="w-full bg-slate-50 text-xs text-slate-800 placeholder-slate-400 pl-9 pr-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-teal-500 focus:bg-white focus:ring-1 focus:ring-teal-500 transition">
+            </div>
+
+            <!-- Dynamic Dropdowns for current view -->
+            <div id="dynamic-filter-dropdowns" class="flex items-center gap-2"></div>
+          </div>
+
+          <!-- RIGHT VIEW MODE TABS: CARD VIEW vs LIST VIEW (Requirement Explicit) -->
+          <div class="flex items-center gap-2 shrink-0">
+            <span class="text-xs text-slate-400 font-medium hidden sm:inline">รูปแบบแสดงผล:</span>
+            <div class="inline-flex p-1 rounded-xl bg-slate-100 border border-slate-200/90 text-xs font-semibold">
+              <button onclick="setViewMode('card')" id="tab-btn-card" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-slate-900 shadow-xs transition cursor-pointer">
+                <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-teal-600"></i>
+                <span id="tab-label-card">Card View</span>
+              </button>
+              <button onclick="setViewMode('list')" id="tab-btn-list" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 transition cursor-pointer">
+                <i data-lucide="table-properties" class="w-3.5 h-3.5"></i>
+                <span>List View</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DATA CONTENT CONTAINER -->
+      <section class="flex-1 p-6 overflow-y-auto">
+        
+        <!-- ================= VIEW 1: OWNERS (DOMAIN 01) ================= -->
+        <div id="owners-view-container" class="space-y-4">
+          <div id="owners-card-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+          <div id="owners-list-table" class="hidden bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs"></div>
+        </div>
+
+        <!-- ================= VIEW 2: PETS (DOMAIN 01) ================= -->
+        <div id="pets-view-container" class="hidden space-y-4">
+          <div id="pets-card-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+          <div id="pets-list-table" class="hidden bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs"></div>
+        </div>
+
+        <!-- ================= VIEW 3: LIVE QUEUE BOARD (DOMAIN 02) ================= -->
+        <div id="queue-view-container" class="hidden space-y-4">
+          <div id="queue-kanban-board" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 items-start">
+            
+            <!-- Stage 1: รอเรียกตรวจ & Triage -->
+            <div class="bg-slate-100/90 rounded-2xl p-3 border border-slate-200/90 flex flex-col min-h-[520px]">
+              <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200 px-1">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                  <h3 class="font-bold text-xs text-slate-800">1. รอเรียกตรวจ / Triage</h3>
+                </div>
+                <span id="count-stage-waiting" class="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">0</span>
+              </div>
+              <p class="text-[10px] text-slate-500 px-1 mb-2">ลากการ์ดเพื่อส่งเข้าห้องตรวจ</p>
+              <div id="dropzone-waiting" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'WAITING')" class="flex-1 space-y-2.5 min-h-[440px] p-1 rounded-xl transition duration-200"></div>
+            </div>
+
+            <!-- Stage 2: กำลังตรวจในห้องแพทย์ -->
+            <div class="bg-slate-100/90 rounded-2xl p-3 border border-slate-200/90 flex flex-col min-h-[520px]">
+              <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200 px-1">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
+                  <h3 class="font-bold text-xs text-slate-800">2. กำลังตรวจในห้องแพทย์</h3>
+                </div>
+                <span id="count-stage-in_service" class="text-xs font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">0</span>
+                <span id="count-stage-inservice" class="hidden">0</span>
+              </div>
+              <p class="text-[10px] text-slate-500 px-1 mb-2">สัตวแพทย์กำลังตรวจรักษา</p>
+              <div id="dropzone-in_service" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'IN_SERVICE')" class="flex-1 space-y-2.5 min-h-[440px] p-1 rounded-xl transition duration-200"></div>
+            </div>
+
+            <!-- Stage 3: พักรอผลแล็บ / หัตถการ -->
+            <div class="bg-slate-100/90 rounded-2xl p-3 border border-slate-200/90 flex flex-col min-h-[520px]">
+              <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200 px-1">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
+                  <h3 class="font-bold text-xs text-slate-800">3. พักรอผลแล็บ / ยา</h3>
+                </div>
+                <span id="count-stage-hold" class="text-xs font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 border border-purple-200">0</span>
+              </div>
+              <p class="text-[10px] text-slate-500 px-1 mb-2">รอผลตรวจเลือด หรือรอเบิกยา</p>
+              <div id="dropzone-hold" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'HOLD')" class="flex-1 space-y-2.5 min-h-[440px] p-1 rounded-xl transition duration-200"></div>
+            </div>
+
+            <!-- Stage 4: ตรวจเสร็จสิ้น / ส่งคิดเงิน -->
+            <div class="bg-slate-100/90 rounded-2xl p-3 border border-slate-200/90 flex flex-col min-h-[520px]">
+              <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200 px-1">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                  <h3 class="font-bold text-xs text-slate-800">4. ตรวจเสร็จ / รอคิดเงิน</h3>
+                </div>
+                <span id="count-stage-completed" class="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">0</span>
+              </div>
+              <p class="text-[10px] text-slate-500 px-1 mb-2">พร้อมส่งต่อไปยังจุดแคชเชียร์</p>
+              <div id="dropzone-completed" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event, 'COMPLETED')" class="flex-1 space-y-2.5 min-h-[440px] p-1 rounded-xl transition duration-200"></div>
+            </div>
+
+          </div>
+          <div id="queue-list-table" class="hidden bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs"></div>
+        </div>
+
+        <!-- ================= VIEW 4: APPOINTMENTS & CALENDAR (DOMAIN 02) ================= -->
+        <div id="appointments-view-container" class="hidden space-y-4">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+            <div class="lg:col-span-4 bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-sm text-slate-900 flex items-center gap-2">
+                  <i data-lucide="calendar" class="w-4 h-4 text-teal-600"></i>
+                  <span id="calendar-month-year-label">มีนาคม 2026</span>
+                </h3>
+                <div class="flex items-center gap-1">
+                  <button onclick="changeCalendarMonth(-1)" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition cursor-pointer"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                  <button onclick="changeCalendarMonth(1)" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 transition cursor-pointer"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                </div>
+              </div>
+              <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-slate-400 uppercase mb-2">
+                <div>อา.</div><div>จ.</div><div>อ.</div><div>พ.</div><div>พฤ.</div><div>ศ.</div><div>ส.</div>
+              </div>
+              <div id="calendar-days-grid" class="grid grid-cols-7 gap-1 text-center text-xs"></div>
+              <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+                <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-teal-500"></span><span>วันที่มีนัดหมาย</span></div>
+                <button onclick="selectToday()" class="font-semibold text-teal-600 hover:underline cursor-pointer">กลับสู่วันนี้</button>
+              </div>
+            </div>
+
+            <div class="lg:col-span-8 space-y-4">
+              <div class="bg-gradient-to-r from-teal-600 to-emerald-600 text-white rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
+                <div>
+                  <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-white/20 text-white">Daily Schedule</span>
+                  <h3 id="daily-schedule-title" class="text-lg font-bold mt-1">ตารางนัดหมายประจำวัน</h3>
+                  <p id="daily-schedule-count" class="text-xs text-teal-100 mt-0.5">มีนัดหมายทั้งหมด 0 รายการ</p>
+                </div>
+                <button onclick="openFormSheet('appointment')" class="bg-white text-teal-800 hover:bg-teal-50 text-xs font-bold px-3.5 py-2 rounded-xl shadow-xs transition active:scale-95 shrink-0 flex items-center gap-1.5 cursor-pointer">
+                  <i data-lucide="calendar-plus" class="w-4 h-4 text-teal-600"></i>
+                  <span>+ จองนัดหมายใหม่</span>
+                </button>
+              </div>
+              <div id="appointments-card-list" class="space-y-3"></div>
+              <div id="appointments-list-table" class="hidden bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= VIEW 5: DOCTOR'S CONSULTATION & EMR (DOMAIN 03) ================= -->
+        <div id="emr-view-container" class="hidden space-y-5">
+          
+          <!-- Top Active Patient Banner & Medical Alert Bar -->
+          <div id="emr-active-patient-banner" class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs transition duration-200">
+            <!-- Injected by JavaScript -->
+          </div>
+
+          <!-- Past Clinical Encounters Header -->
+          <div class="flex items-center justify-between pt-1">
+            <div class="flex items-center gap-2">
+              <i data-lucide="history" class="w-4 h-4 text-teal-600"></i>
+              <h3 class="text-sm font-bold text-slate-800">ประวัติเวชระเบียนและการตรวจรักษา (Medical Records History)</h3>
+              <span id="emr-encounter-count-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">0 รายการ</span>
+            </div>
+            
+            <button onclick="openSOAPFormSheet()" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+              <i data-lucide="stethoscope" class="w-3.5 h-3.5"></i>
+              <span>+ บันทึกตรวจรักษา SOAP (New Encounter)</span>
+            </button>
+          </div>
+
+          <!-- Encounter History: Card View (SOAP Cards) vs List View (Data Table) -->
+          <div id="emr-encounters-card-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-4"></div>
+          <div id="emr-encounters-list-table" class="hidden bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs"></div>
+
+        </div>
+
+        <!-- ================= VIEW 6: PHARMACY DISPENSING (DOMAIN 04) ================= -->
+        <div id="pharmacy-view-container" class="hidden space-y-4">
+          <!-- Active Dispensing Queue Header -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-1">
+            <div class="flex items-center gap-2">
+              <i data-lucide="pill" class="w-4 h-4 text-teal-600"></i>
+              <h3 class="text-sm font-bold text-slate-800">คิวตรวจสอบและจ่ายยา (Pharmacy Dispensing Queue)</h3>
+              <span id="pharmacy-dispense-count-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">0 รอจ่าย</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-500 hidden sm:inline">ตัดสต็อกอัตโนมัติตามเกณฑ์:</span>
+              <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-teal-50 text-teal-700 border border-teal-200 flex items-center gap-1.5">
+                <i data-lucide="check-circle" class="w-3.5 h-3.5 text-teal-600"></i>
+                <span>FEFO (หมดอายุก่อนจ่ายก่อน)</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Filter Buttons for Dispensing Status -->
+          <div class="flex items-center justify-between border-b border-slate-200/80 pb-2">
+            <div class="flex items-center gap-1 p-1 bg-slate-100/90 rounded-xl text-xs font-medium">
+              <button type="button" onclick="filterDispensingByStatus('all')" id="btn-disp-filter-all" class="px-3 py-1 rounded-lg bg-white text-teal-800 shadow-xs cursor-pointer font-bold">ทั้งหมด</button>
+              <button type="button" onclick="filterDispensingByStatus('WAITING_DISPENSE')" id="btn-disp-filter-waiting" class="px-3 py-1 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer">⏳ รอตรวจสอบ & จ่ายยา</button>
+              <button type="button" onclick="filterDispensingByStatus('DISPENSED')" id="btn-disp-filter-dispensed" class="px-3 py-1 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer">✅ จ่ายยาสำเร็จแล้ว</button>
+              <button type="button" onclick="filterDispensingByStatus('RETURNED')" id="btn-disp-filter-returned" class="px-3 py-1 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer">↩️ รายการรับคืน / ยกเลิก</button>
+            </div>
+            <div id="pharmacy-allergy-summary" class="text-xs text-rose-600 font-semibold hidden sm:flex items-center gap-1">
+              <!-- Allergy counter -->
+            </div>
+          </div>
+
+          <!-- Dispensing: Card View vs List View -->
+          <div id="pharmacy-card-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+          <div id="pharmacy-list-table" class="hidden bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs"></div>
+        </div>
+
+        <!-- ================= VIEW 7: INVENTORY & STOCK CONTROL (DOMAIN 04) ================= -->
+        <div id="inventory-view-container" class="hidden space-y-4">
+          <!-- Inventory Header & Action -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-1">
+            <div class="flex items-center gap-2">
+              <i data-lucide="boxes" class="w-4 h-4 text-teal-600"></i>
+              <h3 class="text-sm font-bold text-slate-800">การบริหารยาและคลังเวชภัณฑ์ (Pharmacy & Inventory Management)</h3>
+              <span id="inventory-item-count-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">0 รายการ</span>
+            </div>
+            
+            <div class="flex items-center gap-2 self-start sm:self-auto">
+              <button onclick="openNewProductModal()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                <span>+ ทะเบียนยาใหม่</span>
+              </button>
+              <button onclick="openStockManageSheet('receive')" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+                <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+                <span>+ ตรวจรับยาเข้าคลัง</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 4-Tab Segmented Navigation (Sub-Tabs) -->
+          <div class="flex items-center justify-between border-b border-slate-200/90 pb-2">
+            <div class="flex items-center gap-1 p-1 bg-slate-100/90 rounded-xl border border-slate-200 text-xs font-medium">
+              <button type="button" onclick="switchInventorySubTab('master')" id="tab-inv-master" class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 cursor-pointer bg-white text-teal-800 shadow-xs font-bold">
+                <i data-lucide="package" class="w-3.5 h-3.5"></i>
+                <span>1. ทะเบียน & สต็อกคงคลัง (Stock Master)</span>
+              </button>
+              <button type="button" onclick="switchInventorySubTab('ledger')" id="tab-inv-ledger" class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 cursor-pointer text-slate-600 hover:text-slate-900">
+                <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
+                <span>2. บัญชีคุมความเคลื่อนไหว (Stock Ledger)</span>
+              </button>
+              <button type="button" onclick="switchInventorySubTab('transfers')" id="tab-inv-transfers" class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 cursor-pointer text-slate-600 hover:text-slate-900">
+                <i data-lucide="arrow-left-right" class="w-3.5 h-3.5"></i>
+                <span>3. เบิกใช้ภายใน & โอนย้าย (Issues & Transfers)</span>
+              </button>
+              <button type="button" onclick="switchInventorySubTab('batches')" id="tab-inv-batches" class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 cursor-pointer text-slate-600 hover:text-slate-900">
+                <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i>
+                <span>4. ควบคุมล็อต & เรียกคืนยา (Batch & Recall)</span>
+              </button>
+            </div>
+            <div id="inventory-subtab-badge" class="text-xs text-slate-500 font-mono hidden sm:block">
+              <!-- Subtab summary indicator -->
+            </div>
+          </div>
+
+          <!-- Subtab 1: Stock Master (Card & List Views) -->
+          <div id="inventory-subtab-master" class="space-y-4">
+            <div id="inventory-card-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+            <div id="inventory-list-table" class="hidden bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs"></div>
+          </div>
+
+          <!-- Subtab 2: Stock Movement Ledger (Audit Trail) -->
+          <div id="inventory-subtab-ledger" class="hidden space-y-4">
+            <div id="inventory-ledger-container"></div>
+          </div>
+
+          <!-- Subtab 3: Internal Issues & Transfers -->
+          <div id="inventory-subtab-transfers" class="hidden space-y-4">
+            <div id="inventory-transfers-container"></div>
+          </div>
+
+          <!-- Subtab 4: Batch Control & Recalls -->
+          <div id="inventory-subtab-batches" class="hidden space-y-4">
+            <div id="inventory-batches-container"></div>
+          </div>
+        </div>
+
+        <!-- ================= VIEW 8: LABORATORY & DIAGNOSTIC IMAGING (DOMAIN 05) ================= -->
+        <div id="lab-view-container" class="hidden space-y-5">
+          <!-- Active Diagnostic Suite Header & Segmented Sub-Tabs -->
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-1 border-b border-slate-100">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-lg shadow-xs">
+                <i data-lucide="flask-conical" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="text-sm font-bold text-slate-900">ศูนย์บริการตรวจวิเคราะห์ทางห้องปฏิบัติการและรังสีวินิจฉัย (Diagnostic Suite)</h3>
+                  <span id="lab-order-count-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 border border-purple-200">0 รายการ</span>
+                </div>
+                <p class="text-xs text-slate-500">บริหารคำสั่งตรวจ, ตรวจรับและปฏิเสธสิ่งส่งตรวจ, ควบคุมคุณภาพเครื่องมือ (QC), ภาพถ่ายรังสี และแนวโน้มผลตรวจย้อนหลัง</p>
+              </div>
+            </div>
+            
+            <!-- Segmented Sub-Tab Switcher -->
+            <div class="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs font-semibold overflow-x-auto self-start lg:self-auto max-w-full">
+              <button onclick="switchLabSubTab('orders')" id="lab-tab-btn-orders" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white text-purple-900 shadow-xs border border-purple-200 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="clipboard-list" class="w-3.5 h-3.5"></i>
+                <span>คิวคำสั่งตรวจ (Orders)</span>
+              </button>
+              <button onclick="switchLabSubTab('specimens')" id="lab-tab-btn-specimens" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="test-tube" class="w-3.5 h-3.5"></i>
+                <span>สิ่งส่งตรวจ (Specimens)</span>
+              </button>
+              <button onclick="switchLabSubTab('imaging')" id="lab-tab-btn-imaging" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="scan" class="w-3.5 h-3.5"></i>
+                <span>รังสีวินิจฉัย (PACS & X-Ray)</span>
+              </button>
+              <button onclick="switchLabSubTab('equipment_qc')" id="lab-tab-btn-equipment_qc" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="gauge" class="w-3.5 h-3.5"></i>
+                <span>เครื่องมือ & QC</span>
+              </button>
+              <button onclick="switchLabSubTab('trends')" id="lab-tab-btn-trends" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="trending-up" class="w-3.5 h-3.5"></i>
+                <span>แนวโน้มผลย้อนหลัง (Trends)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Sub-Tab Content -->
+          <div id="lab-subtab-content" class="space-y-4">
+            <!-- Rendered by renderLabSubTabContent() -->
+          </div>
+        </div>
+
+        <!-- ================= SURGERY & TREATMENT VIEW CONTAINER (DOMAIN 06) ================= -->
+        <div id="surgery-view-container" class="hidden space-y-5">
+          <!-- Active Surgery & Operating Room Header & Segmented Sub-Tabs -->
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-1 border-b border-slate-100">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-lg shadow-xs">
+                <i data-lucide="scissors" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="text-sm font-bold text-slate-900">ห้องผ่าตัด & หัตถการรักษา (Surgical & Operating Room Care)</h3>
+                  <span id="surgery-active-count-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-200">3 เคสในระบบ</span>
+                </div>
+                <p class="text-xs text-slate-500">ตารางคิวและห้องผ่าตัด (OR Suites), คำขอส่งผ่าตัด & Triage, บันทึกการผ่าตัดและสัญญาณชีพวิสัญญี, และการพักฟื้น PACU</p>
+              </div>
+            </div>
+
+            <!-- Segmented Sub-Tab Switcher (4 Lifecycle Sub-Tabs) -->
+            <div class="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs font-semibold overflow-x-auto self-start lg:self-auto max-w-full">
+              <button onclick="switchSurgerySubTab('schedule')" id="surgery-tab-btn-schedule" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white text-rose-900 shadow-xs border border-rose-200 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                <span>ตารางคิว & ห้อง OR (Schedules)</span>
+              </button>
+              <button onclick="switchSurgerySubTab('requests')" id="surgery-tab-btn-requests" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="inbox" class="w-3.5 h-3.5"></i>
+                <span>คำขอส่งผ่าตัด & Triage</span>
+              </button>
+              <button onclick="switchSurgerySubTab('intraop')" id="surgery-tab-btn-intraop" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="activity" class="w-3.5 h-3.5"></i>
+                <span>บันทึกผ่าตัด & สัญญาณชีพ OR</span>
+              </button>
+              <button onclick="switchSurgerySubTab('recovery')" id="surgery-tab-btn-recovery" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="bed" class="w-3.5 h-3.5"></i>
+                <span>พักฟื้น & เกณฑ์จำหน่าย (PACU)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Sub-Tab Content -->
+          <div id="surgery-subtab-content" class="space-y-4">
+            <!-- Rendered by renderSurgerySubTabContent() -->
+          </div>
+        </div>
+
+        <!-- ================= BILLING & PAYMENT VIEW CONTAINER (DOMAIN 07) ================= -->
+        <div id="billing-view-container" class="hidden space-y-5">
+          <!-- Active Billing & Cashier Header & Segmented Sub-Tabs -->
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-1 border-b border-slate-100">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-lg shadow-xs">
+                <i data-lucide="receipt" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="text-sm font-bold text-slate-900">จุดรับชำระเงิน & การเงินคลินิก (Billing & Cashier Hub)</h3>
+                  <span id="billing-unpaid-count-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">2 บิลรอชำระ</span>
+                </div>
+                <p class="text-xs text-slate-500">รวบรวมค่าตรวจรักษา ค่ายา ค่าแล็บ ค่าผ่าตัด ออกใบแจ้งหนี้ รับชำระหลายช่องทาง บริหารมัดจำ คืนเงิน และปิดกะลิ้นชักเงินสด</p>
+              </div>
+            </div>
+
+            <!-- Segmented Sub-Tab Switcher (4 Financial Pillars) -->
+            <div class="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs font-semibold overflow-x-auto self-start lg:self-auto max-w-full">
+              <button onclick="switchBillingSubTab('cashier')" id="billing-tab-btn-cashier" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white text-amber-900 shadow-xs border border-amber-200 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
+                <span>จุดรับชำระ & POS (Cashier)</span>
+              </button>
+              <button onclick="switchBillingSubTab('invoices')" id="billing-tab-btn-invoices" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
+                <span>ทะเบียนบิล & ลูกหนี้ (AR)</span>
+              </button>
+              <button onclick="switchBillingSubTab('deposits_refunds')" id="billing-tab-btn-deposits_refunds" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="wallet" class="w-3.5 h-3.5"></i>
+                <span>เงินมัดจำ & คืนเงิน (Refunds)</span>
+              </button>
+              <button onclick="switchBillingSubTab('shift_closing')" id="billing-tab-btn-shift_closing" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
+                <span>ปิดกะ & รายงาน (Shift Closing)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Sub-Tab Content -->
+          <div id="billing-subtab-content" class="space-y-4">
+            <!-- Rendered by renderBillingSubTabContent() -->
+          </div>
+
+          <!-- Fallback containers for backward compatibility -->
+          <div id="billing-card-grid" class="hidden"></div>
+          <div id="billing-list-table" class="hidden"></div>
+        </div>
+
+        <!-- ================= MARKETING & CRM VIEW CONTAINER (DOMAIN 08) ================= -->
+        <div id="crm-view-container" class="hidden space-y-5">
+          <!-- Active CRM & Care Header -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-1">
+            <div class="flex items-center gap-2">
+              <i data-lucide="heart-handshake" class="w-5 h-5 text-purple-600"></i>
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">ศูนย์กลางการดูแลสัมพันธ์ลูกค้า & การตลาดคลินิก (Care & CRM Hub)</h3>
+                <p class="text-xs text-slate-500">ติดตามนัดฉีดวัคซีน, ดูแลอาการหลังผ่าตัด, ระบบสมาชิก Tier & แต้มสะสม, แคมเปญโปรโมชั่น และประเมินความพึงพอใจ</p>
+              </div>
+            </div>
+
+            <!-- Sub-navigation Tabs (4 Pillars of CRM) -->
+            <div class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-lg border border-slate-200 self-start sm:self-auto overflow-x-auto max-w-full">
+              <button onclick="setCrmSubFilter('reminders')" id="btn-crm-sub-reminders" class="text-xs font-semibold px-3 py-1.5 rounded-md bg-white text-slate-800 shadow-xs transition cursor-pointer font-bold flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
+                <span>เตือนนัด & ดูแลสุขภาพ</span>
+              </button>
+              <button onclick="setCrmSubFilter('membership')" id="btn-crm-sub-membership" class="text-xs font-semibold px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="crown" class="w-3.5 h-3.5 text-amber-500"></i>
+                <span>ระบบสมาชิก & แต้ม</span>
+              </button>
+              <button onclick="setCrmSubFilter('campaigns')" id="btn-crm-sub-campaigns" class="text-xs font-semibold px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="gift" class="w-3.5 h-3.5 text-blue-500"></i>
+                <span>แคมเปญ & คูปอง</span>
+              </button>
+              <button onclick="setCrmSubFilter('feedback')" id="btn-crm-sub-feedback" class="text-xs font-semibold px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="star" class="w-3.5 h-3.5 text-amber-500"></i>
+                <span>ความพึงพอใจ & ร้องเรียน</span>
+              </button>
+              <button onclick="setCrmSubFilter('leads')" id="btn-crm-sub-leads" class="text-xs font-semibold px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="user-plus" class="w-3.5 h-3.5 text-purple-600"></i>
+                <span>ผู้มุ่งหวัง & ช่องทาง</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic CRM Sub-tab Viewport -->
+          <div id="crm-tab-content" class="space-y-4"></div>
+        </div>
+
+        <!-- ================= PROCUREMENT & SUPPLIER VIEW CONTAINER (DOMAIN 09) ================= -->
+        <div id="procurement-view-container" class="hidden space-y-5">
+          <!-- Active Procurement Header -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-1">
+            <div class="flex items-center gap-2">
+              <div class="w-9 h-9 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+                <i data-lucide="truck" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">ศูนย์กลางการจัดซื้อ & ผู้จำหน่ายเวชภัณฑ์ (Procurement & Supplier Hub)</h3>
+                <p class="text-xs text-slate-500">บริหารคำขอซื้อ (PR), ออกใบสั่งซื้อ (PO), ตรวจรับสินค้าเข้าคลัง (Goods Receipt & Lots), ตรวจสอบเอกสาร 3 ด้าน (3-Way Match) และทะเบียนผู้จำหน่าย</p>
+              </div>
+            </div>
+
+            <!-- Sub-navigation Tabs (4 Pillars of Procurement) -->
+            <div class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-lg border border-slate-200 self-start sm:self-auto overflow-x-auto max-w-full">
+              <button onclick="setProcurementSubTab('orders')" id="btn-procure-sub-orders" class="text-xs font-semibold px-3 py-1.5 rounded-md bg-white text-slate-800 shadow-xs transition cursor-pointer font-bold flex items-center gap-1.5">
+                <i data-lucide="file-text" class="w-3.5 h-3.5 text-blue-600"></i>
+                <span>ใบสั่งซื้อ & ส่งมอบ (PO)</span>
+              </button>
+              <button onclick="setProcurementSubTab('requisitions')" id="btn-procure-sub-requisitions" class="text-xs font-semibold px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="clipboard-pen-line" class="w-3.5 h-3.5 text-amber-500"></i>
+                <span>คำขอซื้อจากคลินิก (PR)</span>
+              </button>
+              <button onclick="setProcurementSubTab('receipts')" id="btn-procure-sub-receipts" class="text-xs font-semibold px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="package-check" class="w-3.5 h-3.5 text-emerald-600"></i>
+                <span>ตรวจรับ & 3-Way Match</span>
+              </button>
+              <button onclick="setProcurementSubTab('suppliers')" id="btn-procure-sub-suppliers" class="text-xs font-semibold px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="building-2" class="w-3.5 h-3.5 text-indigo-500"></i>
+                <span>ผู้จำหน่าย & สัญญา (Suppliers)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Procurement Sub-tab Viewport -->
+          <div id="procurement-tab-content" class="space-y-4"></div>
+        </div>
+
+        <!-- DOMAIN 10: STAFF & WORKFORCE MANAGEMENT VIEW CONTAINER -->
+        <div id="staff-view-container" class="space-y-4 hidden">
+          <!-- Sub-domain navigation & KPI control bar -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
+            <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+              <button onclick="setStaffSubTab('rosters')" id="btn-staff-sub-rosters" class="text-xs font-semibold px-3 py-1.5 rounded-md bg-white text-slate-800 shadow-xs transition cursor-pointer flex items-center gap-1.5 font-bold">
+                <i data-lucide="calendar" class="w-3.5 h-3.5 text-teal-600"></i>
+                <span>ตารางเวร & ห้องตรวจ (Rosters)</span>
+              </button>
+              <button onclick="setStaffSubTab('employees')" id="btn-staff-sub-employees" class="text-xs font-semibold px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="users" class="w-3.5 h-3.5 text-blue-500"></i>
+                <span>ทะเบียนบุคลากร & ใบอนุญาต (Staff)</span>
+              </button>
+              <button onclick="setStaffSubTab('attendance')" id="btn-staff-sub-attendance" class="text-xs font-semibold px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-500"></i>
+                <span>บันทึกเวลา & OT (Attendance)</span>
+              </button>
+              <button onclick="setStaffSubTab('payroll')" id="btn-staff-sub-payroll" class="text-xs font-semibold px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="banknote" class="w-3.5 h-3.5 text-purple-500"></i>
+                <span>วันลา & เงินเดือน (Leave & Payroll)</span>
+              </button>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="simulateClockIn()" class="text-xs font-medium px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-700 transition cursor-pointer flex items-center gap-1.5">
+                <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-500"></i>
+                <span>⚡ ลงเวลาด่วน (Clock-In)</span>
+              </button>
+              <button onclick="openFormSheet('staff-new')" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white transition cursor-pointer flex items-center gap-1.5 shadow-2xs">
+                <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
+                <span>+ เพิ่มบุคลากรใหม่</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Staff Sub-tab Viewport -->
+          <div id="staff-tab-content" class="space-y-4"></div>
+        </div>
+
+        <!-- Empty State Container -->
+        <div id="empty-state" class="hidden py-16 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
+            <i data-lucide="search-x" class="w-8 h-8"></i>
+          </div>
+          <h4 class="text-base font-semibold text-slate-700">ไม่พบรายการข้อมูลที่ตรงกับเงื่อนไข</h4>
+          <p class="text-xs text-slate-400 mt-1">ลองเปลี่ยนคำค้นหา หรือล้างตัวกรองเพื่อค้นหาใหม่อีกครั้ง</p>
+          <button onclick="resetFilters()" class="mt-4 text-xs font-semibold text-teal-600 hover:text-teal-700 hover:underline cursor-pointer">
+            ล้างตัวกรองทั้งหมด
+          </button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ================= SHADCN SLIDE-OVER SHEET COMPONENT (RIGHT DRAWER) ================= -->
+  <!-- Backdrop -->
+  <div id="sheet-backdrop" onclick="closeSheet()" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-40 hidden transition-opacity duration-300 opacity-0"></div>
+
+  <!-- Slide-out Sheet Panel -->
+  <aside id="sheet-panel" class="fixed top-0 right-0 bottom-0 w-full max-w-2xl lg:max-w-3xl bg-white shadow-2xl border-l border-slate-200 z-50 flex flex-col sheet-enter transition-transform duration-300 ease-out hidden">
+    
+    <!-- Sheet Header -->
+    <div class="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50/60 shrink-0">
+      <div>
+        <div class="flex items-center gap-2">
+          <span id="sheet-badge" class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-teal-100 text-teal-800 border border-teal-200">Form</span>
+          <h2 id="sheet-title" class="text-lg font-bold text-slate-900">ลงทะเบียนข้อมูล</h2>
+        </div>
+        <p id="sheet-subtitle" class="text-xs text-slate-500 mt-0.5">กรอกข้อมูลให้ครบถ้วนเพื่อบันทึกประวัติเข้าสู่ระบบ</p>
+      </div>
+      <button onclick="closeSheet()" class="p-2 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-200/60 transition cursor-pointer">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Sheet Scrollable Form / Content Body -->
+    <div id="sheet-body" class="flex-1 overflow-y-auto p-6 space-y-5 text-xs">
+      <!-- Dynamic Form Content injected by JavaScript -->
+    </div>
+
+    <!-- Sheet Sticky Footer -->
+    <div id="sheet-footer" class="p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-end gap-2.5 shrink-0">
+      <button onclick="closeSheet()" class="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-200/80 transition cursor-pointer">
+        ยกเลิก
+      </button>
+      <button id="sheet-submit-btn" onclick="submitSheetForm()" class="px-4 py-2 rounded-lg text-xs font-semibold bg-teal-600 hover:bg-teal-700 text-white shadow-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+        <i data-lucide="save" class="w-4 h-4"></i>
+        <span>บันทึกข้อมูล</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ================= SHADCN-STYLE TOAST NOTIFICATION ================= -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 flex items-center gap-3 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl border border-slate-700 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div id="toast-icon-wrapper" class="w-7 h-7 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0">
+      <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+    </div>
+    <div>
+      <div id="toast-title" class="text-xs font-bold">บันทึกสำเร็จ</div>
+      <div id="toast-desc" class="text-[11px] text-slate-300">ข้อมูลของคุณถูกบันทึกเรียบร้อยแล้ว</div>
+    </div>
+  </div>
+
+  <!-- ================= PUBLIC QUEUE TV DISPLAY MODAL (DOMAIN 02) ================= -->
+  <div id="modal-queue-tv-display" class="fixed inset-0 z-50 bg-slate-950 flex flex-col hidden transition-opacity duration-200">
+    <!-- TV Header Bar -->
+    <div class="p-4 sm:px-8 bg-slate-900 border-b border-slate-800 flex items-center justify-between shrink-0">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-teal-500/20 border border-teal-500/40 flex items-center justify-center text-teal-400">
+          <i data-lucide="tv" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h2 class="text-lg font-black text-white tracking-wide">VET CLINIC — WAITING AREA QUEUE DISPLAY</h2>
+          <p class="text-xs text-slate-400">จอแสดงผลและเรียกคิวสำหรับผู้รับบริการห้องพักรอ</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="bg-slate-950 border border-slate-800 px-4 py-1.5 rounded-xl text-center">
+          <span class="text-[9px] uppercase font-bold text-slate-500 block">เวลาปัจจุบัน</span>
+          <span id="tv-display-clock" class="text-lg font-mono font-bold text-teal-400">--:--:--</span>
+        </div>
+        <button onclick="closeQueuePublicDisplay()" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- TV Main Split Screen -->
+    <div class="flex-1 p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 overflow-y-auto bg-slate-950">
+      <!-- Left (7 Cols): Currently Serving Rooms -->
+      <div class="lg:col-span-7 flex flex-col space-y-4">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+          <h3 class="text-sm font-black text-teal-400 uppercase tracking-wider flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+            <span>กำลังรับบริการ (NOW SERVING)</span>
+          </h3>
+          <span class="text-xs text-slate-400">ห้องตรวจที่กำลังปฏิบัติการ</span>
+        </div>
+        <div id="tv-active-rooms-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
+          <!-- Injected by renderQueuePublicDisplay -->
+        </div>
+      </div>
+
+      <!-- Right (5 Cols): Next in Line (Waiting) -->
+      <div class="lg:col-span-5 bg-slate-900/60 border border-slate-800 rounded-2xl p-5 flex flex-col">
+        <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
+          <h3 class="text-sm font-black text-amber-400 uppercase tracking-wider flex items-center gap-2">
+            <i data-lucide="clock" class="w-4 h-4"></i>
+            <span>คิวถัดไปที่เตรียมตัว (NEXT IN LINE)</span>
+          </h3>
+          <span class="text-xs text-slate-400">เรียงตามลำดับความเร่งด่วน</span>
+        </div>
+        <div id="tv-waiting-queues-list" class="flex-1 space-y-2.5 overflow-y-auto pr-1">
+          <!-- Injected by renderQueuePublicDisplay -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TV Footer Ticker -->
+    <div class="p-3 bg-teal-950 border-t border-teal-900 text-teal-300 text-xs text-center font-medium shrink-0 flex items-center justify-center gap-2">
+      <i data-lucide="info" class="w-4 h-4 text-teal-400"></i>
+      <span>กรุณาเตรียมความพร้อมก่อนเข้าห้องตรวจ • หากสัตว์เลี้ยงมีอาการหอบเหนื่อย อาเจียนรุนแรง หรือชักเกร็ง กรุณาแจ้งเคาน์เตอร์ทันที</span>
+    </div>
+  </div>
+
+  <!-- ================= RESCHEDULE APPOINTMENT MODAL (DOMAIN 02) ================= -->
+  <div id="modal-reschedule-appointment" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200">
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="calendar" class="w-4 h-4 text-teal-400"></i>
+          <h3 id="reschedule-apt-title" class="font-bold text-sm">เลื่อนเวลานัดหมาย</h3>
+        </div>
+        <button onclick="closeRescheduleModal()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4 text-xs">
+        <div id="reschedule-conflict-warning" class="hidden p-3 bg-rose-50 text-rose-800 border border-rose-200 rounded-xl font-medium"></div>
+
+        <div>
+          <label class="block text-slate-700 font-bold mb-1">วันที่ต้องการเลื่อน *</label>
+          <input type="date" id="reschedule-new-date" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800">
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-bold mb-1">ช่วงเวลาใหม่ *</label>
+          <select id="reschedule-new-time" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800">
+            <option value="09:00 - 09:30">09:00 - 09:30</option>
+            <option value="09:30 - 10:00">09:30 - 10:00</option>
+            <option value="10:00 - 10:30">10:00 - 10:30</option>
+            <option value="10:30 - 11:00">10:30 - 11:00</option>
+            <option value="11:00 - 11:30">11:00 - 11:30</option>
+            <option value="13:30 - 14:00">13:30 - 14:00</option>
+            <option value="14:00 - 14:30">14:00 - 14:30</option>
+            <option value="14:30 - 15:00">14:30 - 15:00</option>
+            <option value="15:00 - 15:30">15:00 - 15:30</option>
+            <option value="15:30 - 16:00">15:30 - 16:00</option>
+            <option value="16:00 - 16:30">16:00 - 16:30</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-bold mb-1">สัตวแพทย์ผู้ตรวจ *</label>
+          <select id="reschedule-new-doctor" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800">
+            <!-- Injected by openRescheduleModal -->
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-bold mb-1">เหตุผลในการเลื่อนนัดหมาย *</label>
+          <textarea id="reschedule-reason" rows="2" placeholder="เช่น เจ้าของติดธุระด่วน, สัตว์เลี้ยงยังไม่พร้อม..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs text-slate-800"></textarea>
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-2">
+        <button onclick="closeRescheduleModal()" class="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-200 transition cursor-pointer">
+          ยกเลิก
+        </button>
+        <button onclick="submitRescheduleAppointment()" class="px-4 py-2 rounded-lg text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white shadow-xs transition active:scale-95 cursor-pointer">
+          ยืนยันการเลื่อนนัดหมาย
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= CANCEL APPOINTMENT MODAL (DOMAIN 02) ================= -->
+  <div id="modal-cancel-appointment" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200">
+      <div class="p-4 bg-rose-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-300"></i>
+          <h3 id="cancel-apt-title" class="font-bold text-sm">ยกเลิกนัดหมาย</h3>
+        </div>
+        <button onclick="closeCancelAppointmentModal()" class="p-1 rounded-lg text-rose-300 hover:text-white hover:bg-rose-800 transition cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4 text-xs">
+        <div class="p-3 bg-rose-50 text-rose-800 border border-rose-200 rounded-xl">
+          <p class="font-bold">⚠️ การยกเลิกนัดหมาย:</p>
+          <p class="text-[11px] mt-0.5">ระบบจะบันทึกประวัติการยกเลิก ปล่อยสล็อตเวลาคืนตาราง และค้นหารายชื่อใน Waitlist เพื่อเสนอคิวแทนอัตโนมัติ</p>
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-bold mb-1">สาเหตุหลักในการยกเลิก *</label>
+          <select id="cancel-reason-select" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800">
+            <option value="เจ้าของติดธุระด่วน">เจ้าของติดธุระด่วน</option>
+            <option value="สัตว์เลี้ยงอาการดีขึ้นแล้ว">สัตว์เลี้ยงอาการดีขึ้นแล้ว</option>
+            <option value="ไม่สะดวกเรื่องการเดินทาง">ไม่สะดวกเรื่องการเดินทาง</option>
+            <option value="ย้ายไปรับการรักษาที่อื่น">ย้ายไปรับการรักษาที่อื่น</option>
+            <option value="สัตวแพทย์ติดเคสผ่าตัดฉุกเฉิน">สัตวแพทย์ติดเคสผ่าตัดฉุกเฉิน</option>
+            <option value="อื่นๆ">อื่นๆ</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-bold mb-1">รายละเอียดเพิ่มเติม / หมายเหตุ</label>
+          <textarea id="cancel-notes" rows="2" placeholder="ระบุรายละเอียดเพิ่มเติม..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs text-slate-800"></textarea>
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-2">
+        <button onclick="closeCancelAppointmentModal()" class="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-200 transition cursor-pointer">
+          กลับ
+        </button>
+        <button onclick="submitCancelAppointment()" class="px-4 py-2 rounded-lg text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white shadow-xs transition active:scale-95 cursor-pointer">
+          ยืนยันการยกเลิกนัด
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= VETERINARY MEDICAL CERTIFICATE & SUMMARY MODAL (DOMAIN 03) ================= -->
+  <div id="modal-medical-certificate" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[92vh] flex flex-col overflow-hidden border border-slate-200 transform scale-95 transition-transform duration-200">
+      <!-- Modal Header -->
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center border border-teal-500/30">
+            <i data-lucide="file-check-2" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm">ใบรับรองสุขภาพสัตว์และสรุปผลการรักษา (Medical Certificate & Summary)</h3>
+            <p class="text-[11px] text-slate-400">เอกสารเวชระเบียนทางการ พร้อมพิมพ์และบันทึกลงประวัติคนไข้</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="printMedicalCertificate()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold transition shadow-xs cursor-pointer">
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+            <span>พิมพ์เอกสาร</span>
+          </button>
+          <button onclick="closeMedicalCertificateModal()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Printable Document Container -->
+      <div class="p-6 overflow-y-auto flex-1 bg-slate-100/60 print:p-0 print:bg-white" id="printable-certificate-content">
+        <!-- Content will be injected dynamically by openMedicalCertificateModal() -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0">
+        <div class="text-[11px] text-slate-500 flex items-center gap-1">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5 text-teal-600"></i>
+          <span>สัตวแพทย์ลงนามรับรองดิจิทัลเรียบร้อยตามมาตรฐาน พ.ร.บ. สถานพยาบาลสัตว์</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="closeMedicalCertificateModal()" class="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-200 transition cursor-pointer">
+            ปิดหน้าต่าง
+          </button>
+          <button onclick="printMedicalCertificate()" class="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white shadow-xs transition active:scale-95 cursor-pointer">
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+            <span>สั่งพิมพ์ / Export PDF</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= REALISTIC MEDICATION LABEL MODAL (DOMAIN 04) ================= -->
+  <div id="modal-drug-label" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 transform scale-95 transition-transform duration-200" id="modal-drug-label-card">
+      <!-- Modal Header -->
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="printer" class="w-4 h-4 text-teal-400"></i>
+          <h3 class="font-bold text-sm">ตัวอย่างฉลากยาสำหรับพิมพ์ (Medication Label Preview)</h3>
+        </div>
+        <button onclick="closeDrugLabelModal()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Printable Label Simulation Area (Standard Veterinary Prescription Bag Label) -->
+      <div class="p-6 bg-slate-50 flex justify-center">
+        <div id="printable-label-content" class="w-full bg-white rounded-xl border-2 border-slate-800 p-5 shadow-xs text-slate-800 font-sans space-y-3.5">
+          <!-- Dynamic Content Injected by JS -->
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 bg-white border-t border-slate-200 flex items-center justify-between gap-3">
+        <button onclick="copyDrugLabelInstructions()" class="text-xs font-semibold text-slate-600 hover:text-teal-600 flex items-center gap-1.5 transition cursor-pointer">
+          <i data-lucide="copy" class="w-4 h-4"></i>
+          <span>คัดลอกวิธีใช้</span>
+        </button>
+        <div class="flex items-center gap-2">
+          <button onclick="closeDrugLabelModal()" class="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-100 transition cursor-pointer">
+            ปิด
+          </button>
+          <button onclick="printDrugLabel()" class="px-4 py-2 rounded-lg text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white shadow-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+            <i data-lucide="printer" class="w-4 h-4"></i>
+            <span>สั่งพิมพ์ฉลากยา</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SMART 1-CLICK PR GENERATOR MODAL (DOMAIN 04 -> DOMAIN 09) ================= -->
+  <div id="modal-pr-generator" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 transform scale-95 transition-transform duration-200">
+      <!-- Modal Header -->
+      <div class="p-4 bg-gradient-to-r from-teal-900 to-slate-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-teal-500/20 text-teal-300 flex items-center justify-center">
+            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm">สร้างใบขอซื้อเวชภัณฑ์ (Purchase Requisition - PR)</h3>
+            <p class="text-[11px] text-teal-200/80">ส่งคำขอจัดซื้ออัตโนมัติไปยัง Domain 09 (Procurement)</p>
+          </div>
+        </div>
+        <button onclick="closePrGeneratorModal()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-5 space-y-4 text-xs">
+        <div id="pr-product-summary-card" class="bg-teal-50/70 p-3.5 rounded-xl border border-teal-200/90 space-y-1.5">
+          <!-- Injected by openPurchaseRequisitionModal -->
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-700 font-bold mb-1">จำนวนที่ต้องการสั่งซื้อ (Requisition Qty) *</label>
+            <div class="flex items-center gap-2">
+              <input type="number" id="pr-form-qty" min="1" value="20" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs font-bold text-teal-700 focus:outline-none focus:border-teal-500">
+              <span id="pr-form-unit-label" class="text-xs font-medium text-slate-500 shrink-0">หน่วย</span>
+            </div>
+          </div>
+          <div>
+            <label class="block text-slate-700 font-bold mb-1">ระดับความเร่งด่วน (Urgency) *</label>
+            <select id="pr-form-urgency" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs font-medium text-slate-800">
+              <option value="HIGH">🔴 ด่วนมาก (HIGH) - สต็อกใกล้หมด</option>
+              <option value="NORMAL" selected>🟡 ปกติ (NORMAL) - เติมสต็อกตามรอบ</option>
+              <option value="EMERGENCY">🚨 ฉุกเฉิน (EMERGENCY) - ยาขาดแคลน</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-bold mb-1">ผู้จัดจำหน่ายคู่สัญญา (Supplier Partner) *</label>
+          <select id="pr-form-supplier" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs font-medium text-slate-800">
+            <!-- Injected by JS from state.suppliers -->
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-bold mb-1">เหตุผลและข้อความระบุถึงฝ่ายจัดซื้อ (Requisition Notes)</label>
+          <textarea id="pr-form-reason" rows="2" placeholder="ระบุเหตุผล เช่น สต็อกยาต่ำกว่าเกณฑ์ความปลอดภัย หรือเตรียมรองรับเคสผ่าตัด..." class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs"></textarea>
+        </div>
+
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+          <span class="text-slate-500 font-medium">ประมาณการมูลค่ารวม:</span>
+          <span id="pr-form-estimated-cost" class="font-mono font-bold text-teal-800 text-sm">฿0.00</span>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-2">
+        <button onclick="closePrGeneratorModal()" class="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-200 transition cursor-pointer">
+          ยกเลิก
+        </button>
+        <button onclick="confirmSubmitPurchaseRequisition()" class="px-4 py-2 rounded-lg text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white shadow-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+          <i data-lucide="check-circle" class="w-4 h-4"></i>
+          <span>ยืนยันสร้างใบขอซื้อ (Send to Procurement)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SAFETY-FIRST MEDICATION RETURN MODAL (RULE 9.4 COMPLIANT) ================= -->
+  <div id="modal-medication-return" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-xl w-full overflow-hidden border border-slate-200 transform scale-95 transition-transform duration-200">
+      <!-- Modal Header -->
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-300 flex items-center justify-center">
+            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm">รับคืนยาและยกเลิกรายการจ่าย (Medication Return & Reversal)</h3>
+            <p class="text-[11px] text-slate-400">ตรวจสอบสภาพและกักกันยาก่อนรับเข้าคลัง (ข้อควรระวัง 9.4)</p>
+          </div>
+        </div>
+        <button onclick="closeMedicationReturnModal()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-5 space-y-4 text-xs">
+        <!-- Safety Alert Guardrail Box (Rule 9.4) -->
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-2 text-amber-900">
+          <i data-lucide="shield-alert" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i>
+          <div class="text-[11px] leading-relaxed">
+            <strong class="font-bold block">กฎความปลอดภัยทางเภสัชกรรม (Rule 9.4):</strong>
+            ห้ามนำยากลับเข้าสต็อกพร้อมจ่ายทันทีโดยไม่ประเมินสภาพ ยาที่เปิดใช้แล้วหรือสัมผัสภายนอกต้องถูกนำเข้า <strong>"คลังกักกัน (Quarantine)"</strong> เพื่อความปลอดภัยสูงสุดของผู้ป่วย
+          </div>
+        </div>
+
+        <div id="return-dispense-info-card" class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1">
+          <!-- Injected by openMedicationReturnModal -->
+        </div>
+
+        <!-- Return Items Selector -->
+        <div class="space-y-2">
+          <label class="block text-slate-800 font-bold">เลือกรายการยาที่ต้องการรับคืน *</label>
+          <div id="return-items-list-container" class="space-y-2">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+
+        <!-- Quarantine vs Restock Decision -->
+        <div class="space-y-1.5 pt-1 border-t border-slate-200">
+          <label class="block text-slate-800 font-bold">ผลการประเมินสภาพยาและปลายทางจัดเก็บ *</label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <label class="p-3 rounded-xl border-2 border-amber-300 bg-amber-50/60 flex items-start gap-2.5 cursor-pointer hover:border-amber-400 transition">
+              <input type="radio" name="return-disposition" value="QUARANTINE" checked class="mt-0.5 text-amber-600 focus:ring-amber-500">
+              <div>
+                <strong class="font-bold text-amber-900 block text-xs">1. กักกันตรวจสอบ (Quarantine)</strong>
+                <span class="text-[11px] text-amber-800">ส่งเข้าคลังกักกัน ยอดพร้อมใช้ (Available) จะไม่เพิ่ม เหมาะกับยาเปิดกล่องแล้ว</span>
+              </div>
+            </label>
+            <label class="p-3 rounded-xl border-2 border-slate-200 bg-white flex items-start gap-2.5 cursor-pointer hover:border-teal-400 transition">
+              <input type="radio" name="return-disposition" value="RESTOCK" class="mt-0.5 text-teal-600 focus:ring-teal-500">
+              <div>
+                <strong class="font-bold text-slate-800 block text-xs">2. รับคืนเข้าสต็อกพร้อมจ่าย (Restock)</strong>
+                <span class="text-[11px] text-slate-600">กล่องยังไม่แกะซีล เก็บรักษาในอุณหภูมิถูกต้อง ยอดพร้อมใช้จะเพิ่มคืน</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Return Reason -->
+        <div>
+          <label class="block text-slate-700 font-bold mb-1">สาเหตุการรับคืน *</label>
+          <select id="return-reason-select" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800">
+            <option value="สัตว์เลี้ยงเกิดอาการไม่พึงประสงค์/แพ้ยา">สัตว์เลี้ยงเกิดอาการไม่พึงประสงค์ / แพ้ยา</option>
+            <option value="เจ้าของสัตว์เลี้ยงขอคืนยา (ยังไม่เปิดใช้)">เจ้าของสัตว์เลี้ยงขอคืนยา (ยังไม่เปิดใช้)</option>
+            <option value="สัตวแพทย์ปรับเปลี่ยนแผนการรักษา">สัตวแพทย์ปรับเปลี่ยนแผนการรักษา</option>
+            <option value="พบความผิดพลาดในการจ่ายยา">พบความผิดพลาดในการจ่ายยา</option>
+            <option value="สัตว์เลี้ยงเสียชีวิต">สัตว์เลี้ยงเสียชีวิต</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-slate-700 font-bold mb-1">บันทึกของเภสัชกรผู้รับคืน (Audit Notes) *</label>
+          <input type="text" id="return-pharmacist-notes" placeholder="ระบุการตรวจสอบสภาพ เช่น กล่องยังไม่แกะ สภาพสมบูรณ์ หรือเปิดแล้วส่งทำลาย..." class="w-full bg-white border border-slate-300 rounded-lg p-2 text-xs">
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-2">
+        <button onclick="closeMedicationReturnModal()" class="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-200 transition cursor-pointer">
+          ยกเลิก
+        </button>
+        <button onclick="confirmSubmitMedicationReturn()" class="px-4 py-2 rounded-lg text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white shadow-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+          <i data-lucide="check-circle" class="w-4 h-4"></i>
+          <span>ยืนยันบันทึกการรับคืนยา</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= NEW PRODUCT MASTER REGISTRATION MODAL ================= -->
+  <div id="modal-new-product" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[92vh] flex flex-col overflow-hidden border border-slate-200 transform scale-95 transition-transform duration-200">
+      <!-- Modal Header -->
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm">ลงทะเบียนยาและเวชภัณฑ์ใหม่ (Product Master Registration)</h3>
+            <p class="text-[11px] text-slate-400">กำหนดรหัสสินค้า, รูปแบบยา, หน่วยนับ, และเกณฑ์ควบคุมอุณหภูมิ</p>
+          </div>
+        </div>
+        <button onclick="closeNewProductModal()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div class="p-5 space-y-4 text-xs overflow-y-auto flex-1">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-700 font-bold mb-1">รหัสสินค้า (Product Code) *</label>
+            <input type="text" id="np-code" placeholder="เช่น MED-AMO-500" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs font-mono font-bold text-slate-900">
+          </div>
+          <div>
+            <label class="block text-slate-700 font-bold mb-1">หมวดหมู่สินค้า (Category) *</label>
+            <select id="np-category" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs">
+              <option value="ยาสัตว์เลี้ยง">ยาสัตว์เลี้ยง (Medication)</option>
+              <option value="วัคซีน">วัคซีน (Vaccine)</option>
+              <option value="เวชภัณฑ์">เวชภัณฑ์สิ้นเปลือง (Medical Supply)</option>
+              <option value="อาหารเฉพาะโรค">อาหารเฉพาะโรค (Prescription Diet)</option>
+              <option value="อาหารเสริม">อาหารเสริม (Supplement)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-700 font-bold mb-1">ชื่อการค้า / ชื่อผลิตภัณฑ์ (Product Name) *</label>
+            <input type="text" id="np-name" placeholder="เช่น Amoxicillin 500mg" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs font-semibold text-slate-900">
+          </div>
+          <div>
+            <label class="block text-slate-700 font-bold mb-1">ชื่อสามัญทางยา (Generic Name) *</label>
+            <input type="text" id="np-generic" placeholder="เช่น Amoxicillin Trihydrate" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-slate-700 font-bold mb-1">รูปแบบยา (Dosage Form) *</label>
+            <input type="text" id="np-dosage-form" placeholder="เช่น ยาเม็ด, ยาน้ำ" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+          </div>
+          <div>
+            <label class="block text-slate-700 font-bold mb-1">ความแรง (Strength)</label>
+            <input type="text" id="np-strength" placeholder="เช่น 500mg, 10mg/ml" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+          </div>
+          <div>
+            <label class="block text-slate-700 font-bold mb-1">หน่วยจ่ายยา (Base Unit) *</label>
+            <input type="text" id="np-base-unit" placeholder="เช่น เม็ด, ขวด, หลอด" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-bold text-teal-800">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-4 gap-2.5">
+          <div>
+            <label class="block text-slate-600 font-medium mb-1">ราคาต้นทุน (฿)</label>
+            <input type="number" step="0.5" id="np-cost" value="10.0" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-mono">
+          </div>
+          <div>
+            <label class="block text-slate-600 font-medium mb-1">ราคาขาย (฿) *</label>
+            <input type="number" step="0.5" id="np-price" value="20.0" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-mono font-bold text-teal-700">
+          </div>
+          <div>
+            <label class="block text-slate-600 font-medium mb-1">สต็อกขั้นต่ำ (Min)</label>
+            <input type="number" id="np-min-stock" value="30" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+          </div>
+          <div>
+            <label class="block text-slate-600 font-medium mb-1">จุดสั่งซื้อ (ROP)</label>
+            <input type="number" id="np-rop" value="50" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs">
+          </div>
+        </div>
+
+        <!-- Packaging & UOM conversion -->
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
+          <label class="block text-slate-800 font-bold">หน่วยบรรจุภัณฑ์และการแปลงหน่วย (Packaging & Conversion)</label>
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <span class="text-slate-500 text-[11px] block">หน่วยจัดซื้อ (Purchase Unit)</span>
+              <input type="text" id="np-purchase-unit" placeholder="เช่น กล่อง" class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-xs">
+            </div>
+            <div>
+              <span class="text-slate-500 text-[11px] block">อัตราแปลง (Factor)</span>
+              <input type="number" id="np-conv-factor" value="100" class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-xs">
+            </div>
+            <div>
+              <span class="text-slate-500 text-[11px] block">ข้อความระบุบรรจุภัณฑ์</span>
+              <input type="text" id="np-packaging-desc" placeholder="เช่น กล่องละ 10 แผง (แผงละ 10 เม็ด)" class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-xs">
+            </div>
+          </div>
+        </div>
+
+        <!-- Cold Chain & Storage Controls -->
+        <div class="bg-blue-50/60 p-3 rounded-xl border border-blue-200 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-blue-900 flex items-center gap-1.5">
+              <i data-lucide="thermometer-snowflake" class="w-4 h-4 text-blue-600"></i>
+              <span>การควบคุมอุณหภูมิและความเย็น (Cold Chain Controls)</span>
+            </span>
+            <label class="inline-flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="np-is-cold-chain" class="rounded text-blue-600 focus:ring-blue-500">
+              <span class="text-xs font-semibold text-blue-950">เป็นสินค้าควบคุมความเย็น (2-8°C)</span>
+            </label>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-slate-600 text-[11px] mb-1">เงื่อนไขการจัดเก็บทั่วไป</label>
+              <input type="text" id="np-storage-desc" placeholder="เช่น อุณหภูมิห้อง ไม่เกิน 25°C พ้นแสงแดด" class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-xs">
+            </div>
+            <div>
+              <label class="block text-slate-600 text-[11px] mb-1">ผู้จัดจำหน่ายหลัก (Default Supplier)</label>
+              <select id="np-supplier-select" class="w-full bg-white border border-slate-300 rounded-lg p-1.5 text-xs">
+                <!-- Injected by JS -->
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-2 shrink-0">
+        <button onclick="closeNewProductModal()" class="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-200 transition cursor-pointer">
+          ยกเลิก
+        </button>
+        <button onclick="saveNewProductMaster()" class="px-4 py-2 rounded-lg text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white shadow-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+          <i data-lucide="check" class="w-4 h-4"></i>
+          <span>บันทึกทะเบียนยา</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PHARMACEUTICAL INFO 360 MODAL ================= -->
+  <div id="modal-pharma-info" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-xl w-full max-h-[90vh] flex flex-col overflow-hidden border border-slate-200 transform scale-95 transition-transform duration-200">
+      <div class="p-4 bg-indigo-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-300 flex items-center justify-center">
+            <i data-lucide="book-open" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 id="pharma-modal-title" class="font-bold text-sm">ข้อมูลทางเภสัชกรรม (Pharmaceutical Monograph)</h3>
+            <p id="pharma-modal-subtitle" class="text-[11px] text-indigo-200/80"></p>
+          </div>
+        </div>
+        <button onclick="closePharmaInfoModal()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-indigo-800 transition cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div id="pharma-modal-body" class="p-5 space-y-4 text-xs overflow-y-auto flex-1">
+        <!-- Injected by openPharmaInfoModal -->
+      </div>
+
+      <div class="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+        <span class="text-[11px] text-slate-400">แหล่งข้อมูล: ข้อมูลเภสัชวิทยาสัตวแพทย์ VETCARE+ Formulary</span>
+        <button onclick="closePharmaInfoModal()" class="px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-200 transition cursor-pointer">
+          ปิดหน้าต่าง
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MEDICAL DICOM / X-RAY VIEWER MODAL (DOMAIN 05) ================= -->
+  <div id="modal-xray-viewer" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-md hidden transition-opacity duration-200">
+    <div class="bg-slate-900 text-white rounded-2xl shadow-2xl max-w-5xl w-full h-[90vh] overflow-hidden border border-slate-700 flex flex-col" id="modal-xray-card">
+      
+      <!-- Top Modal Header -->
+      <div class="p-4 bg-slate-950 border-b border-slate-800 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center">
+            <i data-lucide="scan" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 id="xray-modal-title" class="font-bold text-sm text-white">Digital Radiography Viewer (DICOM)</h3>
+              <span id="xray-modal-badge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-900/60 text-purple-300 border border-purple-700">IMG-XR-001</span>
+            </div>
+            <p id="xray-modal-subtitle" class="text-xs text-slate-400">น้องบราวนี่ • สุนัขพันธุ์ทาง • ถ่ายเมื่อ 2 มี.ค. 2026</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <!-- View switcher buttons (VD vs Lateral) -->
+          <div class="flex items-center p-1 rounded-lg bg-slate-800 border border-slate-700 text-xs font-semibold">
+            <button onclick="switchXrayView('vd')" id="btn-xray-view-vd" class="px-2.5 py-1 rounded bg-purple-600 text-white transition cursor-pointer">VD View</button>
+            <button onclick="switchXrayView('lateral')" id="btn-xray-view-lateral" class="px-2.5 py-1 rounded text-slate-400 hover:text-white transition cursor-pointer">Lateral View</button>
+          </div>
+
+          <!-- Tool Buttons -->
+          <button onclick="toggleXrayInvert()" id="btn-xray-invert" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition cursor-pointer" title="สลับสีฟิล์ม (Invert Contrast)">
+            <i data-lucide="contrast" class="w-4 h-4"></i>
+          </button>
+          <button onclick="toggleXrayZoom()" id="btn-xray-zoom" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition cursor-pointer" title="ซูมขยายภาพ">
+            <i data-lucide="zoom-in" class="w-4 h-4"></i>
+          </button>
+          <button onclick="closeXrayViewerModal()" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Canvas & Report Split Layout -->
+      <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+        <!-- Left: Medical Image Canvas (Simulated DICOM View) -->
+        <div class="flex-1 bg-black relative flex items-center justify-center overflow-hidden select-none p-4">
+          <!-- Anatomical Orientation Badges -->
+          <span class="absolute top-4 left-4 font-black text-xl text-yellow-400/80 font-mono pointer-events-none">R</span>
+          <span class="absolute top-4 right-4 font-black text-xl text-yellow-400/80 font-mono pointer-events-none">L</span>
+          <span class="absolute bottom-4 left-4 font-mono text-[10px] text-slate-500 pointer-events-none">kVp: 68 | mA: 150 | Exp: 0.08s</span>
+
+          <!-- The X-Ray Image Element -->
+          <img id="xray-image-display" src="https://images.unsplash.com/photo-1516549655169-df83a0774514?w=1000&auto=format&fit=crop&q=80" 
+            class="max-h-full max-w-full object-contain filter contrast-125 transition-all duration-300" alt="Veterinary Radiograph">
+        </div>
+
+        <!-- Right: Radiological Findings & Report -->
+        <div class="w-full lg:w-96 bg-slate-900 border-t lg:border-t-0 lg:border-l border-slate-800 p-5 overflow-y-auto space-y-4 shrink-0 text-xs">
+          <div>
+            <span class="text-[10px] uppercase font-bold tracking-wider text-purple-400">Radiology Report</span>
+            <h4 class="font-bold text-sm text-white mt-0.5">รายงานผลตรวจรังสีวินิจฉัย</h4>
+          </div>
+
+          <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/80 space-y-2">
+            <div class="flex justify-between text-slate-400 text-[11px]">
+              <span>บริเวณที่ตรวจ:</span>
+              <strong id="xray-report-region" class="text-slate-200">Abdomen (ช่องท้อง) 2 Views</strong>
+            </div>
+            <div class="flex justify-between text-slate-400 text-[11px]">
+              <span>เครื่องมือตรวจ:</span>
+              <span class="text-slate-200 font-mono">DR-VET 400 Plus</span>
+            </div>
+            <div class="flex justify-between text-slate-400 text-[11px]">
+              <span>สัตวแพทย์ผู้ส่งตรวจ:</span>
+              <span id="xray-report-doctor" class="text-slate-200">น.สพ. วุฒิชัย</span>
+            </div>
+          </div>
+
+          <!-- Findings -->
+          <div class="space-y-1.5">
+            <h5 class="font-bold text-slate-200 text-xs flex items-center gap-1.5">
+              <i data-lucide="file-search" class="w-3.5 h-3.5 text-purple-400"></i>
+              <span>ข้อค้นพบทางรังสีวิทยา (Findings):</span>
+            </h5>
+            <div id="xray-report-findings" class="p-3 bg-slate-950/70 rounded-xl border border-slate-800 text-slate-300 text-xs leading-relaxed">
+              - กระเพาะอาหารขยายตัวปานกลาง มีก๊าซและของเหลวคั่งค้าง
+              - ลำไส้เล็กส่วนต้นมีก๊าซเล็กน้อย ไม่พบการอุดตันแบบ Mechanical Ileus
+              - เงาตับ ม้าม และไต ทั้งสองข้างขนาดปกติ ขอบเขตเรียบ
+              - ไม่พบสิ่งแปลกปลอมที่มีความทึบรังสีผิดปกติ (Radio-opaque foreign body)
+            </div>
+          </div>
+
+          <!-- Impression / Conclusion -->
+          <div class="space-y-1.5">
+            <h5 class="font-bold text-slate-200 text-xs flex items-center gap-1.5">
+              <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <span>ผลวินิจฉัยสรุป (Impression):</span>
+            </h5>
+            <div id="xray-report-conclusion" class="p-3 bg-emerald-950/40 rounded-xl border border-emerald-800/60 text-emerald-300 text-xs font-semibold leading-relaxed">
+              สอดคล้องกับภาวะกระเพาะและลำไส้อักเสบเฉียบพลัน (Acute Gastroenteritis) ไม่พบภาวะกระเพาะบิดหมุน (GDV) หรือสิ่งแปลกปลอมอุดตัน
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-500">
+            <span>รังสีแพทย์: <strong>สพ.ญ. ศศิธร</strong></span>
+            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">Verified</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-3.5 bg-slate-950 border-t border-slate-800 flex items-center justify-between shrink-0">
+        <button onclick="printXrayReport()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition cursor-pointer">
+          <i data-lucide="printer" class="w-4 h-4"></i>
+          <span>พิมพ์ผล X-Ray</span>
+        </button>
+        <button onclick="closeXrayViewerModal()" class="px-4 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-white transition cursor-pointer">
+          ปิดหน้าต่าง
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= DOMAIN 05: SPECIMEN REJECTION MODAL ================= -->
+  <div id="modal-specimen-accession" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 flex flex-col">
+      <div class="p-4 bg-rose-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-rose-500/30 text-rose-300 flex items-center justify-center">
+            <i data-lucide="shield-alert" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-white">บันทึกการปฏิเสธสิ่งส่งตรวจ (Specimen Quality Rejection)</h3>
+            <p class="text-xs text-rose-200">ตามเกณฑ์มาตรฐานคุณภาพห้องปฏิบัติการ (Rule 9.2)</p>
+          </div>
+        </div>
+        <button onclick="closeSpecimenRejectModal()" class="text-rose-300 hover:text-white p-1 rounded-lg transition cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="confirmSpecimenRejection(event)" class="p-5 space-y-4">
+        <input type="hidden" id="reject-specimen-id" value="">
+
+        <!-- Specimen Info Banner -->
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs">
+          <div>
+            <span class="text-[10px] text-slate-400 block font-mono">SPECIMEN BARCODE</span>
+            <span id="reject-specimen-badge" class="font-mono font-bold text-slate-800 text-sm">SPEC-0001</span>
+          </div>
+          <span id="reject-specimen-pet" class="text-slate-600 font-semibold">น้องบราวนี่ (EDTA Tube)</span>
+        </div>
+
+        <!-- Rejection Reason Selector -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">สาเหตุการปฏิเสธสิ่งส่งตรวจ <span class="text-rose-500">*</span></label>
+          <select id="reject-reason-code" required class="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2.5 focus:outline-none focus:border-rose-500 font-semibold">
+            <option value="CLOTTED">CLOTTED: เลือดแข็งตัว/พบลิ่มเลือดในหลอด EDTA (ตรวจ CBC ไม่ได้)</option>
+            <option value="HEMOLYZED">HEMOLYZED: เม็ดเลือดแดงแตก (Hemolysis Grade 3+-4+ รบกวนค่าเคมี)</option>
+            <option value="LIPEMIC">LIPEMIC: เซรั่มขุ่นขาวข้น (Lipemia รบกวนการวัดการดูดกลืนแสง)</option>
+            <option value="INSUFFICIENT_VOLUME">INSUFFICIENT_VOLUME: ปริมาตรเลือดไม่พอต่อการวิเคราะห์ (QNS < 0.5 mL)</option>
+            <option value="WRONG_TUBE">WRONG_TUBE: ใส่หลอดเก็บตัวอย่างผิดประเภท / สารกันเลือดแข็งไม่ถูกต้อง</option>
+          </select>
+        </div>
+
+        <!-- Custom Notes -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">บันทึกและคำแนะนำเพิ่มเติมสำหรับทีมพยาบาล/สัตวแพทย์</label>
+          <textarea id="reject-custom-notes" rows="2" class="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl p-3 focus:outline-none focus:border-rose-500" placeholder="เช่น พบก้อน Clot ติดปลายหลอด แนะนำให้ใช้เข็มเบอร์ 21G เจาะเส้น Cephalic และกลับหลอดเบาๆ 8-10 ครั้ง..."></textarea>
+        </div>
+
+        <!-- Redraw Checkbox -->
+        <label class="flex items-center gap-2 p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-900 cursor-pointer">
+          <input type="checkbox" id="reject-redraw-flag" checked class="rounded text-rose-600 focus:ring-rose-500">
+          <span class="font-bold">ส่งแจ้งเตือนเจาะเก็บตัวอย่างซ้ำโดยด่วน (Notify Redraw Required)</span>
+        </label>
+
+        <div class="pt-2 flex items-center justify-end gap-2 border-t border-slate-100">
+          <button type="button" onclick="closeSpecimenRejectModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition cursor-pointer">
+            ยกเลิก
+          </button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white shadow-xs transition active:scale-95 cursor-pointer">
+            ยืนยันการปฏิเสธตัวอย่าง
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= DOMAIN 05: EQUIPMENT DAILY QC LOG MODAL ================= -->
+  <div id="modal-qc-run" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 flex flex-col">
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <i data-lucide="clipboard-check" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-white">บันทึกผลการควบคุมคุณภาพเครื่องมือ (Daily QC Run Entry)</h3>
+            <p class="text-xs text-slate-400">การสอบเทียบและบันทึกค่าควบคุมมาตรฐานประจำวัน</p>
+          </div>
+        </div>
+        <button onclick="closeNewQcRunModal()" class="text-slate-400 hover:text-white p-1 rounded-lg transition cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="submitNewQcRun(event)" class="p-5 space-y-3.5">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">เลือกเครื่องมือตรวจวิเคราะห์ <span class="text-rose-500">*</span></label>
+          <select id="qc-equipment-id" required class="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2.5 focus:outline-none focus:border-purple-500 font-semibold">
+            <option value="1">EQ-HEM-01: ProCyte Dx Automated Hematology Analyzer</option>
+            <option value="2">EQ-CHM-01: Catalyst One Veterinary Chemistry Analyzer</option>
+            <option value="3">EQ-XR-01: DR-VET 400 Plus High-Frequency System</option>
+            <option value="4">EQ-US-01: Mindray Vetus 8 Veterinary Ultrasound</option>
+            <option value="5">EQ-MIC-01: Olympus CX23 Clinical Microscope</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">ชนิดน้ำยาควบคุม (Control Type) <span class="text-rose-500">*</span></label>
+            <input type="text" id="qc-control-type" required class="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-purple-500" value="e-CHECK (XS) Normal Level">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">หมายเลขรุ่น (Lot Number) <span class="text-rose-500">*</span></label>
+            <input type="text" id="qc-lot-number" required class="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-purple-500 font-mono" value="LOT-2026-0302">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">ค่าที่อ่านได้ (Measured Value) <span class="text-rose-500">*</span></label>
+            <input type="text" id="qc-measured-val" required class="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-purple-500 font-mono" placeholder="เช่น WBC: 7.18 | RBC: 4.80">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">ช่วงค่ามาตรฐาน (Expected Target) <span class="text-rose-500">*</span></label>
+            <input type="text" id="qc-expected-val" required class="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-purple-500 font-mono" placeholder="เช่น WBC: 7.0±0.5 | RBC: 4.80±0.3">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">ผลการประเมิน (QC Result Status) <span class="text-rose-500">*</span></label>
+          <select id="qc-status-val" required class="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2.5 focus:outline-none focus:border-purple-500 font-bold">
+            <option value="PASS" class="text-emerald-700">✓ PASS (ผ่านเกณฑ์มาตรฐาน - พร้อมใช้งานตรวจคนไข้)</option>
+            <option value="FAIL" class="text-rose-700">✗ FAIL (ตกเกณฑ์ - ต้องหยุดเครื่องและ Recalibrate ทันที)</option>
+            <option value="WARNING" class="text-amber-700">⚠ WARNING (สัญญาณเริ่มเบี่ยงเบน - เฝ้าระวัง)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">หมายเหตุและผลการวิเคราะห์ Levey-Jennings</label>
+          <textarea id="qc-notes-val" rows="2" class="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl p-2.5 focus:outline-none focus:border-purple-500" placeholder="ค่าทดสอบอยู่ในเกณฑ์ ±1 SD ปกติ ไม่มีสัญญาณ Trend หรือ Shift..."></textarea>
+        </div>
+
+        <div class="pt-2 flex items-center justify-end gap-2 border-t border-slate-100">
+          <button type="button" onclick="closeNewQcRunModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition cursor-pointer">
+            ยกเลิก
+          </button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-xs font-bold bg-purple-600 hover:bg-purple-700 text-white shadow-xs transition active:scale-95 cursor-pointer">
+            บันทึกผล QC
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= DOMAIN 05: LAB RETEST / REPEAT TESTING MODAL ================= -->
+  <div id="modal-lab-retest" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 flex flex-col">
+      <div class="p-4 bg-purple-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-purple-500/30 text-purple-300 flex items-center justify-center">
+            <i data-lucide="repeat" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-white">สั่งตรวจซ้ำทางห้องปฏิบัติการ (Lab Retest / Repeat Testing)</h3>
+            <p class="text-xs text-purple-200">ตรวจซ้ำเพื่อยืนยันผลโดยไม่คิดค่าบริการเพิ่ม (Capability 3.11 & Workflow 4.5)</p>
+          </div>
+        </div>
+        <button onclick="closeRetestOrderModal()" class="text-purple-300 hover:text-white p-1 rounded-lg transition cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="confirmRetest(event)" class="p-5 space-y-4">
+        <input type="hidden" id="retest-order-id" value="">
+
+        <div class="p-3 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-between text-xs">
+          <div>
+            <span class="text-[10px] text-purple-600 block font-mono">ORDER NUMBER</span>
+            <span id="retest-order-badge" class="font-mono font-bold text-purple-900 text-sm">ORD-0001</span>
+          </div>
+          <span id="retest-order-pet" class="text-purple-800 font-semibold truncate max-w-xs">น้องบราวนี่ (CBC)</span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">เหตุผลในการสั่งตรวจซ้ำ (Retest Indication) <span class="text-rose-500">*</span></label>
+          <select id="retest-reason-type" required class="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2.5 focus:outline-none focus:border-purple-500 font-semibold">
+            <option value="PANIC_CONFIRM">ยืนยันค่าวิกฤติต่อชีวิต (Critical Panic Value Double Check)</option>
+            <option value="DILUTION">เจือจางตัวอย่างเนื่องจากค่าสูงเกินขีดจำกัดเครื่อง (High Limit Dilution)</option>
+            <option value="RERUN_QC">รันซ้ำหลังเครื่องสอบเทียบใหม่ (Instrument Post-Cal Rerun)</option>
+            <option value="REDRAW_SAMPLE">เจาะเลือดใหม่เนื่องจากตัวอย่างเดิม Clotted/Hemolyzed</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">บันทึกข้อความถึงนักเทคนิคการแพทย์</label>
+          <textarea id="retest-notes" rows="2" class="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl p-3 focus:outline-none focus:border-purple-500" placeholder="เช่น รบกวนเจือจาง 1:2 หรือสเมียร์ฟิล์มเลือดดูเกล็ดเลือดซ้ำ..."></textarea>
+        </div>
+
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-600 flex items-center gap-2">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+          <span>ระบบจะไม่สร้างรายการค่าบริการใหม่ในใบเสร็จการเงิน (No Additional Billing Item)</span>
+        </div>
+
+        <div class="pt-2 flex items-center justify-end gap-2 border-t border-slate-100">
+          <button type="button" onclick="closeRetestOrderModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition cursor-pointer">
+            ยกเลิก
+          </button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-xs font-bold bg-purple-600 hover:bg-purple-700 text-white shadow-xs transition active:scale-95 cursor-pointer">
+            ยืนยันส่งตรวจซ้ำ
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= DOMAIN 06: MODAL SURGERY REQUEST ================= -->
+  <div id="modal-surgery-request" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 flex flex-col">
+      <div class="p-4 bg-rose-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-rose-500/30 text-rose-300 flex items-center justify-center">
+            <i data-lucide="inbox" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-white">ส่งคำขอผ่าตัดและระงับความรู้สึกใหม่ (New Surgery Request)</h3>
+            <p class="text-xs text-rose-200">บันทึกคำขอส่งผ่าตัดจากห้องตรวจรักษา ประเมินความเร่งด่วนและเตรียมจัดคิว OR</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeNewSurgeryRequestModal()" class="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="submitNewSurgeryRequest(event)" class="p-5 space-y-4 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">เลือกสัตว์ป่วยที่ต้องการผ่าตัด <span class="text-rose-500">*</span></label>
+          <select id="surg-req-pet-id" required class="w-full p-2.5 rounded-lg border border-slate-300 bg-white focus:outline-none focus:border-rose-500">
+            <option value="">-- เลือกสัตว์ป่วยจากทะเบียน --</option>
+            <option value="1">บราวนี่ (สุนัข - โกลเดน) • เจ้าของ: คุณวิภาดา (แพท)</option>
+            <option value="2">โมจิ (แมว - สก็อตติช) • เจ้าของ: คุณชนาธิป (บอล)</option>
+            <option value="3">ลักกี้ (สุนัข - ชิบะ) • เจ้าของ: คุณกมลชนก (แนท)</option>
+            <option value="4">ชีสเค้ก (แมว - บริติช) • เจ้าของ: คุณวิภาดา (แพท)</option>
+            <option value="5">สิงโต (สุนัข - ไทยบางแก้ว) • เจ้าของ: มูลนิธิเพื่อนสัตว์ไทย</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">ประเภทการผ่าตัด / หัตถการที่ร้องขอ <span class="text-rose-500">*</span></label>
+          <select id="surg-req-catalog-id" required class="w-full p-2.5 rounded-lg border border-slate-300 bg-white focus:outline-none focus:border-rose-500">
+            <option value="1">ผ่าตัดทำหมันแมวเพศเมีย (Feline Ovariohysterectomy) [Soft Tissue - ~45 นาที]</option>
+            <option value="2">เย็บซ่อมแซมแผลฉีกขาดขนาดใหญ่ (Wound Debridement & Closure) [Emergency - ~30 นาที]</option>
+            <option value="3">ผ่าตัดก้อนเนื้องอกผิวหนัง (Mass Excision & Biopsy) [Soft Tissue - ~60 นาที]</option>
+            <option value="4">ขูดหินปูนและขัดฟันแบบดมยาสลบ (Comprehensive Dental Prophylaxis) [Dental - ~40 นาที]</option>
+            <option value="5">ผ่าตัดคลอดฉุกเฉิน (Emergency Cesarean Section) [STAT Emergency - ~60 นาที]</option>
+            <option value="6">ผ่าตัดเปิดช่องท้องสำรวจ (Exploratory Laparotomy) [Major Abdominal - ~90 นาที]</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">ระดับความเร่งด่วนทางคลินิก (Clinical Priority) <span class="text-rose-500">*</span></label>
+          <select id="surg-req-priority" required class="w-full p-2.5 rounded-lg border border-slate-300 bg-white focus:outline-none focus:border-rose-500">
+            <option value="ROUTINE">Routine (ตามนัดหมายทั่วไป)</option>
+            <option value="URGENT">Urgent (เร่งด่วนภายในวัน)</option>
+            <option value="STAT">STAT Emergency (ฉุกเฉินวิกฤตทันที)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">ข้อบ่งชี้ทางการแพทย์ (Medical Indication) <span class="text-rose-500">*</span></label>
+          <textarea id="surg-req-indication" rows="3" required placeholder="ระบุเหตุผลในการผ่าตัด อาการสำคัญ หรือรอยโรคที่ต้องผ่าตัดรักษา..." class="w-full p-2.5 rounded-lg border border-slate-300 bg-white focus:outline-none focus:border-rose-500"></textarea>
+        </div>
+
+        <div class="pt-3 flex items-center justify-end gap-2 border-t border-slate-100">
+          <button type="button" onclick="closeNewSurgeryRequestModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition cursor-pointer">
+            ยกเลิก
+          </button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white shadow-xs transition active:scale-95 cursor-pointer">
+            ส่งคำขอผ่าตัด
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= DOMAIN 06: MODAL ANESTHESIA VITAL MONITORING ================= -->
+  <div id="modal-anesthesia-vital" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 flex flex-col">
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-blue-500/30 text-blue-300 flex items-center justify-center">
+            <i data-lucide="activity" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-white">บันทึกสัญญาณชีพวิสัญญี (Intraoperative Vitals Checkpoint)</h3>
+            <p class="text-xs text-slate-300">บันทึกพารามิเตอร์สัญญาณชีพต่อเนื่องระหว่างการระงับความรู้สึกในห้องผ่าตัด</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeAnesthesiaMonitoringModal()" class="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="submitAnesthesiaVitalEntry(event)" class="p-5 space-y-3.5 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">จุดเวลาตรวจ (Checkpoint / Elapsed Time) <span class="text-rose-500">*</span></label>
+          <input type="text" id="vital-time-min" value="12:00 (25 min)" required class="w-full p-2.5 rounded-lg border border-slate-300 bg-white font-mono">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">อัตราการเต้นหัวใจ HR (bpm)</label>
+            <input type="number" id="vital-hr" value="116" min="30" max="250" required class="w-full p-2.5 rounded-lg border border-slate-300 bg-white font-mono font-bold">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">ความอิ่มตัวออกซิเจน SpO2 (%)</label>
+            <input type="number" id="vital-spo2" value="99" min="50" max="100" required class="w-full p-2.5 rounded-lg border border-slate-300 bg-white font-mono font-bold">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">คาร์บอนไดออกไซด์ EtCO2 (mmHg)</label>
+            <input type="number" id="vital-etco2" value="38" min="10" max="80" required class="w-full p-2.5 rounded-lg border border-slate-300 bg-white font-mono font-bold">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">ความดันเลือดเฉลี่ย MAP (mmHg)</label>
+            <input type="number" id="vital-map" value="78" min="30" max="180" required class="w-full p-2.5 rounded-lg border border-slate-300 bg-white font-mono font-bold">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2.5">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">อุณหภูมิ Temp (°C)</label>
+            <input type="number" id="vital-temp" step="0.1" value="38.0" min="32" max="42" required class="w-full p-2.5 rounded-lg border border-slate-300 bg-white font-mono font-bold">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">การหายใจ RR (/m)</label>
+            <input type="number" id="vital-rr" value="16" min="4" max="80" required class="w-full p-2.5 rounded-lg border border-slate-300 bg-white font-mono font-bold">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Isoflurane (%)</label>
+            <input type="number" id="vital-iso" step="0.1" value="1.5" min="0" max="5" required class="w-full p-2.5 rounded-lg border border-slate-300 bg-white font-mono font-bold">
+          </div>
+        </div>
+
+        <div class="pt-3 flex items-center justify-end gap-2 border-t border-slate-100">
+          <button type="button" onclick="closeAnesthesiaMonitoringModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition cursor-pointer">
+            ยกเลิก
+          </button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-xs transition active:scale-95 cursor-pointer">
+            บันทึกสัญญาณชีพ
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= DOMAIN 06: MODAL SURGICAL COMPLICATION ================= -->
+  <div id="modal-surgery-complication" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 flex flex-col">
+      <div class="p-4 bg-amber-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-amber-500/30 text-amber-300 flex items-center justify-center">
+            <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-white">รายงานภาวะแทรกซ้อน (Surgical Complication Incident)</h3>
+            <p class="text-xs text-amber-200">บันทึกเหตุการณ์ไม่พึงประสงค์ การแทรกซ้อนทางวิสัญญี หรือภาวะวิกฤตระหว่างผ่าตัด</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeComplicationLogModal()" class="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="submitComplicationLog(event)" class="p-5 space-y-3.5 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">ประเภทภาวะแทรกซ้อน <span class="text-rose-500">*</span></label>
+            <select id="comp-type" required class="w-full p-2.5 rounded-lg border border-slate-300 bg-white">
+              <option value="MILD_HYPOTENSION">ความดันโลหิตต่ำชั่วคราว (Hypotension)</option>
+              <option value="BRADYCARDIA">หัวใจเต้นช้า (Bradycardia)</option>
+              <option value="HYPOXIA">ภาวะออกซิเจนในเลือดต่ำ (Hypoxia)</option>
+              <option value="HEMORRHAGE">เลือดออกผิดปกติ (Surgical Hemorrhage)</option>
+              <option value="HYPOTHERMIA">ภาวะอุณหภูมิต่ำ (Hypothermia)</option>
+              <option value="ARRHYTHMIA">ภาวะหัวใจเต้นผิดจังหวะ (Arrhythmia)</option>
+              <option value="OTHER">ภาวะแทรกซ้อนอื่น ๆ</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">ระดับความรุนแรง (Severity) <span class="text-rose-500">*</span></label>
+            <select id="comp-severity" required class="w-full p-2.5 rounded-lg border border-slate-300 bg-white">
+              <option value="MILD">เล็กน้อย (Mild) - ตอบสนองต่อการปรับยา</option>
+              <option value="MODERATE">ปานกลาง (Moderate) - ต้องให้การรักษาจำเพาะ</option>
+              <option value="SEVERE">รุนแรง (Severe) - กระทบต่อระบบไหลเวียน</option>
+              <option value="CRITICAL">วิกฤต (Critical) - เสี่ยงต่อชีวิตฉุกเฉิน</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">รายละเอียดเหตุการณ์และการแก้ไข (Description & Resolution) <span class="text-rose-500">*</span></label>
+          <textarea id="comp-description" rows="3" required placeholder="อธิบายอาการที่เกิดขึ้น เวลา และการแก้ไขทางคลินิก (เช่น ปรับก๊าซสลบ, ให้ IV bolus, ให้ Atropine)..." class="w-full p-2.5 rounded-lg border border-slate-300 bg-white"></textarea>
+        </div>
+
+        <div class="pt-3 flex items-center justify-end gap-2 border-t border-slate-100">
+          <button type="button" onclick="closeComplicationLogModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition cursor-pointer">
+            ยกเลิก
+          </button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white shadow-xs transition active:scale-95 cursor-pointer">
+            บันทึกรายงาน
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= REALISTIC MEDICAL RECEIPT & TAX INVOICE MODAL (DOMAIN 07) ================= -->
+  <div id="modal-receipt-viewer" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/70 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[92vh] overflow-hidden border border-slate-200 flex flex-col" id="modal-receipt-card">
+      
+      <!-- Top Modal Header -->
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center">
+            <i data-lucide="receipt" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 id="receipt-modal-title" class="font-bold text-sm text-white">เอกสารการเงินและหลักฐานการชำระเงิน</h3>
+              <span id="receipt-modal-badge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">PAID</span>
+            </div>
+            <p class="text-[11px] text-slate-400">ระบบออกใบเสร็จรับเงินอย่างย่อและใบกำกับภาษีเต็มรูปตามมาตรฐานสรรพากร</p>
+          </div>
+        </div>
+
+        <button onclick="closeReceiptModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Document Type Switcher Tabs -->
+      <div class="px-5 py-2.5 bg-slate-100 border-b border-slate-200 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-1.5">
+          <button onclick="switchReceiptDocType('slip')" id="btn-receipt-tab-slip" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-white text-slate-900 shadow-2xs border border-slate-200 transition cursor-pointer flex items-center gap-1.5">
+            <i data-lucide="file-text" class="w-3.5 h-3.5 text-amber-600"></i>
+            <span>ใบเสร็จรับเงินอย่างย่อ (Slip 80mm)</span>
+          </button>
+          <button onclick="switchReceiptDocType('tax_invoice')" id="btn-receipt-tab-tax" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5">
+            <i data-lucide="file-check" class="w-3.5 h-3.5 text-blue-600"></i>
+            <span>ใบกำกับภาษีเต็มรูป (A4 Tax Invoice)</span>
+          </button>
+        </div>
+        <span class="text-[11px] text-slate-500 font-medium hidden sm:inline">กดปุ่มสั่งพิมพ์เพื่อออกเอกสารจริง</span>
+      </div>
+
+      <!-- Printable Document Scrollable Viewport -->
+      <div class="p-4 sm:p-6 bg-slate-100/70 overflow-y-auto flex-1 flex justify-center">
+        <div id="printable-receipt-content" class="w-full max-w-lg bg-white rounded-xl border border-slate-300 p-5 sm:p-6 shadow-xs text-slate-800 font-sans space-y-4">
+          <!-- Dynamic Content Injected by JS -->
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 bg-white border-t border-slate-200 flex items-center justify-between gap-3 shrink-0">
+        <div class="flex items-center gap-2">
+          <button onclick="closeReceiptModal()" class="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-100 transition cursor-pointer">
+            ปิดหน้าต่าง
+          </button>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="dischargePatientFromReceipt()" id="btn-receipt-discharge" class="px-4 py-2 rounded-lg text-xs font-bold bg-purple-600 hover:bg-purple-700 text-white shadow-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+            <i data-lucide="check-check" class="w-4 h-4"></i>
+            <span>เสร็จสิ้น & ปิดคิวผู้ป่วย (Discharge)</span>
+          </button>
+          <button onclick="printReceiptDocument()" class="px-4 py-2 rounded-lg text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white shadow-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+            <i data-lucide="printer" class="w-4 h-4"></i>
+            <span>สั่งพิมพ์เอกสาร</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= DOMAIN 07: MODAL REFUND ORDER ================= -->
+  <div id="modal-refund-order" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 flex flex-col">
+      <div class="p-4 bg-rose-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-rose-500/30 text-rose-300 flex items-center justify-center">
+            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-white">ทำรายการคืนเงินลูกค้า (Issue Refund / Credit Note)</h3>
+            <p class="text-xs text-rose-200">บันทึกการคืนเงินจากการคืนสินค้า การคิดเงินผิดพลาด หรือยกเลิกบริการ</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeRefundModal()" class="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="submitRefundOrder(event)" class="p-5 space-y-4 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">เลือกใบแจ้งหนี้อ้างอิงที่ต้องการคืนเงิน <span class="text-rose-500">*</span></label>
+          <select id="refund-invoice-select" required class="w-full p-2.5 rounded-lg border border-slate-300 bg-white">
+            <option value="3">INV-20260302-003: คุณกมลชนก (แนท) - น้องลักกี้ (ยอดบิล ฿1,350.00)</option>
+            <option value="4">INV-20260215-004: มูลนิธิเพื่อนสัตว์ไทย - น้องสิงโต (ยอดชำระแล้ว ฿650.00)</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">จำนวนเงินที่คืน (บาท) <span class="text-rose-500">*</span></label>
+            <input type="number" id="refund-amount" value="180" min="1" max="50000" required class="w-full p-2.5 rounded-lg border border-slate-300 font-bold font-mono text-right bg-white">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">ช่องทางการคืนเงิน <span class="text-rose-500">*</span></label>
+            <select id="refund-method" required class="w-full p-2.5 rounded-lg border border-slate-300 bg-white">
+              <option value="PROMPTPAY">โอนคืนผ่าน PromptPay</option>
+              <option value="CASH">คืนเงินสด (Cash)</option>
+              <option value="CREDIT_CARD">Void บัตรเครดิต</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">เหตุผลในการขอคืนเงิน (Refund Reason) <span class="text-rose-500">*</span></label>
+          <textarea id="refund-reason" rows="2.5" required placeholder="ระบุเหตุผล เช่น คืนสินค้าบรรจุภัณฑ์ชำรุด, ยกเลิกหัตถการบางส่วน..." class="w-full p-2.5 rounded-lg border border-slate-300 bg-white">คืนสินค้าอาหารสัตว์บรรจุภัณฑ์ชำรุดก่อนเปิดใช้</textarea>
+        </div>
+
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center gap-2 text-slate-600">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+          <span>รายการคืนเงินต้องผ่านการอนุมัติโดยผู้จัดการคลินิก (น.สพ. วุฒิชัย)</span>
+        </div>
+
+        <div class="pt-3 flex items-center justify-end gap-2 border-t border-slate-100">
+          <button type="button" onclick="closeRefundModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition cursor-pointer">
+            ยกเลิก
+          </button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white shadow-xs transition active:scale-95 cursor-pointer">
+            ยืนยันคืนเงิน
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= DOMAIN 07: MODAL CUSTOMER DEPOSIT ================= -->
+  <div id="modal-customer-deposit" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 flex flex-col">
+      <div class="p-4 bg-emerald-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-emerald-500/30 text-emerald-300 flex items-center justify-center">
+            <i data-lucide="wallet" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-white">รับเงินมัดจำล่วงหน้า (Customer Advance Deposit)</h3>
+            <p class="text-xs text-emerald-200">บันทึกเงินมัดจำสำหรับเคสผ่าตัด แอดมิท หรือส่งตรวจวินิจฉัยพิเศษ</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeCustomerDepositModal()" class="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="submitCustomerDeposit(event)" class="p-5 space-y-4 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">เลือกลูกค้าและสัตว์ป่วย <span class="text-rose-500">*</span></label>
+          <div class="grid grid-cols-2 gap-2">
+            <select id="deposit-customer-id" required class="p-2.5 rounded-lg border border-slate-300 bg-white">
+              <option value="1">คุณวิภาดา (แพท)</option>
+              <option value="2">คุณชนาธิป (บอล)</option>
+              <option value="3">คุณกมลชนก (แนท)</option>
+              <option value="5">มูลนิธิเพื่อนสัตว์ไทย</option>
+            </select>
+            <select id="deposit-pet-id" required class="p-2.5 rounded-lg border border-slate-300 bg-white">
+              <option value="1">น้องบราวนี่ (โกลเดน)</option>
+              <option value="2">น้องโมจิ (สก็อตติช)</option>
+              <option value="3">น้องลักกี้ (ชิบะ)</option>
+              <option value="4">น้องชีสเค้ก (บริติช)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">จำนวนเงินมัดจำ (บาท) <span class="text-rose-500">*</span></label>
+            <input type="number" id="deposit-amount" value="1000" min="100" max="100000" required class="w-full p-2.5 rounded-lg border border-slate-300 font-bold font-mono text-right bg-white">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">ช่องทางรับเงิน <span class="text-rose-500">*</span></label>
+            <select id="deposit-method" required class="w-full p-2.5 rounded-lg border border-slate-300 bg-white">
+              <option value="PROMPTPAY">PromptPay QR</option>
+              <option value="CASH">เงินสด (Cash)</option>
+              <option value="CREDIT_CARD">บัตรเครดิต</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">หมายเหตุและวัตถุประสงค์มัดจำ</label>
+          <textarea id="deposit-notes" rows="2.5" placeholder="ระบุเหตุผล เช่น มัดจำค่าผ่าตัดฉุกเฉิน มัดจำค่าห้องพักฟื้น..." class="w-full p-2.5 rounded-lg border border-slate-300 bg-white">เงินมัดจำค่าผ่าตัดและห้องพักฟื้นล่วงหน้า</textarea>
+        </div>
+
+        <div class="pt-3 flex items-center justify-end gap-2 border-t border-slate-100">
+          <button type="button" onclick="closeCustomerDepositModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition cursor-pointer">
+            ยกเลิก
+          </button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition active:scale-95 cursor-pointer">
+            บันทึกรับเงินมัดจำ
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= DOMAIN 07: MODAL SHIFT CLOSE & CASH BALANCING ================= -->
+  <div id="modal-shift-close" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200 flex flex-col">
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-amber-500/30 text-amber-300 flex items-center justify-center">
+            <i data-lucide="calculator" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-white">ปิดกะลิ้นชักการเงินประจำวัน (Daily Cash Drawer Close)</h3>
+            <p class="text-xs text-slate-300">นับเงินสดจริงในลิ้นชัก กระทบยอดกับระบบ และบันทึกผลต่างขาด/เกิน</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeShiftCloseModal()" class="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="submitShiftClose(event)" class="p-5 space-y-4 text-xs">
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
+          <div class="flex justify-between">
+            <span class="text-slate-500">เงินทอนตั้งต้น (Opening Float):</span>
+            <span class="font-bold font-mono text-slate-800">฿3,000.00</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-500">ยอดขายเงินสดระหว่างกะ (Cash Sales):</span>
+            <span class="font-bold font-mono text-slate-800">฿0.00</span>
+          </div>
+          <div class="flex justify-between pt-1 border-t border-slate-200 font-bold">
+            <span class="text-slate-700">ยอดเงินสดที่ต้องมีในลิ้นชัก (Expected Cash):</span>
+            <span class="font-mono text-amber-700 text-sm">฿3,000.00</span>
+          </div>
+          <input type="hidden" id="expected-cash-val" value="3000">
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-800 mb-1">ยอดเงินสดที่นับได้จริง (Actual Cash Counted) <span class="text-rose-500">*</span></label>
+          <input type="number" id="actual-cash-counted" value="3000" min="0" max="200000" oninput="calculateShiftVariance()" required class="w-full p-2.5 rounded-lg border border-slate-300 font-bold font-mono text-lg text-right bg-white text-slate-900">
+        </div>
+
+        <div class="p-2.5 bg-slate-100 rounded-lg flex items-center justify-between">
+          <span class="text-slate-600 font-semibold">สถานะผลต่าง (Variance):</span>
+          <span id="shift-variance-display" class="text-xs font-bold font-mono text-emerald-600">✓ ยอดเงินสดตรงกับระบบทุกประการ (Balanced)</span>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">บันทึกข้อสังเกตและผู้อนุมัติปิดกะ</label>
+          <textarea id="shift-close-notes" rows="2" class="w-full p-2.5 rounded-lg border border-slate-300 bg-white">ปิดกะเรียบร้อย ยอดเงินสดครบถ้วน นำเงินสดเข้าตู้นิรภัย</textarea>
+        </div>
+
+        <div class="pt-3 flex items-center justify-end gap-2 border-t border-slate-100">
+          <button type="button" onclick="closeShiftCloseModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition cursor-pointer">
+            ยกเลิก
+          </button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white shadow-xs transition active:scale-95 cursor-pointer">
+            ยืนยันปิดกะลิ้นชัก
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= DOMAIN 07: MODAL VOID INVOICE ================= -->
+  <div id="modal-void-invoice" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200 flex flex-col">
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2">
+          <i data-lucide="ban" class="w-5 h-5 text-rose-500"></i>
+          <h3 class="font-bold text-sm text-white">ยกเลิกใบแจ้งหนี้ (Void Invoice)</h3>
+        </div>
+        <button type="button" onclick="closeVoidInvoiceModal()" class="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="submitVoidInvoice(event)" class="p-5 space-y-4 text-xs">
+        <div class="p-3 bg-rose-50 rounded-xl border border-rose-200 text-rose-800 flex items-start gap-2">
+          <i data-lucide="alert-octagon" class="w-4 h-4 shrink-0 mt-0.5 text-rose-600"></i>
+          <div>
+            <span class="font-bold block">คำเตือนด้านการเงิน (Audit Notice):</span>
+            <p class="text-[11px] text-rose-700 mt-0.5">การยกเลิกบิลจะเปลี่ยนสถานะเป็น VOID และปรับยอดหนี้เป็น 0 ทันที โดยไม่สามารถย้อนกลับได้</p>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">เหตุผลในการยกเลิกบิล (Void Reason) <span class="text-rose-500">*</span></label>
+          <textarea id="void-reason" rows="3" required placeholder="ระบุเหตุผล เช่น ออกบิลซ้ำซ้อน, ลูกค้ายกเลิกการตรวจ, แพทย์สั่งปรับแผนการรักษา..." class="w-full p-2.5 rounded-lg border border-slate-300 bg-white"></textarea>
+        </div>
+
+        <div class="pt-3 flex items-center justify-end gap-2 border-t border-slate-100">
+          <button type="button" onclick="closeVoidInvoiceModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition cursor-pointer">
+            ยกเลิก
+          </button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white shadow-xs transition active:scale-95 cursor-pointer">
+            ยืนยันการ Void บิล
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= REALISTIC LINE OA MESSAGE PREVIEW MODAL (DOMAIN 08) ================= -->
+  <div id="modal-line-preview" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/70 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden border-4 border-slate-800 flex flex-col" id="modal-line-phone-card">
+      
+      <!-- Simulated Smartphone Bezel & Status Bar -->
+      <div class="bg-slate-900 text-white px-5 pt-3 pb-2 flex items-center justify-between text-[11px] font-mono">
+        <span>09:41</span>
+        <div class="w-16 h-3 bg-slate-800 rounded-full mx-auto"></div>
+        <div class="flex items-center gap-1">
+          <i data-lucide="wifi" class="w-3 h-3"></i>
+          <i data-lucide="battery-medium" class="w-3.5 h-3.5"></i>
+        </div>
+      </div>
+
+      <!-- LINE Chat Top Header -->
+      <div class="bg-emerald-600 text-white p-3 flex items-center justify-between shadow-xs">
+        <div class="flex items-center gap-2.5">
+          <button onclick="closeLinePreviewModal()" class="p-1 hover:bg-emerald-700 rounded-lg transition cursor-pointer">
+            <i data-lucide="chevron-left" class="w-5 h-5"></i>
+          </button>
+          <div class="w-8 h-8 rounded-full bg-white text-emerald-700 font-black flex items-center justify-center text-xs shadow-2xs">
+            VC
+          </div>
+          <div>
+            <div class="flex items-center gap-1">
+              <h4 class="font-bold text-xs">VetCare Clinic Official</h4>
+              <i data-lucide="badge-check" class="w-3.5 h-3.5 fill-emerald-200 text-emerald-800"></i>
+            </div>
+            <p class="text-[10px] text-emerald-100">ตอบกลับอัตโนมัติ 24 ชม.</p>
+          </div>
+        </div>
+        <button onclick="closeLinePreviewModal()" class="p-1 text-emerald-200 hover:text-white transition cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- LINE Chat Viewport Body -->
+      <div class="p-4 bg-slate-100 flex-1 overflow-y-auto min-h-[360px] flex flex-col justify-between">
+        <div class="text-center my-1">
+          <span class="text-[10px] bg-slate-200/80 text-slate-500 px-2 py-0.5 rounded-full font-sans">วันนี้ 13:00 น.</span>
+        </div>
+
+        <!-- Dynamic Simulated LINE Flex Message Injected by JS -->
+        <div id="line-preview-bubble-content" class="space-y-3"></div>
+
+        <div class="text-center pt-2 text-[10px] text-slate-400">
+          ส่งผ่าน VetCare Messaging Gateway API
+        </div>
+      </div>
+
+      <!-- Phone Bottom Actions -->
+      <div class="p-3 bg-white border-t border-slate-200 flex items-center justify-between gap-2">
+        <button onclick="closeLinePreviewModal()" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-100 transition cursor-pointer">
+          ปิดหน้าต่าง
+        </button>
+        <button onclick="simulateSendLineReminder()" class="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
+          <i data-lucide="send" class="w-3.5 h-3.5"></i>
+          <span>ส่งข้อความจริง (Send LINE)</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= CRM ACTION & FEEDBACK MODAL ================= -->
+  <div id="modal-crm-action" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200">
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
+        <h4 id="crm-action-modal-title" class="font-bold text-xs text-white">บันทึกข้อมูล</h4>
+        <button onclick="closeCrmActionModal()" class="p-1 rounded-lg text-slate-400 hover:text-white transition cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div id="crm-action-modal-body" class="p-5 max-h-[75vh] overflow-y-auto"></div>
+      <div id="crm-action-modal-footer" class="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-2">
+        <button onclick="closeCrmActionModal()" class="px-3 py-1.5 text-xs text-slate-600 hover:bg-slate-200 rounded-lg transition cursor-pointer">ยกเลิก</button>
+        <button id="crm-action-modal-submit-btn" onclick="submitCustomerFeedback()" class="px-4 py-1.5 text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition active:scale-95 cursor-pointer">บันทึกข้อมูล</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PURCHASE ORDER (PO) PRINTABLE DOCUMENT VIEWER MODAL ================= -->
+  <div id="modal-po-viewer" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/70 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[95vh] flex flex-col overflow-hidden border border-slate-200">
+      <!-- Modal Top Action Header -->
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2">
+          <i data-lucide="file-check" class="w-5 h-5 text-teal-400"></i>
+          <div>
+            <h4 class="font-bold text-sm text-white">เอกสารใบสั่งซื้ออย่างเป็นทางการ (Official Purchase Order)</h4>
+            <p class="text-[11px] text-slate-400">แบบฟอร์มจัดซื้อสำหรับส่งให้บริษัทคู่ค้าและฝ่ายบัญชีตรวจสอบ</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="printPoDocument()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold transition cursor-pointer shadow-xs">
+            <i data-lucide="printer" class="w-4 h-4"></i>
+            <span>พิมพ์ใบสั่งซื้อ (Print PO)</span>
+          </button>
+          <button onclick="closePoDocumentModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-white transition cursor-pointer">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Printable A4 Document Body -->
+      <div id="po-document-paper" class="p-8 overflow-y-auto bg-slate-100/50 flex justify-center">
+        <!-- Rendered by renderPoDocument(poId) -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-3 bg-white border-t border-slate-200 flex items-center justify-between shrink-0 text-xs text-slate-500">
+        <span class="flex items-center gap-1.5">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+          <span>เอกสารผ่านการอนุมัติทางอิเล็กทรอนิกส์ (Digital Sign-off Verified)</span>
+        </span>
+        <button onclick="closePoDocumentModal()" class="px-4 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100 rounded-lg transition cursor-pointer border border-slate-200">
+          ปิดหน้าต่าง
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= GOODS RECEIPT INTAKE MODAL ================= -->
+  <div id="modal-goods-receipt" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/70 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[92vh] flex flex-col overflow-hidden border border-slate-200">
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2">
+          <i data-lucide="package-check" class="w-5 h-5 text-emerald-400"></i>
+          <div>
+            <h4 class="font-bold text-sm text-white">บันทึกตรวจรับสินค้าเข้าคลัง (Goods Receipt & Lot Intake)</h4>
+            <p class="text-[11px] text-slate-400">ตรวจนับสินค้าจริง, บันทึก Lot No., Exp Date และปรับยอดเข้าคลังเวชภัณฑ์ (Domain 04) ทันที</p>
+          </div>
+        </div>
+        <button onclick="closeGoodsReceiptModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-white transition cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div id="goods-receipt-modal-body" class="p-6 overflow-y-auto space-y-4">
+        <!-- Rendered by openGoodsReceiptModal(poId) -->
+      </div>
+      <div class="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-2 shrink-0">
+        <button onclick="closeGoodsReceiptModal()" class="px-4 py-2 text-xs font-medium text-slate-600 hover:bg-slate-200 rounded-lg transition cursor-pointer">ยกเลิก</button>
+        <button id="btn-confirm-goods-receipt" class="px-5 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition shadow-xs active:scale-95 cursor-pointer flex items-center gap-1.5">
+          <i data-lucide="check-circle" class="w-4 h-4"></i>
+          <span>ยืนยันตรวจรับเข้าคลัง</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= RFQ & QUOTATION COMPARISON MODAL ================= -->
+  <div id="modal-rfq-comparison" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/70 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden border border-slate-200">
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">
+            <i data-lucide="scale" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-sm text-white">เปรียบเทียบใบเสนอราคาและคัดเลือกผู้จำหน่าย (RFQ & Supplier Selection)</h4>
+            <p class="text-[11px] text-slate-400">วิเคราะห์เปรียบเทียบราคาต่อหน่วย, ยอดสุทธิ, เงื่อนไขเครดิต, และคะแนนความตรงต่อเวลา เพื่อตัดสินใจสั่งซื้อ</p>
+          </div>
+        </div>
+        <button onclick="closeRfqComparisonModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-white transition cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div id="rfq-comparison-modal-body" class="p-6 overflow-y-auto space-y-4">
+        <!-- Rendered by openRfqComparisonModal(prId) -->
+      </div>
+      <div class="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0 text-xs">
+        <span class="text-slate-500 flex items-center gap-1.5">
+          <i data-lucide="info" class="w-4 h-4 text-slate-400"></i>
+          <span>เลือกผู้จำหน่ายที่ตรงตามเกณฑ์เพื่อสร้างใบสั่งซื้อ (PO) ให้อัตโนมัติ</span>
+        </span>
+        <button onclick="closeRfqComparisonModal()" class="px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-200 rounded-lg transition cursor-pointer">ปิดหน้าต่าง</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= REGISTER NEW SUPPLIER MODAL ================= -->
+  <div id="modal-new-supplier" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/70 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[92vh] flex flex-col overflow-hidden border border-slate-200">
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold">
+            <i data-lucide="building-2" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-sm text-white">ลงทะเบียนคู่ค้า / ผู้จำหน่ายเวชภัณฑ์ใหม่ (New Supplier)</h4>
+            <p class="text-[11px] text-slate-400">บันทึกข้อมูลนิติบุคคล, เลขประจำตัวผู้เสียภาษี, เครดิตเทอม และช่องทางประสานงาน</p>
+          </div>
+        </div>
+        <button onclick="closeNewSupplierModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-white transition cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <form id="form-new-supplier" onsubmit="submitNewSupplier(event)" class="p-6 overflow-y-auto space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">รหัสคู่ค้า (Supplier Code) *</label>
+            <input type="text" id="new-sup-code" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono text-slate-800 focus:outline-none focus:border-indigo-500">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">หมวดหมู่ธุรกิจ (Category) *</label>
+            <select id="new-sup-category" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-indigo-500">
+              <option value="PHARMACEUTICAL">เภสัชภัณฑ์และวัคซีน (Pharmaceutical)</option>
+              <option value="MEDICAL_DEVICE">อุปกรณ์การแพทย์และสารน้ำ (Medical Device)</option>
+              <option value="BIOLOGICAL">ชีววัตถุและป้องกันปรสิต (Biological)</option>
+              <option value="LAB_SUPPLY">น้ำยาและอุปกรณ์ชันสูตร (Lab & Diagnostics)</option>
+              <option value="GENERAL">เวชภัณฑ์สิ้นเปลืองทั่วไป (General Consumables)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">ชื่อบริษัท / ร้านค้าผู้จำหน่าย *</label>
+          <input type="text" id="new-sup-name" required placeholder="เช่น บริษัท เว็ท เมดิคอล ซัพพลาย จำกัด" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">ประเภทสินค้า / ความเชี่ยวชาญ *</label>
+            <input type="text" id="new-sup-type" required placeholder="เช่น น้ำยาตรวจแล็บ ยาชา ยาควบคุม" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-indigo-500">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">เลขประจำตัวผู้เสียภาษี (Tax ID)</label>
+            <input type="text" id="new-sup-taxid" placeholder="010555xxxxxxx" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono text-slate-800 focus:outline-none focus:border-indigo-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">เงื่อนไขการชำระเงิน (Payment Terms) *</label>
+            <select id="new-sup-terms" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-indigo-500">
+              <option value="Credit 30 วัน">Credit 30 วัน (มาตรฐาน)</option>
+              <option value="Credit 45 วัน">Credit 45 วัน</option>
+              <option value="Credit 60 วัน">Credit 60 วัน</option>
+              <option value="Credit 15 วัน">Credit 15 วัน</option>
+              <option value="Cash on Delivery">เก็บเงินปลายทาง (COD / เงินสด)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">ชื่อผู้ติดต่อหลัก (Primary Contact)</label>
+            <input type="text" id="new-sup-contact" placeholder="คุณสมชาย ใจดี" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-indigo-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">เบอร์โทรศัพท์ติดต่อ *</label>
+            <input type="tel" id="new-sup-phone" required placeholder="02-xxx-xxxx หรือ 08x-xxx-xxxx" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-indigo-500">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">อีเมลฝ่ายขาย / สั่งซื้อ *</label>
+            <input type="email" id="new-sup-email" required placeholder="orders@supplier.co.th" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-indigo-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">ที่อยู่จดทะเบียน / ออกใบกำกับภาษี</label>
+          <textarea id="new-sup-address" rows="2" placeholder="เลขที่ ถนน แขวง/ตำบล เขต/อำเภอ จังหวัด รหัสไปรษณีย์" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:border-indigo-500"></textarea>
+        </div>
+
+        <div class="p-3 bg-slate-50 border-t border-slate-200 -mx-6 -mb-6 flex items-center justify-end gap-2 shrink-0">
+          <button type="button" onclick="closeNewSupplierModal()" class="px-4 py-2 text-xs font-medium text-slate-600 hover:bg-slate-200 rounded-lg transition cursor-pointer">ยกเลิก</button>
+          <button type="submit" class="px-5 py-2 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition shadow-xs active:scale-95 cursor-pointer flex items-center gap-1.5">
+            <i data-lucide="user-plus" class="w-4 h-4"></i>
+            <span>บันทึกข้อมูลคู่ค้า</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= SUPPLIER CLAIM & RETURN DOCUMENT VIEWER MODAL ================= -->
+  <div id="modal-supplier-claim-viewer" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/70 backdrop-blur-xs hidden transition-opacity duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[95vh] flex flex-col overflow-hidden border border-slate-200">
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold">
+            <i data-lucide="file-warning" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-sm text-white">ใบแจ้งข้อร้องเรียนและเคลมคืนสินค้าคู่ค้า (Supplier Claim & Return Note)</h4>
+            <p class="text-[11px] text-slate-400">บันทึกตรวจรับของชำรุดเสียหาย บันทึกเหตุผล และส่งเรื่องติดตามการชดเชย</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="printSupplierClaimDocument()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition cursor-pointer shadow-xs">
+            <i data-lucide="printer" class="w-4 h-4"></i>
+            <span>พิมพ์ใบเคลม (Print)</span>
+          </button>
+          <button onclick="closeSupplierClaimModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-white transition cursor-pointer">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+      <div id="supplier-claim-modal-body" class="p-6 overflow-y-auto space-y-4">
+        <!-- Rendered by openSupplierClaimModal(claimId) -->
+      </div>
+      <div class="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0 text-xs">
+        <span class="text-slate-500 flex items-center gap-1">
+          <i data-lucide="shield-alert" class="w-4 h-4 text-rose-500"></i>
+          <span>เอกสารควบคุมคุณภาพเวชภัณฑ์ตามมาตรฐานโรงพยาบาลสัตว์</span>
+        </span>
+        <button onclick="closeSupplierClaimModal()" class="px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-200 rounded-lg transition cursor-pointer">ปิด</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOMAIN 10: OFFICIAL PAYSLIP PREVIEW MODAL -->
+  <div id="modal-payslip-viewer" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden border border-slate-200">
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center font-bold">
+            <i data-lucide="file-text" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white">ใบแจ้งยอดเงินเดือนและค่าตอบแทน (Official Payslip)</h3>
+            <p class="text-[11px] text-slate-400">ระบบการคำนวณภาษีและประกันสังคมอัตโนมัติ ตามมาตรฐานกรมสรรพากร</p>
+          </div>
+        </div>
+        <button onclick="closePayslipModal()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 flex items-center justify-center transition cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div id="payslip-modal-body" class="p-6 overflow-y-auto space-y-4 bg-slate-100 flex justify-center">
+        <div id="payslip-document-paper" class="w-full flex justify-center">
+          <!-- Rendered by openPayslipModal(employeeId) -->
+        </div>
+      </div>
+      <div class="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0">
+        <span class="text-[11px] text-slate-400">เอกสารนี้สร้างขึ้นโดยระบบอัตโนมัติ VetCare+ Workforce Management</span>
+        <div class="flex items-center gap-2">
+          <button onclick="closePayslipModal()" class="px-4 py-2 text-xs font-medium text-slate-600 hover:bg-slate-200 rounded-lg transition cursor-pointer">ปิดหน้าต่าง</button>
+          <button onclick="printPayslip()" class="px-5 py-2 text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition shadow-xs active:scale-95 cursor-pointer flex items-center gap-1.5">
+            <i data-lucide="printer" class="w-4 h-4"></i>
+            <span>พิมพ์สลิปเงินเดือน (Print)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOMAIN 10: SHIFT SWAP MODAL -->
+  <div id="modal-shift-swap" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full flex flex-col overflow-hidden border border-slate-200">
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center font-bold">
+            <i data-lucide="repeat" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white">ขอสลับเวรปฏิบัติงาน (Shift Swap Request)</h3>
+            <p class="text-[11px] text-slate-400">แจ้งเปลี่ยนแปลงผู้ตรวจประจำห้องและตารางเวร</p>
+          </div>
+        </div>
+        <button onclick="closeShiftSwapModal()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 flex items-center justify-center transition cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div id="shift-swap-modal-body" class="p-5 space-y-4">
+        <!-- Rendered by openShiftSwapModal(rosterId) -->
+      </div>
+      <div class="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-2 shrink-0">
+        <button onclick="closeShiftSwapModal()" class="px-4 py-2 text-xs font-medium text-slate-600 hover:bg-slate-200 rounded-lg transition cursor-pointer">ยกเลิก</button>
+        <button onclick="submitShiftSwap()" class="px-5 py-2 text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition shadow-xs active:scale-95 cursor-pointer flex items-center gap-1.5">
+          <i data-lucide="check" class="w-4 h-4"></i>
+          <span>บันทึกการสลับเวร</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOMAIN 10: NEW LEAVE REQUEST MODAL WITH REAL-TIME QUOTAS -->
+  <div id="modal-leave-request" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full flex flex-col overflow-hidden border border-slate-200">
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold">
+            <i data-lucide="calendar-plus" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white">ยื่นคำขอลาปฏิบัติงาน (New Leave Request)</h3>
+            <p class="text-[11px] text-slate-400">ตรวจสอบโควตาวันลาคงเหลือและยื่นเสนอขออนุมัติ</p>
+          </div>
+        </div>
+        <button onclick="closeLeaveRequestModal()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 flex items-center justify-center transition cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <form id="form-leave-request" onsubmit="submitNewLeaveRequest(event)" class="p-5 space-y-4 overflow-y-auto max-h-[80vh]">
+        <!-- Employee Selector -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">เลือกบุคลากรผู้ขอลา *</label>
+          <select id="leave-form-employee" onchange="onLeaveEmployeeChanged(this.value)" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-purple-500 font-medium">
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+
+        <!-- Live Quota Summary Cards -->
+        <div>
+          <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">สิทธิ์วันลาคงเหลือปี 2026 (Leave Balances)</label>
+          <div id="leave-quota-cards" class="grid grid-cols-3 gap-2">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Leave Type -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">ประเภทการลา *</label>
+          <select id="leave-form-type" onchange="updateLeaveCalculatedDays()" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-purple-500 font-medium">
+            <option value="VACATION">🏖️ ลาพักผ่อนประจำปี (Annual Vacation)</option>
+            <option value="SICK">💊 ลาป่วย (Sick Leave)</option>
+            <option value="BUSINESS">💼 ลากิจธุระจำเป็น (Business Leave)</option>
+          </select>
+        </div>
+
+        <!-- Date Range -->
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">วันที่เริ่มลา *</label>
+            <input type="date" id="leave-form-start-date" required onchange="updateLeaveCalculatedDays()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2 font-mono">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">วันที่สิ้นสุด *</label>
+            <input type="date" id="leave-form-end-date" required onchange="updateLeaveCalculatedDays()" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2 font-mono">
+          </div>
+        </div>
+
+        <!-- Calculated Days Banner -->
+        <div class="p-2.5 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-between text-xs">
+          <span class="text-purple-900 font-medium">รวมจำนวนวันที่ขอลา:</span>
+          <span id="leave-form-total-days" class="font-extrabold text-purple-950 font-mono text-sm">1 วัน</span>
+        </div>
+
+        <!-- Reason -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">เหตุผลความจำเป็นในการลา *</label>
+          <textarea id="leave-form-reason" rows="2" required placeholder="ระบุเหตุผลความจำเป็น..." class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-purple-500"></textarea>
+        </div>
+
+        <!-- Quota Warning -->
+        <div id="leave-form-warning" class="hidden p-2.5 rounded-lg bg-rose-50 border border-rose-300 text-rose-800 text-[11px] font-bold">
+          ⚠️ จำนวนวันที่ขอลาเกินสิทธิ์คงเหลือ กรุณาตรวจสอบอีกครั้ง
+        </div>
+
+        <div class="p-3 bg-slate-50 border-t border-slate-200 -mx-5 -mb-5 flex items-center justify-end gap-2 shrink-0">
+          <button type="button" onclick="closeLeaveRequestModal()" class="px-4 py-2 text-xs font-medium text-slate-600 hover:bg-slate-200 rounded-lg transition cursor-pointer">ยกเลิก</button>
+          <button type="submit" id="btn-submit-leave" class="px-5 py-2 text-xs font-bold bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition shadow-xs active:scale-95 cursor-pointer flex items-center gap-1.5">
+            <i data-lucide="check" class="w-4 h-4"></i>
+            <span>ยื่นคำขอลา</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- DOMAIN 10: NEW OVERTIME PRE-APPROVAL MODAL -->
+  <div id="modal-ot-request" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full flex flex-col overflow-hidden border border-slate-200">
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold">
+            <i data-lucide="clock" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white">ยื่นขอทำงานล่วงเวลา (Overtime Pre-Approval)</h3>
+            <p class="text-[11px] text-slate-400">ขออนุมัติชั่วโมง OT นอกเวลาก่อนปฏิบัติงานจริง</p>
+          </div>
+        </div>
+        <button onclick="closeOtRequestModal()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 flex items-center justify-center transition cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <form id="form-ot-request" onsubmit="submitNewOtRequest(event)" class="p-5 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">บุคลากรผู้ปฏิบัติงาน OT *</label>
+          <select id="ot-form-employee" required class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 font-medium">
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">วันที่ปฏิบัติงาน OT *</label>
+            <input type="date" id="ot-form-date" required value="2026-03-02" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2 font-mono">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">จำนวนชั่วโมงที่ขอ *</label>
+            <input type="number" step="0.5" min="0.5" max="8" id="ot-form-hours" required value="2.0" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2 font-mono font-bold text-center">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">เวลาเริ่ม (เช่น 17:00) *</label>
+            <input type="time" id="ot-form-start-time" required value="17:00" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2 font-mono">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">เวลาสิ้นสุด (เช่น 19:00) *</label>
+            <input type="time" id="ot-form-end-time" required value="19:00" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2 font-mono">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">เหตุผลความจำเป็นในการทำงานล่วงเวลา *</label>
+          <input type="text" id="ot-form-reason" required placeholder="เช่น ดูแลเคสสัตว์ป่วยวิกฤตหลังผ่าตัดใน ICU" class="w-full text-xs bg-slate-50 border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <div class="p-3 bg-slate-50 border-t border-slate-200 -mx-5 -mb-5 flex items-center justify-end gap-2 shrink-0">
+          <button type="button" onclick="closeOtRequestModal()" class="px-4 py-2 text-xs font-medium text-slate-600 hover:bg-slate-200 rounded-lg transition cursor-pointer">ยกเลิก</button>
+          <button type="submit" class="px-5 py-2 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition shadow-xs active:scale-95 cursor-pointer flex items-center gap-1.5">
+            <i data-lucide="check" class="w-4 h-4"></i>
+            <span>ยื่นขออนุมัติ OT</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- DOMAIN 10: EMPLOYEE SKILLS MATRIX & CREDENTIALS MODAL -->
+  <div id="modal-employee-credentials" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden border border-slate-200">
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center font-bold">
+            <i data-lucide="award" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white">ประวัติทักษะทางคลินิก & วุฒิการศึกษา (Clinical Skills & Credentials)</h3>
+            <p class="text-[11px] text-slate-400">ระบบประเมินสมรรถนะวิชาชีพตามมาตรฐานโรงพยาบาลสัตว์สากล</p>
+          </div>
+        </div>
+        <button onclick="closeEmployeeCredentialsModal()" class="w-7 h-7 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 flex items-center justify-center transition cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div id="employee-credentials-modal-body" class="p-6 overflow-y-auto space-y-4">
+        <!-- Rendered dynamically by openEmployeeCredentialsModal(empId) -->
+      </div>
+      <div class="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0 text-xs">
+        <span class="text-slate-500 flex items-center gap-1">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+          <span>ทักษะผ่านการทดสอบและรับรองโดยหัวหน้าฝ่ายการแพทย์</span>
+        </span>
+        <button onclick="closeEmployeeCredentialsModal()" class="px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-200 rounded-lg transition cursor-pointer">ปิด</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODULAR JAVASCRIPT ARCHITECTURE ================= -->
+  <!-- Core Architecture -->
+  <script src="js/core/state.js"></script>
+  <script src="js/core/utils.js"></script>
+  <script src="js/core/event_bus.js"></script>
+
+  <!-- Domain 01: Customer & Pet Management -->
+  <script src="js/domains/d01_customer_pet/data.js"></script>
+  <script src="js/domains/d01_customer_pet/engine.js"></script>
+
+  <!-- Domain 02: Appointment & Queue Management -->
+  <script src="js/domains/d02_appointment_queue/data.js"></script>
+  <script src="js/domains/d02_appointment_queue/engine.js"></script>
+
+  <!-- Domain 03: Clinical & Medical Management -->
+  <script src="js/domains/d03_clinical_emr/data.js"></script>
+  <script src="js/domains/d03_clinical_emr/engine.js"></script>
+
+  <!-- Domain 04: Pharmacy & Inventory Management -->
+  <script src="js/domains/d04_pharmacy_inventory/data.js"></script>
+  <script src="js/domains/d04_pharmacy_inventory/engine.js"></script>
+
+  <!-- Domain 05: Laboratory & Diagnostic Imaging Management -->
+  <script src="js/domains/d05_lab_imaging/data.js"></script>
+  <script src="js/domains/d05_lab_imaging/engine.js"></script>
+
+  <!-- Domain 06: Surgery & Treatment Management -->
+  <script src="js/domains/d06_surgery_treatment/data.js"></script>
+  <script src="js/domains/d06_surgery_treatment/engine.js"></script>
+
+  <!-- Domain 07: Billing & Payment Management -->
+  <script src="js/domains/d07_billing_payment/data.js"></script>
+  <script src="js/domains/d07_billing_payment/engine.js"></script>
+
+  <!-- Domain 08: Marketing & Customer Relationship Management -->
+  <script src="js/domains/d08_marketing_crm/data.js"></script>
+  <script src="js/domains/d08_marketing_crm/engine.js"></script>
+
+  <!-- Domain 09: Procurement & Supplier Management -->
+  <script src="js/domains/d09_procurement/data.js"></script>
+  <script src="js/domains/d09_procurement/engine.js"></script>
+
+  <!-- Domain 10: Human Resources & Workforce Management -->
+  <script src="js/domains/d10_staff_hr/data.js"></script>
+  <script src="js/domains/d10_staff_hr/engine.js"></script>
+
+  <!-- Core Application & Lifecycle Engine -->
+  <script src="js/core/app.js"></script>
+</body>
+</html>
