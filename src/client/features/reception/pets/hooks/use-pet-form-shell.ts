@@ -1,3 +1,5 @@
+import type { FormEvent } from "react";
+import { useCallback } from "react";
 import { useAddNewPetFormContext } from "#/client/features/reception/pets/contexts/add-new-pet-form-provider";
 
 export function usePetFormShell() {
@@ -18,6 +20,21 @@ export function usePetFormShell() {
     resetForm,
   } = useAddNewPetFormContext();
 
+  const handleFormSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!isEdit && currentStep < 3) {
+        nextStep();
+        return;
+      }
+
+      void submitForm();
+    },
+    [isEdit, currentStep, nextStep, submitForm]
+  );
+
   return {
     mode,
     isEdit,
@@ -33,5 +50,6 @@ export function usePetFormShell() {
     isSubmitting,
     submitForm,
     resetForm,
+    handleFormSubmit,
   };
 }

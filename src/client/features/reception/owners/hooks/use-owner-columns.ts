@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import { useIsMobile } from "#/client/shared/shadcn/hooks/use-mobile";
-import { useOwnersDashboardContext } from "../contexts/owners-dashboard-provider";
+import { useOwnersContext } from "../contexts/owners.context";
 import { DEFAULT_VISIBLE_OWNER_COLUMNS, OWNER_TABLE_COLUMNS } from "../models/owners-table";
 
 export function useOwnerColumns() {
   const isMobile = useIsMobile();
-  const { visibleColumns, toggleColumn, resetColumns } = useOwnersDashboardContext();
+  const { visibleColumns, toggleColumn, resetColumns } = useOwnersContext();
 
   const isDesktop = !isMobile;
 

@@ -1,5 +1,10 @@
+import type { ColumnVisibilityState } from "@tanstack/react-table";
 import { formatPhoneNumber, formatRegisteredDate } from "#/client/shared/helpers/formatters";
-import type { OwnerDto, PreferredChannel } from "#/shared/schemas/owner.schema";
+import type {
+  OwnerDto,
+  OwnerQuickFilterKey,
+  PreferredChannel,
+} from "#/shared/schemas/owner.schema";
 
 export type OwnerColumnKey =
   | "owner"
@@ -43,7 +48,7 @@ export const LOCKED_OWNER_COLUMNS: ReadonlySet<OwnerColumnKey> = new Set(
 
 export const OWNER_COLUMNS_STORAGE_KEY = "vet-clinic.owners.list-visible-columns.v1";
 
-export type OwnerQuickFilterKey = "preferredLine" | "juristic";
+export type { OwnerQuickFilterKey };
 
 export interface OwnerQuickFilterDefinition {
   key: OwnerQuickFilterKey;
@@ -190,4 +195,96 @@ export function formatFullAddress(owner: OwnerDto): string {
 
 export function formatOwnerRegisteredDate(isoDate: string): string {
   return formatRegisteredDate(isoDate, isoDate);
+}
+
+export function filterOwners(
+  owners: readonly OwnerDto[],
+  searchTerm: string,
+  quickFilters: readonly OwnerQuickFilterKey[]
+): OwnerDto[] {
+  const term = searchTerm.trim().toLowerCase();
+
+  if (!term && quickFilters.length === 0) {
+    return [...owners];
+  }
+
+  return owners.filter((owner) => {
+    for (const filterKey of quickFilters) {
+      if (!OWNER_QUICK_FILTER_PREDICATES[filterKey](owner)) {
+        return false;
+      }
+    }
+
+    if (!term) return true;
+
+    const fullName = getOwnerDisplayName(owner).toLowerCase();
+    const code = owner.customerCode.toLowerCase();
+    const phone = owner.phonePrimary.toLowerCase();
+    const phoneSecondary = owner.phoneSecondary.toLowerCase();
+    const lineId = owner.lineId.toLowerCase();
+    const taxId = owner.taxId.toLowerCase();
+    const email = owner.email.toLowerCase();
+
+    return (
+      fullName.includes(term) ||
+      code.includes(term) ||
+      phone.includes(term) ||
+      phoneSecondary.includes(term) ||
+      lineId.includes(term) ||
+      taxId.includes(term) ||
+      email.includes(term)
+    );
+  });
+}
+
+export interface OwnersMetrics {
+  totalOwnersCount: number;
+  individualCount: number;
+  juristicCount: number;
+  fullConsentCount: number;
+  fullConsentPercentage: number;
+}
+
+export function computeOwnersMetrics(owners: readonly OwnerDto[]): OwnersMetrics {
+  const totalOwnersCount = owners.length;
+  let individualCount = 0;
+  let juristicCount = 0;
+  let fullConsentCount = 0;
+
+  for (const owner of owners) {
+    if (owner.customerType === "INDIVIDUAL") {
+      individualCount += 1;
+    } else {
+      juristicCount += 1;
+    }
+
+    if (owner.pdpaPrivacyNotice && owner.pdpaReminders && owner.pdpaMarketing && owner.pdpaMedia) {
+      fullConsentCount += 1;
+    }
+  }
+
+  const fullConsentPercentage =
+    totalOwnersCount === 0 ? 0 : Math.round((fullConsentCount / totalOwnersCount) * 100);
+
+  return {
+    totalOwnersCount,
+    individualCount,
+    juristicCount,
+    fullConsentCount,
+    fullConsentPercentage,
+  };
+}
+
+export function getOwnerColumnVisibilityState(
+  visibleColumns: readonly OwnerColumnKey[]
+): ColumnVisibilityState {
+  const visibleSet = new Set<OwnerColumnKey>(visibleColumns);
+  const visibility: ColumnVisibilityState = {};
+
+  for (const col of OWNER_TABLE_COLUMNS) {
+    visibility[col.key] = col.locked ? true : visibleSet.has(col.key);
+  }
+  visibility.actions = true;
+
+  return visibility;
 }

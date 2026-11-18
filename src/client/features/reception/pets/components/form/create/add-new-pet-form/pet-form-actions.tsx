@@ -1,10 +1,9 @@
 import { ArrowLeft, ArrowRight, Check, Loader2 } from "lucide-react";
-import { Button } from "#/client/shared/shadcn/components/ui/button";
 import { usePetFormShell } from "#/client/features/reception/pets/hooks/use-pet-form-shell";
+import { Button } from "#/client/shared/shadcn/components/ui/button";
 
 export function PetFormActions() {
-  const { currentStep, nextStep, prevStep, submitForm, isSubmitting, setIsOpen, isEdit } =
-    usePetFormShell();
+  const { currentStep, nextStep, prevStep, isSubmitting, setIsOpen, isEdit } = usePetFormShell();
 
   return (
     <div className="flex w-full items-center justify-between gap-3">
@@ -50,7 +49,7 @@ export function PetFormActions() {
                 <ArrowRight className="ml-1.5 size-4" />
               </Button>
             )}
-            <Button type="button" size="sm" onClick={submitForm} disabled={isSubmitting}>
+            <Button type="submit" size="sm" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-1.5 size-4 animate-spin" />
@@ -70,7 +69,7 @@ export function PetFormActions() {
             <ArrowRight className="ml-1.5 size-4" />
           </Button>
         ) : (
-          <Button type="button" size="sm" onClick={submitForm} disabled={isSubmitting}>
+          <Button type="submit" size="sm" disabled={isSubmitting}>
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-1.5 size-4 animate-spin" />

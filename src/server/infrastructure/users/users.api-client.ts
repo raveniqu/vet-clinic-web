@@ -16,7 +16,7 @@ export class UsersApiClient {
     return usersSchema.parse(await response.json());
   }
 
-  async getUserById(id: number) {
+  async getUserById(id: string) {
     const response = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
       headers: {
         Accept: "application/json",

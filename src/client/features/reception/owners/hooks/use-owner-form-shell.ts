@@ -1,3 +1,5 @@
+import type { FormEvent } from "react";
+import { useCallback } from "react";
 import { useAddNewOwnerFormContext } from "#/client/features/reception/owners/contexts/add-new-owner-form-provider";
 
 export function useOwnerFormShell() {
@@ -16,6 +18,21 @@ export function useOwnerFormShell() {
     resetForm,
   } = useAddNewOwnerFormContext();
 
+  const handleFormSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!isEdit && currentStep < 3) {
+        nextStep();
+        return;
+      }
+
+      void submitForm();
+    },
+    [isEdit, currentStep, nextStep, submitForm]
+  );
+
   return {
     mode,
     isEdit,
@@ -29,5 +46,6 @@ export function useOwnerFormShell() {
     goToStep,
     submitForm,
     resetForm,
+    handleFormSubmit,
   };
 }

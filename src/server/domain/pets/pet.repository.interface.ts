@@ -8,8 +8,8 @@ import type {
 
 export interface IPetRepository {
   readonly getAll: () => Promise<PetDto[]>;
-  readonly getById: (id: number) => Promise<PetDto | null>;
-  readonly getByOwnerId: (ownerId: number) => Promise<PetDto[]>;
+  readonly getById: (id: string) => Promise<PetDto | null>;
+  readonly getByOwnerId: (ownerId: string) => Promise<PetDto[]>;
   readonly create: (input: CreatePetInput) => Promise<PetDto>;
   readonly update: (input: UpdatePetInput) => Promise<PetDto>;
   readonly getSpecies: () => Promise<SpeciesItem[]>;

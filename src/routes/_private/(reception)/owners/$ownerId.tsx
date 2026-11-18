@@ -11,7 +11,7 @@ import { getOwnerByIdSchema } from "#/shared/schemas/owner.schema";
 export const Route = createFileRoute("/_private/(reception)/owners/$ownerId")({
   loader: async ({ context, params }) => {
     const parsed = getOwnerByIdSchema.safeParse({
-      id: Number(params.ownerId),
+      id: params.ownerId,
     });
 
     if (!parsed.success) {

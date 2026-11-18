@@ -14,7 +14,7 @@ export class InMemoryOwnerRepository implements IOwnerRepository {
     return this.db.getAllOwners();
   }
 
-  async getById(id: number): Promise<OwnerDto | null> {
+  async getById(id: string): Promise<OwnerDto | null> {
     await this.db.simulateNetworkDelay(300);
     return this.db.getOwnerById(id);
   }

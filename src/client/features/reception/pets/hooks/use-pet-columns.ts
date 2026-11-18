@@ -1,11 +1,13 @@
 import { useMemo } from "react";
 import { useIsMobile } from "#/client/shared/shadcn/hooks/use-mobile";
-import { usePetsDashboardContext } from "../contexts/pets-dashboard-provider";
+import { usePetsContext } from "../contexts/pets.context";
 import { DEFAULT_VISIBLE_PET_COLUMNS, PET_TABLE_COLUMNS } from "../models/pets-table";
+import { usePetsSearch } from "./use-pets-search";
 
 export function usePetColumns() {
   const isMobile = useIsMobile();
-  const { selectedTab, visibleColumns, toggleColumn, resetColumns } = usePetsDashboardContext();
+  const { selectedTab } = usePetsSearch();
+  const { visibleColumns, toggleColumn, resetColumns } = usePetsContext();
 
   const isListTabActive = !isMobile && selectedTab === "list";
 

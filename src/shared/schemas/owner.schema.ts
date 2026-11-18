@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, sortOrderSchema } from "./pagination.schema";
 
 export const customerTypeEnum = z.enum(["INDIVIDUAL", "JURISTIC"]);
 export type CustomerType = z.infer<typeof customerTypeEnum>;
@@ -115,7 +116,7 @@ export const ownerDtoSchema = step1IdentityContactBaseSchema
   .extend(step2AddressSchema.shape)
   .extend(step3PreferencesPdpaSchema.shape)
   .extend({
-    id: z.number().int().positive(),
+    id: z.uuid(),
     customerCode: z.string(),
     createdAt: z.string(),
   });
@@ -124,12 +125,37 @@ export type OwnerDto = z.infer<typeof ownerDtoSchema>;
 
 // Input Query Schemas
 export const getOwnerByIdSchema = z.object({
-  id: z.number().int().positive(),
+  id: z.uuid(),
 });
 export type GetOwnerByIdInput = z.infer<typeof getOwnerByIdSchema>;
 
 // Update Owner Input Schema
 export const updateOwnerInputSchema = createOwnerInputSchema.extend({
-  id: z.number().int().positive(),
+  id: z.uuid(),
 });
 export type UpdateOwnerInput = z.infer<typeof updateOwnerInputSchema>;
+
+// Owners Route Search & Filter Schemas
+export const ownerQuickFilterKeySchema = z.enum(["preferredLine", "juristic"]);
+export type OwnerQuickFilterKey = z.infer<typeof ownerQuickFilterKeySchema>;
+
+export const ownerSortFieldSchema = z.enum(["owner", "createdAt"]);
+export type OwnerSortField = z.infer<typeof ownerSortFieldSchema>;
+
+export const ownersSearchSchema = z.object({
+  openAddNewForm: z.boolean().optional().catch(undefined),
+  editOwnerId: z.uuid().optional().catch(undefined),
+  search: z.string().trim().max(100).default("").catch(""),
+  quickFilters: z.array(ownerQuickFilterKeySchema).default([]).catch([]),
+  page: z.coerce.number().int().min(1).default(DEFAULT_PAGE).catch(DEFAULT_PAGE),
+  pageSize: z.coerce
+    .number()
+    .int()
+    .min(1)
+    .max(100)
+    .default(DEFAULT_PAGE_SIZE)
+    .catch(DEFAULT_PAGE_SIZE),
+  sortBy: ownerSortFieldSchema.default("createdAt").catch("createdAt"),
+  sortOrder: sortOrderSchema.default("desc").catch("desc"),
+});
+export type OwnersSearch = z.infer<typeof ownersSearchSchema>;

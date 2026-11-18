@@ -1,11 +1,11 @@
-import { usePetsDashboardContext } from "#/client/features/reception/pets/contexts/pets-dashboard-provider";
 import { AddNewPetFormProvider } from "#/client/features/reception/pets/contexts/add-new-pet-form-provider";
-import { EditPetFormBody } from "./edit-pet-form-body";
+import { useEditPetForm } from "#/client/features/reception/pets/hooks/use-edit-pet-form";
 import { PetOwnerCreateModal } from "../create/add-new-pet-form/pet-owner-create-modal";
 import { PetPhotoQrModal } from "../create/add-new-pet-form/pet-photo-qr-modal";
+import { EditPetFormBody } from "./edit-pet-form-body";
 
 export function EditPetForm() {
-  const { editingPet, setEditingPet } = usePetsDashboardContext();
+  const { editingPet, handleOpenChange } = useEditPetForm();
 
   if (!editingPet) return null;
 
@@ -14,9 +14,7 @@ export function EditPetForm() {
       mode="edit"
       pet={editingPet}
       isOpenControlled={Boolean(editingPet)}
-      onOpenChangeControlled={(open) => {
-        if (!open) setEditingPet(null);
-      }}
+      onOpenChangeControlled={handleOpenChange}
     >
       <EditPetFormBody />
       <PetOwnerCreateModal />

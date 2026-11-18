@@ -1,29 +1,20 @@
 import { useBatchSlice } from "#/client/shared/hooks/use-batch-slice";
-import { useOwnersDashboardContext } from "../contexts/owners-dashboard-provider";
+import { useOwnersContext } from "../contexts/owners.context";
 import { OWNER_MOBILE_BATCH_SIZE } from "../models/owners-table";
-import {
-  useOwnerClipboard,
-  useOwnerPetRelations,
-  usePdpaPopoverControl,
-} from "./use-owner-row-actions";
+import { useOwnerClipboard } from "./use-owner-clipboard";
+import { useOwnerPetRelations } from "./use-owner-pet-relations";
+import { useOwnersList } from "./use-owners-list";
+import { useOwnersSearch } from "./use-owners-search";
 
 export function useOwnersMobile(
   initialCount = OWNER_MOBILE_BATCH_SIZE,
   step = OWNER_MOBILE_BATCH_SIZE
 ) {
-  const {
-    allOwners,
-    filteredOwners,
-    hasActiveFilter,
-    clearFilters,
-    filterResetKey,
-    setEditingOwner,
-  } = useOwnersDashboardContext();
-
+  const { resetFilters } = useOwnersSearch();
+  const { filteredOwners, isEmptyDataset, hasActiveFilter, filterResetKey } = useOwnersList();
+  const { openEditDialog } = useOwnersContext();
   const { petsByOwnerId, speciesCodeById } = useOwnerPetRelations();
   const { copyPhone, isPhoneCopied } = useOwnerClipboard();
-  const { openPdpaPopoverOwnerId, onPdpaPopoverOpenChange, openEditConsent } =
-    usePdpaPopoverControl(setEditingOwner);
 
   const {
     displayedItems: mobileOwners,
@@ -43,16 +34,13 @@ export function useOwnersMobile(
     remainingCount,
     loadMore,
     totalCount,
-    isEmptyDataset: allOwners.length === 0,
+    isEmptyDataset,
     hasActiveFilter,
-    clearFilters,
+    clearFilters: resetFilters,
     petsByOwnerId,
     speciesCodeById,
     copyPhone,
     isPhoneCopied,
-    openPdpaPopoverOwnerId,
-    onPdpaPopoverOpenChange,
-    openEditConsent,
-    setEditingOwner,
+    openEditDialog,
   };
 }

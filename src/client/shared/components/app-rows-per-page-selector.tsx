@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "../shadcn/components/ui/select";
 import { useSidebar } from "../shadcn/components/ui/sidebar";
-import type { PaginationReturn } from "../hooks/use-pagination";
+import type { PaginationReturn } from "./app-pagination";
 
 export interface PageSizeOption {
   label: string;

@@ -20,12 +20,12 @@ export class InMemoryPetRepository implements IPetRepository {
     return this.db.getAllPets();
   }
 
-  async getById(id: number): Promise<PetDto | null> {
+  async getById(id: string): Promise<PetDto | null> {
     await this.db.simulateNetworkDelay(300);
     return this.db.getPetById(id);
   }
 
-  async getByOwnerId(ownerId: number): Promise<PetDto[]> {
+  async getByOwnerId(ownerId: string): Promise<PetDto[]> {
     await this.db.simulateNetworkDelay(300);
     return this.db.getPetsByOwnerId(ownerId);
   }

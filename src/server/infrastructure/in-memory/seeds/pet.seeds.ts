@@ -3,7 +3,7 @@ import type { PetOwnershipRecord, PetRecord } from "../types";
 export const initialPetSeeds: PetRecord[] = [
   // 1-5: Emily Watson (Customer 1)
   {
-    id: 1,
+    id: "40000000-0000-4000-8000-000000000001",
     petCode: "PET-2026-0001",
     petName: "Milo",
     speciesId: 1, // Dog
@@ -24,7 +24,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-01-15T10:00:00.000Z",
   },
   {
-    id: 2,
+    id: "40000000-0000-4000-8000-000000000002",
     petCode: "PET-2026-0002",
     petName: "Luna",
     speciesId: 2, // Cat
@@ -45,7 +45,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-01-15T10:15:00.000Z",
   },
   {
-    id: 3,
+    id: "40000000-0000-4000-8000-000000000003",
     petCode: "PET-2026-0003",
     petName: "Mochi",
     speciesId: 3, // Rabbit
@@ -68,7 +68,7 @@ export const initialPetSeeds: PetRecord[] = [
 
   // 4-6: David Sterling (Customer 2)
   {
-    id: 4,
+    id: "40000000-0000-4000-8000-000000000004",
     petCode: "PET-2026-0004",
     petName: "Thor",
     speciesId: 1, // Dog
@@ -89,7 +89,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-01-18T14:30:00.000Z",
   },
   {
-    id: 5,
+    id: "40000000-0000-4000-8000-000000000005",
     petCode: "PET-2026-0005",
     petName: "Oreo",
     speciesId: 2, // Cat
@@ -110,7 +110,7 @@ export const initialPetSeeds: PetRecord[] = [
 
   // 6-8: กมลวรรณ ศิริวัฒนากุล (Customer 3)
   {
-    id: 6,
+    id: "40000000-0000-4000-8000-000000000006",
     petCode: "PET-2026-0006",
     petName: "ส้มส้ม (Som-Som)",
     speciesId: 2, // Cat
@@ -133,7 +133,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-01-20T11:20:00.000Z",
   },
   {
-    id: 7,
+    id: "40000000-0000-4000-8000-000000000007",
     petCode: "PET-2026-0007",
     petName: "เฉาก๊วย (Chao-Kuay)",
     speciesId: 2, // Cat
@@ -152,7 +152,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-01-20T11:40:00.000Z",
   },
   {
-    id: 8,
+    id: "40000000-0000-4000-8000-000000000008",
     petCode: "PET-2026-0008",
     petName: "บราวนี่ (Brownie)",
     speciesId: 4, // Hamster
@@ -175,7 +175,7 @@ export const initialPetSeeds: PetRecord[] = [
 
   // 9-11: ธนกฤต เจริญสุข (Customer 4)
   {
-    id: 9,
+    id: "40000000-0000-4000-8000-000000000009",
     petCode: "PET-2026-0009",
     petName: "รักกี้ (Lucky)",
     speciesId: 1, // Dog
@@ -196,7 +196,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-01-25T17:00:00.000Z",
   },
   {
-    id: 10,
+    id: "40000000-0000-4000-8000-000000000010",
     petCode: "PET-2026-0010",
     petName: "โอเลี้ยง (O-Liang)",
     speciesId: 1, // Dog
@@ -217,7 +217,7 @@ export const initialPetSeeds: PetRecord[] = [
 
   // 11-13: พัชราภรณ์ วงษ์สุวรรณ (Customer 5)
   {
-    id: 11,
+    id: "40000000-0000-4000-8000-000000000011",
     petCode: "PET-2026-0011",
     petName: "ชูก้า (Sugar)",
     speciesId: 1, // Dog
@@ -236,7 +236,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-02-01T10:40:00.000Z",
   },
   {
-    id: 12,
+    id: "40000000-0000-4000-8000-000000000012",
     petCode: "PET-2026-0012",
     petName: "พุดดิ้ง (Pudding)",
     speciesId: 2, // Cat
@@ -255,7 +255,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-02-01T11:00:00.000Z",
   },
   {
-    id: 13,
+    id: "40000000-0000-4000-8000-000000000013",
     petCode: "PET-2026-0013",
     petName: "กีวี่ (Kiwi)",
     speciesId: 5, // Bird
@@ -278,7 +278,7 @@ export const initialPetSeeds: PetRecord[] = [
 
   // 14-16: Alexander Novak (Customer 6)
   {
-    id: 14,
+    id: "40000000-0000-4000-8000-000000000014",
     petCode: "PET-2026-0014",
     petName: "Simba",
     speciesId: 2, // Cat
@@ -299,7 +299,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-02-05T13:30:00.000Z",
   },
   {
-    id: 15,
+    id: "40000000-0000-4000-8000-000000000015",
     petCode: "PET-2026-0015",
     petName: "Cleo",
     speciesId: 2, // Cat
@@ -318,7 +318,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-02-05T13:50:00.000Z",
   },
   {
-    id: 16,
+    id: "40000000-0000-4000-8000-000000000016",
     petCode: "PET-2026-0016",
     petName: "Nagini",
     speciesId: 6, // Snake
@@ -341,7 +341,7 @@ export const initialPetSeeds: PetRecord[] = [
 
   // 17-20: ชญานิศ ปัญญารัตน์ (Customer 7)
   {
-    id: 17,
+    id: "40000000-0000-4000-8000-000000000017",
     petCode: "PET-2026-0017",
     petName: "เต้าหู้ (Tofu)",
     speciesId: 1, // Dog
@@ -362,7 +362,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-02-10T15:45:00.000Z",
   },
   {
-    id: 18,
+    id: "40000000-0000-4000-8000-000000000018",
     petCode: "PET-2026-0018",
     petName: "เฉาก๊วย (Chao-Kuay Dog)",
     speciesId: 1, // Dog
@@ -381,7 +381,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-02-10T16:00:00.000Z",
   },
   {
-    id: 19,
+    id: "40000000-0000-4000-8000-000000000019",
     petCode: "PET-2026-0019",
     petName: "ปีโป้ (Pipo)",
     speciesId: 3, // Rabbit
@@ -402,7 +402,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-02-10T16:20:00.000Z",
   },
   {
-    id: 20,
+    id: "40000000-0000-4000-8000-000000000020",
     petCode: "PET-2026-0020",
     petName: "ชาเย็น (Cha-Yen)",
     speciesId: 4, // Hamster
@@ -425,7 +425,7 @@ export const initialPetSeeds: PetRecord[] = [
 
   // 21-23: วิศรุต อัครเดช (Customer 8)
   {
-    id: 21,
+    id: "40000000-0000-4000-8000-000000000021",
     petCode: "PET-2026-0021",
     petName: "เจ้าสัว (Chao-Sua)",
     speciesId: 1, // Dog
@@ -446,7 +446,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-02-12T09:30:00.000Z",
   },
   {
-    id: 22,
+    id: "40000000-0000-4000-8000-000000000022",
     petCode: "PET-2026-0022",
     petName: "เสือใหญ่ (Suea-Yai)",
     speciesId: 2, // Cat
@@ -465,7 +465,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-02-12T09:50:00.000Z",
   },
   {
-    id: 23,
+    id: "40000000-0000-4000-8000-000000000023",
     petCode: "PET-2026-0023",
     petName: "ซูโม่ (Sumo)",
     speciesId: 7, // Turtle
@@ -488,7 +488,7 @@ export const initialPetSeeds: PetRecord[] = [
 
   // 24-26: วรรณพร จิตรประสงค์ (Customer 9)
   {
-    id: 24,
+    id: "40000000-0000-4000-8000-000000000024",
     petCode: "PET-2026-0024",
     petName: "เบลล่า (Bella)",
     speciesId: 1, // Dog
@@ -509,7 +509,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-02-15T12:00:00.000Z",
   },
   {
-    id: 25,
+    id: "40000000-0000-4000-8000-000000000025",
     petCode: "PET-2026-0025",
     petName: "สีหมอก (Si-Mok)",
     speciesId: 2, // Cat
@@ -528,7 +528,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-02-15T12:20:00.000Z",
   },
   {
-    id: 26,
+    id: "40000000-0000-4000-8000-000000000026",
     petCode: "PET-2026-0026",
     petName: "มะนาว (Manao)",
     speciesId: 5, // Bird
@@ -549,7 +549,7 @@ export const initialPetSeeds: PetRecord[] = [
 
   // 27-30: บริษัท แฮปปี้เพ็ท แคร์ จำกัด (Customer 10)
   {
-    id: 27,
+    id: "40000000-0000-4000-8000-000000000027",
     petCode: "PET-2026-0027",
     petName: "ฮีโร่ (Hero)",
     speciesId: 1, // Dog
@@ -568,7 +568,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-02-18T14:15:00.000Z",
   },
   {
-    id: 28,
+    id: "40000000-0000-4000-8000-000000000028",
     petCode: "PET-2026-0028",
     petName: "นำโชค (Nam-Chok)",
     speciesId: 1, // Dog
@@ -589,7 +589,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-02-18T14:30:00.000Z",
   },
   {
-    id: 29,
+    id: "40000000-0000-4000-8000-000000000029",
     petCode: "PET-2026-0029",
     petName: "กังฟู (Kung-Fu)",
     speciesId: 6, // Snake
@@ -610,7 +610,7 @@ export const initialPetSeeds: PetRecord[] = [
     createdAt: "2026-02-18T14:45:00.000Z",
   },
   {
-    id: 30,
+    id: "40000000-0000-4000-8000-000000000030",
     petCode: "PET-2026-0030",
     petName: "เต่าเต่า (Tao-Tao)",
     speciesId: 7, // Turtle
@@ -635,25 +635,25 @@ export const initialPetSeeds: PetRecord[] = [
 export const initialPetOwnershipSeeds: PetOwnershipRecord[] = [
   // Customer 1 -> Pets 1, 2, 3
   {
-    id: 1,
-    petId: 1,
-    customerId: 1,
+    id: "50000000-0000-4000-8000-000000000001",
+    petId: "40000000-0000-4000-8000-000000000001",
+    customerId: "30000000-0000-4000-8000-000000000001",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2021-08-01",
   },
   {
-    id: 2,
-    petId: 2,
-    customerId: 1,
+    id: "50000000-0000-4000-8000-000000000002",
+    petId: "40000000-0000-4000-8000-000000000002",
+    customerId: "30000000-0000-4000-8000-000000000001",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2022-11-01",
   },
   {
-    id: 3,
-    petId: 3,
-    customerId: 1,
+    id: "50000000-0000-4000-8000-000000000003",
+    petId: "40000000-0000-4000-8000-000000000003",
+    customerId: "30000000-0000-4000-8000-000000000001",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2024-01-10",
@@ -661,17 +661,17 @@ export const initialPetOwnershipSeeds: PetOwnershipRecord[] = [
 
   // Customer 2 -> Pets 4, 5
   {
-    id: 4,
-    petId: 4,
-    customerId: 2,
+    id: "50000000-0000-4000-8000-000000000004",
+    petId: "40000000-0000-4000-8000-000000000004",
+    customerId: "30000000-0000-4000-8000-000000000002",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2020-05-15",
   },
   {
-    id: 5,
-    petId: 5,
-    customerId: 2,
+    id: "50000000-0000-4000-8000-000000000005",
+    petId: "40000000-0000-4000-8000-000000000005",
+    customerId: "30000000-0000-4000-8000-000000000002",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2022-06-20",
@@ -679,25 +679,25 @@ export const initialPetOwnershipSeeds: PetOwnershipRecord[] = [
 
   // Customer 3 -> Pets 6, 7, 8
   {
-    id: 6,
-    petId: 6,
-    customerId: 3,
+    id: "50000000-0000-4000-8000-000000000006",
+    petId: "40000000-0000-4000-8000-000000000006",
+    customerId: "30000000-0000-4000-8000-000000000003",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2021-09-01",
   },
   {
-    id: 7,
-    petId: 7,
-    customerId: 3,
+    id: "50000000-0000-4000-8000-000000000007",
+    petId: "40000000-0000-4000-8000-000000000007",
+    customerId: "30000000-0000-4000-8000-000000000003",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2023-04-01",
   },
   {
-    id: 8,
-    petId: 8,
-    customerId: 3,
+    id: "50000000-0000-4000-8000-000000000008",
+    petId: "40000000-0000-4000-8000-000000000008",
+    customerId: "30000000-0000-4000-8000-000000000003",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2024-06-15",
@@ -705,17 +705,17 @@ export const initialPetOwnershipSeeds: PetOwnershipRecord[] = [
 
   // Customer 4 -> Pets 9, 10
   {
-    id: 9,
-    petId: 9,
-    customerId: 4,
+    id: "50000000-0000-4000-8000-000000000009",
+    petId: "40000000-0000-4000-8000-000000000009",
+    customerId: "30000000-0000-4000-8000-000000000004",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2022-12-01",
   },
   {
-    id: 10,
-    petId: 10,
-    customerId: 4,
+    id: "50000000-0000-4000-8000-000000000010",
+    petId: "40000000-0000-4000-8000-000000000010",
+    customerId: "30000000-0000-4000-8000-000000000004",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2021-01-15",
@@ -723,25 +723,25 @@ export const initialPetOwnershipSeeds: PetOwnershipRecord[] = [
 
   // Customer 5 -> Pets 11, 12, 13
   {
-    id: 11,
-    petId: 11,
-    customerId: 5,
+    id: "50000000-0000-4000-8000-000000000011",
+    petId: "40000000-0000-4000-8000-000000000011",
+    customerId: "30000000-0000-4000-8000-000000000005",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2023-03-01",
   },
   {
-    id: 12,
-    petId: 12,
-    customerId: 5,
+    id: "50000000-0000-4000-8000-000000000012",
+    petId: "40000000-0000-4000-8000-000000000012",
+    customerId: "30000000-0000-4000-8000-000000000005",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2022-09-10",
   },
   {
-    id: 13,
-    petId: 13,
-    customerId: 5,
+    id: "50000000-0000-4000-8000-000000000013",
+    petId: "40000000-0000-4000-8000-000000000013",
+    customerId: "30000000-0000-4000-8000-000000000005",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2023-10-05",
@@ -749,25 +749,25 @@ export const initialPetOwnershipSeeds: PetOwnershipRecord[] = [
 
   // Customer 6 -> Pets 14, 15, 16
   {
-    id: 14,
-    petId: 14,
-    customerId: 6,
+    id: "50000000-0000-4000-8000-000000000014",
+    petId: "40000000-0000-4000-8000-000000000014",
+    customerId: "30000000-0000-4000-8000-000000000006",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2022-02-01",
   },
   {
-    id: 15,
-    petId: 15,
-    customerId: 6,
+    id: "50000000-0000-4000-8000-000000000015",
+    petId: "40000000-0000-4000-8000-000000000015",
+    customerId: "30000000-0000-4000-8000-000000000006",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2023-06-15",
   },
   {
-    id: 16,
-    petId: 16,
-    customerId: 6,
+    id: "50000000-0000-4000-8000-000000000016",
+    petId: "40000000-0000-4000-8000-000000000016",
+    customerId: "30000000-0000-4000-8000-000000000006",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2022-03-20",
@@ -775,33 +775,33 @@ export const initialPetOwnershipSeeds: PetOwnershipRecord[] = [
 
   // Customer 7 -> Pets 17, 18, 19, 20
   {
-    id: 17,
-    petId: 17,
-    customerId: 7,
+    id: "50000000-0000-4000-8000-000000000017",
+    petId: "40000000-0000-4000-8000-000000000017",
+    customerId: "30000000-0000-4000-8000-000000000007",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2022-07-01",
   },
   {
-    id: 18,
-    petId: 18,
-    customerId: 7,
+    id: "50000000-0000-4000-8000-000000000018",
+    petId: "40000000-0000-4000-8000-000000000018",
+    customerId: "30000000-0000-4000-8000-000000000007",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2023-11-01",
   },
   {
-    id: 19,
-    petId: 19,
-    customerId: 7,
+    id: "50000000-0000-4000-8000-000000000019",
+    petId: "40000000-0000-4000-8000-000000000019",
+    customerId: "30000000-0000-4000-8000-000000000007",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2024-04-10",
   },
   {
-    id: 20,
-    petId: 20,
-    customerId: 7,
+    id: "50000000-0000-4000-8000-000000000020",
+    petId: "40000000-0000-4000-8000-000000000020",
+    customerId: "30000000-0000-4000-8000-000000000007",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2025-02-01",
@@ -809,25 +809,25 @@ export const initialPetOwnershipSeeds: PetOwnershipRecord[] = [
 
   // Customer 8 -> Pets 21, 22, 23
   {
-    id: 21,
-    petId: 21,
-    customerId: 8,
+    id: "50000000-0000-4000-8000-000000000021",
+    petId: "40000000-0000-4000-8000-000000000021",
+    customerId: "30000000-0000-4000-8000-000000000008",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2020-01-10",
   },
   {
-    id: 22,
-    petId: 22,
-    customerId: 8,
+    id: "50000000-0000-4000-8000-000000000022",
+    petId: "40000000-0000-4000-8000-000000000022",
+    customerId: "30000000-0000-4000-8000-000000000008",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2021-05-15",
   },
   {
-    id: 23,
-    petId: 23,
-    customerId: 8,
+    id: "50000000-0000-4000-8000-000000000023",
+    petId: "40000000-0000-4000-8000-000000000023",
+    customerId: "30000000-0000-4000-8000-000000000008",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2020-08-01",
@@ -835,25 +835,25 @@ export const initialPetOwnershipSeeds: PetOwnershipRecord[] = [
 
   // Customer 9 -> Pets 24, 25, 26
   {
-    id: 24,
-    petId: 24,
-    customerId: 9,
+    id: "50000000-0000-4000-8000-000000000024",
+    petId: "40000000-0000-4000-8000-000000000024",
+    customerId: "30000000-0000-4000-8000-000000000009",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2023-07-01",
   },
   {
-    id: 25,
-    petId: 25,
-    customerId: 9,
+    id: "50000000-0000-4000-8000-000000000025",
+    petId: "40000000-0000-4000-8000-000000000025",
+    customerId: "30000000-0000-4000-8000-000000000009",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2023-02-10",
   },
   {
-    id: 26,
-    petId: 26,
-    customerId: 9,
+    id: "50000000-0000-4000-8000-000000000026",
+    petId: "40000000-0000-4000-8000-000000000026",
+    customerId: "30000000-0000-4000-8000-000000000009",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2023-05-01",
@@ -861,33 +861,33 @@ export const initialPetOwnershipSeeds: PetOwnershipRecord[] = [
 
   // Customer 10 -> Pets 27, 28, 29, 30
   {
-    id: 27,
-    petId: 27,
-    customerId: 10,
+    id: "50000000-0000-4000-8000-000000000027",
+    petId: "40000000-0000-4000-8000-000000000027",
+    customerId: "30000000-0000-4000-8000-000000000010",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2021-11-01",
   },
   {
-    id: 28,
-    petId: 28,
-    customerId: 10,
+    id: "50000000-0000-4000-8000-000000000028",
+    petId: "40000000-0000-4000-8000-000000000028",
+    customerId: "30000000-0000-4000-8000-000000000010",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2020-06-01",
   },
   {
-    id: 29,
-    petId: 29,
-    customerId: 10,
+    id: "50000000-0000-4000-8000-000000000029",
+    petId: "40000000-0000-4000-8000-000000000029",
+    customerId: "30000000-0000-4000-8000-000000000010",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2023-08-01",
   },
   {
-    id: 30,
-    petId: 30,
-    customerId: 10,
+    id: "50000000-0000-4000-8000-000000000030",
+    petId: "40000000-0000-4000-8000-000000000030",
+    customerId: "30000000-0000-4000-8000-000000000010",
     ownershipType: "PRIMARY",
     isPrimary: true,
     startDate: "2021-03-01",

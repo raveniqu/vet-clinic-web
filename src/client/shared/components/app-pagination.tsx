@@ -1,13 +1,32 @@
-import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
 import { cn } from "cn";
+import { createContext, useContext, useMemo, useState } from "react";
+import type { ReactNode } from "react";
 import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
 } from "../shadcn/components/ui/pagination";
-import type { PaginationReturn } from "../hooks/use-pagination";
 import { AppPaginationLink, AppPaginationNextLink, AppPaginationPreviousLink } from "./app-link";
+
+export interface PaginationReturn {
+  currentPage: number;
+  pageSize: number;
+  totalPages: number;
+  totalCount: number;
+  startIndex: number;
+  endIndex: number;
+  startItemIndex: number;
+  endItemIndex: number;
+  canGoPrevious: boolean;
+  canGoNext: boolean;
+  goToPreviousPage: () => void;
+  goToNextPage: () => void;
+  goToPage: (page: number) => void;
+  resetPage: () => void;
+  setPageSize: (newSize: number) => void;
+  summaryText: string;
+}
 
 export type PaginationContextValue = Pick<
   PaginationReturn,

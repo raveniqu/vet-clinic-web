@@ -11,10 +11,9 @@ import { formatFullAddress, getOwnerDisplayName } from "../models/owners-table";
 
 export function useOwnerDetails() {
   const { ownerId } = useParams({ from: "/_private/(reception)/owners/$ownerId" });
-  const numericOwnerId = Number(ownerId);
 
-  const { data: owner } = useSuspenseQuery(ownerDetailQueryOptions(numericOwnerId));
-  const { data: petsByOwner } = useSuspenseQuery(petsByOwnerQueryOptions(numericOwnerId));
+  const { data: owner } = useSuspenseQuery(ownerDetailQueryOptions(ownerId));
+  const { data: petsByOwner } = useSuspenseQuery(petsByOwnerQueryOptions(ownerId));
   const { data: speciesList = [] } = useQuery(speciesQueryOptions());
 
   if (!owner) {

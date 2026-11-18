@@ -13,7 +13,7 @@ export function ownersListQueryOptions() {
   });
 }
 
-export function ownerDetailQueryOptions(id: number) {
+export function ownerDetailQueryOptions(id: string) {
   return queryOptions<OwnerDto | null>({
     queryKey: ownerKeys.detail(id),
     queryFn: async () => {

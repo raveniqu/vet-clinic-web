@@ -7,7 +7,7 @@ import type {
 
 export const initialCustomerSeeds: CustomerRecord[] = [
   {
-    id: 1,
+    id: "30000000-0000-4000-8000-000000000001",
     customerCode: "CUS-2026-0001",
     customerType: "INDIVIDUAL",
     prefix: "Ms.",
@@ -21,7 +21,7 @@ export const initialCustomerSeeds: CustomerRecord[] = [
     createdAt: "2026-01-15T09:30:00.000Z",
   },
   {
-    id: 2,
+    id: "30000000-0000-4000-8000-000000000002",
     customerCode: "CUS-2026-0002",
     customerType: "INDIVIDUAL",
     prefix: "Mr.",
@@ -35,7 +35,7 @@ export const initialCustomerSeeds: CustomerRecord[] = [
     createdAt: "2026-01-18T14:15:00.000Z",
   },
   {
-    id: 3,
+    id: "30000000-0000-4000-8000-000000000003",
     customerCode: "CUS-2026-0003",
     customerType: "INDIVIDUAL",
     prefix: "นางสาว",
@@ -49,7 +49,7 @@ export const initialCustomerSeeds: CustomerRecord[] = [
     createdAt: "2026-01-20T11:00:00.000Z",
   },
   {
-    id: 4,
+    id: "30000000-0000-4000-8000-000000000004",
     customerCode: "CUS-2026-0004",
     customerType: "INDIVIDUAL",
     prefix: "นาย",
@@ -63,7 +63,7 @@ export const initialCustomerSeeds: CustomerRecord[] = [
     createdAt: "2026-01-25T16:45:00.000Z",
   },
   {
-    id: 5,
+    id: "30000000-0000-4000-8000-000000000005",
     customerCode: "CUS-2026-0005",
     customerType: "INDIVIDUAL",
     prefix: "นาง",
@@ -77,7 +77,7 @@ export const initialCustomerSeeds: CustomerRecord[] = [
     createdAt: "2026-02-01T10:20:00.000Z",
   },
   {
-    id: 6,
+    id: "30000000-0000-4000-8000-000000000006",
     customerCode: "CUS-2026-0006",
     customerType: "INDIVIDUAL",
     prefix: "Mr.",
@@ -91,7 +91,7 @@ export const initialCustomerSeeds: CustomerRecord[] = [
     createdAt: "2026-02-05T13:10:00.000Z",
   },
   {
-    id: 7,
+    id: "30000000-0000-4000-8000-000000000007",
     customerCode: "CUS-2026-0007",
     customerType: "INDIVIDUAL",
     prefix: "คุณ",
@@ -105,7 +105,7 @@ export const initialCustomerSeeds: CustomerRecord[] = [
     createdAt: "2026-02-10T15:30:00.000Z",
   },
   {
-    id: 8,
+    id: "30000000-0000-4000-8000-000000000008",
     customerCode: "CUS-2026-0008",
     customerType: "INDIVIDUAL",
     prefix: "นาย",
@@ -119,7 +119,7 @@ export const initialCustomerSeeds: CustomerRecord[] = [
     createdAt: "2026-02-12T09:15:00.000Z",
   },
   {
-    id: 9,
+    id: "30000000-0000-4000-8000-000000000009",
     customerCode: "CUS-2026-0009",
     customerType: "INDIVIDUAL",
     prefix: "นางสาว",
@@ -133,7 +133,7 @@ export const initialCustomerSeeds: CustomerRecord[] = [
     createdAt: "2026-02-15T11:40:00.000Z",
   },
   {
-    id: 10,
+    id: "30000000-0000-4000-8000-000000000010",
     customerCode: "CUS-2026-0010",
     customerType: "JURISTIC",
     prefix: "บริษัท",
@@ -150,88 +150,88 @@ export const initialCustomerSeeds: CustomerRecord[] = [
 
 export const initialCustomerContactSeeds: CustomerContactRecord[] = [
   // Customer 1
-  { id: 101, customerId: 1, contactType: "PHONE", contactValue: "0891234567", isPrimary: true },
-  { id: 102, customerId: 1, contactType: "PHONE", contactValue: "027123456", isPrimary: false },
-  { id: 103, customerId: 1, contactType: "LINE", contactValue: "@emily_w", isPrimary: false },
+  { id: "31000000-0000-4000-8000-000000000101", customerId: "30000000-0000-4000-8000-000000000001", contactType: "PHONE", contactValue: "0891234567", isPrimary: true },
+  { id: "31000000-0000-4000-8000-000000000102", customerId: "30000000-0000-4000-8000-000000000001", contactType: "PHONE", contactValue: "027123456", isPrimary: false },
+  { id: "31000000-0000-4000-8000-000000000103", customerId: "30000000-0000-4000-8000-000000000001", contactType: "LINE", contactValue: "@emily_w", isPrimary: false },
   {
-    id: 104,
-    customerId: 1,
+    id: "31000000-0000-4000-8000-000000000104",
+    customerId: "30000000-0000-4000-8000-000000000001",
     contactType: "EMAIL",
     contactValue: "emily.watson@gmail.com",
     isPrimary: false,
   },
 
   // Customer 2
-  { id: 105, customerId: 2, contactType: "PHONE", contactValue: "0819876543", isPrimary: true },
-  { id: 106, customerId: 2, contactType: "LINE", contactValue: "david_sterling", isPrimary: false },
+  { id: "31000000-0000-4000-8000-000000000105", customerId: "30000000-0000-4000-8000-000000000002", contactType: "PHONE", contactValue: "0819876543", isPrimary: true },
+  { id: "31000000-0000-4000-8000-000000000106", customerId: "30000000-0000-4000-8000-000000000002", contactType: "LINE", contactValue: "david_sterling", isPrimary: false },
   {
-    id: 107,
-    customerId: 2,
+    id: "31000000-0000-4000-8000-000000000107",
+    customerId: "30000000-0000-4000-8000-000000000002",
     contactType: "EMAIL",
     contactValue: "david.sterling@outlook.com",
     isPrimary: false,
   },
 
   // Customer 3
-  { id: 108, customerId: 3, contactType: "PHONE", contactValue: "0863334455", isPrimary: true },
-  { id: 109, customerId: 3, contactType: "LINE", contactValue: "kamonwan_siri", isPrimary: false },
+  { id: "31000000-0000-4000-8000-000000000108", customerId: "30000000-0000-4000-8000-000000000003", contactType: "PHONE", contactValue: "0863334455", isPrimary: true },
+  { id: "31000000-0000-4000-8000-000000000109", customerId: "30000000-0000-4000-8000-000000000003", contactType: "LINE", contactValue: "kamonwan_siri", isPrimary: false },
   {
-    id: 110,
-    customerId: 3,
+    id: "31000000-0000-4000-8000-000000000110",
+    customerId: "30000000-0000-4000-8000-000000000003",
     contactType: "EMAIL",
     contactValue: "kamonwan.s@gmail.com",
     isPrimary: false,
   },
 
   // Customer 4
-  { id: 111, customerId: 4, contactType: "PHONE", contactValue: "0897778899", isPrimary: true },
-  { id: 112, customerId: 4, contactType: "LINE", contactValue: "thanakrit_c", isPrimary: false },
+  { id: "31000000-0000-4000-8000-000000000111", customerId: "30000000-0000-4000-8000-000000000004", contactType: "PHONE", contactValue: "0897778899", isPrimary: true },
+  { id: "31000000-0000-4000-8000-000000000112", customerId: "30000000-0000-4000-8000-000000000004", contactType: "LINE", contactValue: "thanakrit_c", isPrimary: false },
 
   // Customer 5
-  { id: 113, customerId: 5, contactType: "PHONE", contactValue: "0845556677", isPrimary: true },
-  { id: 114, customerId: 5, contactType: "LINE", contactValue: "patchara_w", isPrimary: false },
+  { id: "31000000-0000-4000-8000-000000000113", customerId: "30000000-0000-4000-8000-000000000005", contactType: "PHONE", contactValue: "0845556677", isPrimary: true },
+  { id: "31000000-0000-4000-8000-000000000114", customerId: "30000000-0000-4000-8000-000000000005", contactType: "LINE", contactValue: "patchara_w", isPrimary: false },
   {
-    id: 115,
-    customerId: 5,
+    id: "31000000-0000-4000-8000-000000000115",
+    customerId: "30000000-0000-4000-8000-000000000005",
     contactType: "EMAIL",
     contactValue: "patcharaporn.w@hotmail.com",
     isPrimary: false,
   },
 
   // Customer 6
-  { id: 116, customerId: 6, contactType: "PHONE", contactValue: "0823339900", isPrimary: true },
+  { id: "31000000-0000-4000-8000-000000000116", customerId: "30000000-0000-4000-8000-000000000006", contactType: "PHONE", contactValue: "0823339900", isPrimary: true },
   {
-    id: 117,
-    customerId: 6,
+    id: "31000000-0000-4000-8000-000000000117",
+    customerId: "30000000-0000-4000-8000-000000000006",
     contactType: "EMAIL",
     contactValue: "alex.novak@corp.com",
     isPrimary: false,
   },
 
   // Customer 7
-  { id: 118, customerId: 7, contactType: "PHONE", contactValue: "0834445566", isPrimary: true },
-  { id: 119, customerId: 7, contactType: "LINE", contactValue: "@chayanis_p", isPrimary: false },
+  { id: "31000000-0000-4000-8000-000000000118", customerId: "30000000-0000-4000-8000-000000000007", contactType: "PHONE", contactValue: "0834445566", isPrimary: true },
+  { id: "31000000-0000-4000-8000-000000000119", customerId: "30000000-0000-4000-8000-000000000007", contactType: "LINE", contactValue: "@chayanis_p", isPrimary: false },
 
   // Customer 8
-  { id: 120, customerId: 8, contactType: "PHONE", contactValue: "0812223344", isPrimary: true },
+  { id: "31000000-0000-4000-8000-000000000120", customerId: "30000000-0000-4000-8000-000000000008", contactType: "PHONE", contactValue: "0812223344", isPrimary: true },
   {
-    id: 121,
-    customerId: 8,
+    id: "31000000-0000-4000-8000-000000000121",
+    customerId: "30000000-0000-4000-8000-000000000008",
     contactType: "EMAIL",
     contactValue: "witsarut.a@yahoo.com",
     isPrimary: false,
   },
 
   // Customer 9
-  { id: 122, customerId: 9, contactType: "PHONE", contactValue: "0856667788", isPrimary: true },
-  { id: 123, customerId: 9, contactType: "LINE", contactValue: "wannaporn_jit", isPrimary: false },
+  { id: "31000000-0000-4000-8000-000000000122", customerId: "30000000-0000-4000-8000-000000000009", contactType: "PHONE", contactValue: "0856667788", isPrimary: true },
+  { id: "31000000-0000-4000-8000-000000000123", customerId: "30000000-0000-4000-8000-000000000009", contactType: "LINE", contactValue: "wannaporn_jit", isPrimary: false },
 
   // Customer 10 (Juristic)
-  { id: 124, customerId: 10, contactType: "PHONE", contactValue: "028889999", isPrimary: true },
-  { id: 125, customerId: 10, contactType: "LINE", contactValue: "@happypetcare", isPrimary: false },
+  { id: "31000000-0000-4000-8000-000000000124", customerId: "30000000-0000-4000-8000-000000000010", contactType: "PHONE", contactValue: "028889999", isPrimary: true },
+  { id: "31000000-0000-4000-8000-000000000125", customerId: "30000000-0000-4000-8000-000000000010", contactType: "LINE", contactValue: "@happypetcare", isPrimary: false },
   {
-    id: 126,
-    customerId: 10,
+    id: "31000000-0000-4000-8000-000000000126",
+    customerId: "30000000-0000-4000-8000-000000000010",
     contactType: "EMAIL",
     contactValue: "contact@happypet.co.th",
     isPrimary: false,
@@ -240,8 +240,8 @@ export const initialCustomerContactSeeds: CustomerContactRecord[] = [
 
 export const initialCustomerAddressSeeds: CustomerAddressRecord[] = [
   {
-    id: 201,
-    customerId: 1,
+    id: "32000000-0000-4000-8000-000000000201",
+    customerId: "30000000-0000-4000-8000-000000000001",
     addressType: "RESIDENTIAL",
     addressLine: "88/12 Thong Lo Soi 13, Sukhumvit 55 Rd.",
     subdistrict: "Khlong Tan Nuea",
@@ -252,8 +252,8 @@ export const initialCustomerAddressSeeds: CustomerAddressRecord[] = [
     isPrimary: true,
   },
   {
-    id: 202,
-    customerId: 2,
+    id: "32000000-0000-4000-8000-000000000202",
+    customerId: "30000000-0000-4000-8000-000000000002",
     addressType: "RESIDENTIAL",
     addressLine: "120/45 Ari Samphan 1, Phahon Yothin Rd.",
     subdistrict: "Sam Sen Nai",
@@ -264,8 +264,8 @@ export const initialCustomerAddressSeeds: CustomerAddressRecord[] = [
     isPrimary: true,
   },
   {
-    id: 203,
-    customerId: 3,
+    id: "32000000-0000-4000-8000-000000000203",
+    customerId: "30000000-0000-4000-8000-000000000003",
     addressType: "RESIDENTIAL",
     addressLine: "45/8 หมู่ 3 ถ.ราชพฤกษ์",
     subdistrict: "บางกร่าง",
@@ -276,8 +276,8 @@ export const initialCustomerAddressSeeds: CustomerAddressRecord[] = [
     isPrimary: true,
   },
   {
-    id: 204,
-    customerId: 4,
+    id: "32000000-0000-4000-8000-000000000204",
+    customerId: "30000000-0000-4000-8000-000000000004",
     addressType: "RESIDENTIAL",
     addressLine: "72/14 ถ.นิมมานเหมินท์ ซอย 9",
     subdistrict: "สุเทพ",
@@ -288,8 +288,8 @@ export const initialCustomerAddressSeeds: CustomerAddressRecord[] = [
     isPrimary: true,
   },
   {
-    id: 205,
-    customerId: 5,
+    id: "32000000-0000-4000-8000-000000000205",
+    customerId: "30000000-0000-4000-8000-000000000005",
     addressType: "RESIDENTIAL",
     addressLine: "302/18 ถ.พระราม 3 แขวงบางโพงพาง",
     subdistrict: "บางโพงพาง",
@@ -300,8 +300,8 @@ export const initialCustomerAddressSeeds: CustomerAddressRecord[] = [
     isPrimary: true,
   },
   {
-    id: 206,
-    customerId: 6,
+    id: "32000000-0000-4000-8000-000000000206",
+    customerId: "30000000-0000-4000-8000-000000000006",
     addressType: "RESIDENTIAL",
     addressLine: "15 Sukhumvit Soi 31",
     subdistrict: "Khlong Toei Nuea",
@@ -312,8 +312,8 @@ export const initialCustomerAddressSeeds: CustomerAddressRecord[] = [
     isPrimary: true,
   },
   {
-    id: 207,
-    customerId: 7,
+    id: "32000000-0000-4000-8000-000000000207",
+    customerId: "30000000-0000-4000-8000-000000000007",
     addressType: "RESIDENTIAL",
     addressLine: "59/3 ซ.ลาดพร้าว 71 ถ.สังคมสงเคราะห์",
     subdistrict: "สะพานสอง",
@@ -324,8 +324,8 @@ export const initialCustomerAddressSeeds: CustomerAddressRecord[] = [
     isPrimary: true,
   },
   {
-    id: 208,
-    customerId: 8,
+    id: "32000000-0000-4000-8000-000000000208",
+    customerId: "30000000-0000-4000-8000-000000000008",
     addressType: "RESIDENTIAL",
     addressLine: "99/22 ถ.ศรีนครินทร์ แขวงหนองบอน",
     subdistrict: "หนองบอน",
@@ -336,8 +336,8 @@ export const initialCustomerAddressSeeds: CustomerAddressRecord[] = [
     isPrimary: true,
   },
   {
-    id: 209,
-    customerId: 9,
+    id: "32000000-0000-4000-8000-000000000209",
+    customerId: "30000000-0000-4000-8000-000000000009",
     addressType: "RESIDENTIAL",
     addressLine: "188/5 ถ.บรมราชชนนี แขวงอรุณอมรินทร์",
     subdistrict: "อรุณอมรินทร์",
@@ -348,8 +348,8 @@ export const initialCustomerAddressSeeds: CustomerAddressRecord[] = [
     isPrimary: true,
   },
   {
-    id: 210,
-    customerId: 10,
+    id: "32000000-0000-4000-8000-000000000210",
+    customerId: "30000000-0000-4000-8000-000000000010",
     addressType: "BILLING",
     addressLine: "500/2 ถ.พหลโยธิน แขวงจตุจักร",
     subdistrict: "จตุจักร",
@@ -363,8 +363,8 @@ export const initialCustomerAddressSeeds: CustomerAddressRecord[] = [
 
 export const initialCustomerPreferenceSeeds: CustomerPreferenceRecord[] = [
   {
-    id: 301,
-    customerId: 1,
+    id: "33000000-0000-4000-8000-000000000301",
+    customerId: "30000000-0000-4000-8000-000000000001",
     referralSource: "Friend / Referral",
     preferredChannel: "LINE",
     preferredTime: "13:00 - 17:00",
@@ -375,8 +375,8 @@ export const initialCustomerPreferenceSeeds: CustomerPreferenceRecord[] = [
     pdpaMedia: true,
   },
   {
-    id: 302,
-    customerId: 2,
+    id: "33000000-0000-4000-8000-000000000302",
+    customerId: "30000000-0000-4000-8000-000000000002",
     referralSource: "Google Search",
     preferredChannel: "PHONE",
     preferredTime: "09:00 - 12:00",
@@ -387,8 +387,8 @@ export const initialCustomerPreferenceSeeds: CustomerPreferenceRecord[] = [
     pdpaMedia: false,
   },
   {
-    id: 303,
-    customerId: 3,
+    id: "33000000-0000-4000-8000-000000000303",
+    customerId: "30000000-0000-4000-8000-000000000003",
     referralSource: "Facebook / Instagram",
     preferredChannel: "LINE",
     preferredTime: "13:00 - 17:00",
@@ -399,8 +399,8 @@ export const initialCustomerPreferenceSeeds: CustomerPreferenceRecord[] = [
     pdpaMedia: true,
   },
   {
-    id: 304,
-    customerId: 4,
+    id: "33000000-0000-4000-8000-000000000304",
+    customerId: "30000000-0000-4000-8000-000000000004",
     referralSource: "Walk-in",
     preferredChannel: "SMS",
     preferredTime: "17:00 - 20:00",
@@ -411,8 +411,8 @@ export const initialCustomerPreferenceSeeds: CustomerPreferenceRecord[] = [
     pdpaMedia: false,
   },
   {
-    id: 305,
-    customerId: 5,
+    id: "33000000-0000-4000-8000-000000000305",
+    customerId: "30000000-0000-4000-8000-000000000005",
     referralSource: "Friend / Referral",
     preferredChannel: "LINE",
     preferredTime: "09:00 - 12:00",
@@ -423,8 +423,8 @@ export const initialCustomerPreferenceSeeds: CustomerPreferenceRecord[] = [
     pdpaMedia: false,
   },
   {
-    id: 306,
-    customerId: 6,
+    id: "33000000-0000-4000-8000-000000000306",
+    customerId: "30000000-0000-4000-8000-000000000006",
     referralSource: "Google Maps",
     preferredChannel: "EMAIL",
     preferredTime: "13:00 - 17:00",
@@ -435,8 +435,8 @@ export const initialCustomerPreferenceSeeds: CustomerPreferenceRecord[] = [
     pdpaMedia: true,
   },
   {
-    id: 307,
-    customerId: 7,
+    id: "33000000-0000-4000-8000-000000000307",
+    customerId: "30000000-0000-4000-8000-000000000007",
     referralSource: "TikTok / Social Media",
     preferredChannel: "LINE",
     preferredTime: "17:00 - 20:00",
@@ -447,8 +447,8 @@ export const initialCustomerPreferenceSeeds: CustomerPreferenceRecord[] = [
     pdpaMedia: true,
   },
   {
-    id: 308,
-    customerId: 8,
+    id: "33000000-0000-4000-8000-000000000308",
+    customerId: "30000000-0000-4000-8000-000000000008",
     referralSource: "Walk-in",
     preferredChannel: "PHONE",
     preferredTime: "09:00 - 12:00",
@@ -459,8 +459,8 @@ export const initialCustomerPreferenceSeeds: CustomerPreferenceRecord[] = [
     pdpaMedia: false,
   },
   {
-    id: 309,
-    customerId: 9,
+    id: "33000000-0000-4000-8000-000000000309",
+    customerId: "30000000-0000-4000-8000-000000000009",
     referralSource: "Facebook / Instagram",
     preferredChannel: "LINE",
     preferredTime: "13:00 - 17:00",
@@ -471,8 +471,8 @@ export const initialCustomerPreferenceSeeds: CustomerPreferenceRecord[] = [
     pdpaMedia: false,
   },
   {
-    id: 310,
-    customerId: 10,
+    id: "33000000-0000-4000-8000-000000000310",
+    customerId: "30000000-0000-4000-8000-000000000010",
     referralSource: "Corporate Partner",
     preferredChannel: "EMAIL",
     preferredTime: "09:00 - 12:00",

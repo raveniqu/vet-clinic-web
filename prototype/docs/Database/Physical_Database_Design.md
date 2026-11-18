@@ -73,7 +73,7 @@
 ตัวอย่าง:
 
 ```
-customer_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY
+customer_id UUID GENERATED ALWAYS AS IDENTITY PRIMARY KEY
 ```
 
 หากต้องการใช้รหัสภายนอกสำหรับ API หรือการเชื่อมต่อระบบอื่น สามารถเพิ่ม `public_id UUID` แยกจาก Primary Key ได้ โดยไม่จำเป็นต้องใช้ UUID เป็น Primary Key ของทุกตาราง

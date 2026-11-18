@@ -1,10 +1,13 @@
 import { useBatchSlice } from "#/client/shared/hooks/use-batch-slice";
-import { usePetsDashboardContext } from "../contexts/pets-dashboard-provider";
+import { useSidebar } from "#/client/shared/shadcn/components/ui/sidebar";
 import { PET_GRID_BATCH_SIZE } from "../models/pets-table";
+import { usePetsList } from "./use-pets-list";
+import { usePetsSearch } from "./use-pets-search";
 
 export function usePetsGrid() {
-  const { allPets, filteredPets, hasActiveFilter, clearFilters, filterResetKey, setEditingPet } =
-    usePetsDashboardContext();
+  const { filteredPets, isEmptyDataset } = usePetsList();
+  const { hasActiveFilter, clearFilters, filterResetKey } = usePetsSearch();
+  const { open: isSidebarOpen } = useSidebar();
 
   const {
     displayedItems: displayedPets,
@@ -28,9 +31,9 @@ export function usePetsGrid() {
     nextBatchCount,
     hasMore,
     loadMore,
-    isEmptyDataset: allPets.length === 0,
+    isEmptyDataset,
     hasActiveFilter,
     clearFilters,
-    setEditingPet,
+    isSidebarOpen,
   };
 }

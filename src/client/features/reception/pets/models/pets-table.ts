@@ -1,5 +1,11 @@
+import type { ColumnVisibilityState } from "@tanstack/react-table";
 import { formatRegisteredDate } from "#/client/shared/helpers/formatters";
-import type { PetDto, ReproductiveStatus, TemperamentAlert } from "#/shared/schemas/pet.schema";
+import type {
+  PetDto,
+  PetQuickFilterKey,
+  ReproductiveStatus,
+  TemperamentAlert,
+} from "#/shared/schemas/pet.schema";
 
 export type PetColumnKey =
   | "pet"
@@ -49,8 +55,6 @@ export const LOCKED_PET_COLUMNS: ReadonlySet<PetColumnKey> = new Set(
 
 export const PET_COLUMNS_STORAGE_KEY = "vet-clinic.pets.list-visible-columns.v1";
 
-export type PetQuickFilterKey = "hasAllergies" | "alertTemperament" | "intact" | "missingMicrochip";
-
 export interface PetQuickFilterDefinition {
   key: PetQuickFilterKey;
   label: string;
@@ -86,12 +90,6 @@ export const PET_QUICK_FILTER_PREDICATES: Record<PetQuickFilterKey, (pet: PetDto
   intact: PET_QUICK_FILTERS[2].predicate,
   missingMicrochip: PET_QUICK_FILTERS[3].predicate,
 };
-
-export const TABLE_PAGE_SIZE_ITEMS: { label: string; value: number }[] = [
-  { label: "10", value: 10 },
-  { label: "25", value: 25 },
-  { label: "50", value: 50 },
-];
 
 export const PET_GRID_BATCH_SIZE = 6;
 
@@ -142,4 +140,91 @@ export function getTemperamentSeverity(
 
 export function getReproductiveSeverity(status: ReproductiveStatus): "neutral" | "warning" {
   return status === "Intact" ? "warning" : "neutral";
+}
+
+export interface PetFilterCriteria {
+  searchTerm: string;
+  selectedSpeciesId: number;
+  quickFilters: readonly PetQuickFilterKey[];
+}
+
+export function filterPets(pets: readonly PetDto[], criteria: PetFilterCriteria): PetDto[] {
+  const term = criteria.searchTerm.trim().toLowerCase();
+
+  return pets.filter((pet) => {
+    if (criteria.selectedSpeciesId > 0 && pet.speciesId !== criteria.selectedSpeciesId) {
+      return false;
+    }
+
+    for (const filterKey of criteria.quickFilters) {
+      if (!PET_QUICK_FILTER_PREDICATES[filterKey](pet)) {
+        return false;
+      }
+    }
+
+    if (!term) return true;
+
+    const name = pet.petName.toLowerCase();
+    const breed = pet.breedName.toLowerCase();
+    const color = (pet.color || "").toLowerCase();
+    const species = pet.speciesName.toLowerCase();
+    const code = pet.petCode.toLowerCase();
+    const owner = (pet.ownerName || "").toLowerCase();
+    const microchip = (pet.microchipNumber || "").toLowerCase();
+
+    return (
+      name.includes(term) ||
+      breed.includes(term) ||
+      color.includes(term) ||
+      species.includes(term) ||
+      code.includes(term) ||
+      owner.includes(term) ||
+      microchip.includes(term)
+    );
+  });
+}
+
+export interface PetsMetrics {
+  totalPets: number;
+  totalDogs: number;
+  totalCats: number;
+  totalAllergies: number;
+}
+
+export function computePetsMetrics(pets: readonly PetDto[]): PetsMetrics {
+  let totalDogs = 0;
+  let totalCats = 0;
+  let totalAllergies = 0;
+
+  for (const pet of pets) {
+    if (pet.speciesName === "Dog") {
+      totalDogs += 1;
+    } else if (pet.speciesName === "Cat") {
+      totalCats += 1;
+    }
+
+    if (hasNonEmptyText(pet.allergies)) {
+      totalAllergies += 1;
+    }
+  }
+
+  return {
+    totalPets: pets.length,
+    totalDogs,
+    totalCats,
+    totalAllergies,
+  };
+}
+
+export function getPetColumnVisibilityState(
+  visibleColumns: readonly PetColumnKey[]
+): ColumnVisibilityState {
+  const visibleSet = new Set<PetColumnKey>(visibleColumns);
+  const visibility: ColumnVisibilityState = { actions: true };
+
+  for (const column of PET_TABLE_COLUMNS) {
+    visibility[column.key] = Boolean(column.locked) || visibleSet.has(column.key);
+  }
+
+  return visibility;
 }

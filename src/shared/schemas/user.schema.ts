@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const userSchema = z.object({
-  id: z.number().nonnegative(),
+  id: z.uuid(),
   name: z.string().min(1),
   username: z.string().min(1),
   email: z.email(),
@@ -27,7 +27,7 @@ export const userSchema = z.object({
 export const usersSchema = z.array(userSchema);
 
 export const getUserByIdSchema = z.object({
-  id: z.number().nonnegative(),
+  id: z.uuid(),
 });
 
 export type UserDto = z.infer<typeof userSchema>;

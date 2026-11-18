@@ -1,17 +1,12 @@
 import { useQuickFilters } from "#/client/shared/hooks/use-quick-filters";
-import { usePetsDashboardContext } from "../contexts/pets-dashboard-provider";
 import { PET_QUICK_FILTERS } from "../models/pets-table";
+import { usePetsList } from "./use-pets-list";
+import { usePetsSearch } from "./use-pets-search";
 
 export function usePetQuickFilters() {
-  const {
-    allPets,
-    filteredPets,
-    quickFilters,
-    setQuickFilters,
-    activeFilterCount,
-    hasActiveFilter,
-    clearFilters,
-  } = usePetsDashboardContext();
+  const { allPets, filteredPets } = usePetsList();
+  const { quickFilters, setQuickFilters, activeFilterCount, hasActiveFilter, clearFilters } =
+    usePetsSearch();
 
   return useQuickFilters({
     allItems: allPets,

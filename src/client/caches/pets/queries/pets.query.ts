@@ -16,7 +16,7 @@ export function petsListQueryOptions() {
   });
 }
 
-export function petDetailQueryOptions(id: number) {
+export function petDetailQueryOptions(id: string) {
   return queryOptions<PetDto | null>({
     queryKey: petKeys.detail(id),
     queryFn: async () => {
@@ -26,7 +26,7 @@ export function petDetailQueryOptions(id: number) {
   });
 }
 
-export function petsByOwnerQueryOptions(ownerId?: number) {
+export function petsByOwnerQueryOptions(ownerId?: string) {
   return queryOptions<PetDto[]>({
     queryKey: petKeys.list({ ownerId }),
     queryFn: async () => {

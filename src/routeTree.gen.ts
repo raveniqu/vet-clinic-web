@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PrivateRouteRouteImport } from './routes/_private/route'
 import { Route as PrivateIndexRouteImport } from './routes/_private/index'
+import { Route as PrivatereceptionPetsRouteRouteImport } from './routes/_private/(reception)/pets/route'
 import { Route as PrivateclinicalConsultationsIndexRouteImport } from './routes/_private/(clinical)/consultations/index'
 import { Route as PrivateclinicalDiagnosticsIndexRouteImport } from './routes/_private/(clinical)/diagnostics/index'
 import { Route as PrivateclinicalSurgeryIndexRouteImport } from './routes/_private/(clinical)/surgery/index'
@@ -37,6 +38,12 @@ const PrivateIndexRoute = PrivateIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PrivateRouteRoute,
 } as any)
+const PrivatereceptionPetsRouteRoute =
+  PrivatereceptionPetsRouteRouteImport.update({
+    id: '/(reception)/pets',
+    path: '/pets',
+    getParentRoute: () => PrivateRouteRoute,
+  } as any)
 const PrivateclinicalConsultationsIndexRoute =
   PrivateclinicalConsultationsIndexRouteImport.update({
     id: '/(clinical)/consultations/',
@@ -117,15 +124,15 @@ const PrivatereceptionOwnersOwnerIdRoute =
   } as any)
 const PrivatereceptionPetsIndexRoute =
   PrivatereceptionPetsIndexRouteImport.update({
-    id: '/(reception)/pets/',
-    path: '/pets/',
-    getParentRoute: () => PrivateRouteRoute,
+    id: '/',
+    path: '/',
+    getParentRoute: () => PrivatereceptionPetsRouteRoute,
   } as any)
 const PrivatereceptionPetsPetIdRoute =
   PrivatereceptionPetsPetIdRouteImport.update({
-    id: '/(reception)/pets/$petId',
-    path: '/pets/$petId',
-    getParentRoute: () => PrivateRouteRoute,
+    id: '/$petId',
+    path: '/$petId',
+    getParentRoute: () => PrivatereceptionPetsRouteRoute,
   } as any)
 const PrivatereceptionQueueIndexRoute =
   PrivatereceptionQueueIndexRouteImport.update({
@@ -136,6 +143,7 @@ const PrivatereceptionQueueIndexRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof PrivateIndexRoute
+  '/pets': typeof PrivatereceptionPetsRouteRouteWithChildren
   '/owners/$ownerId': typeof PrivatereceptionOwnersOwnerIdRoute
   '/pets/$petId': typeof PrivatereceptionPetsPetIdRoute
   '/consultations/': typeof PrivateclinicalConsultationsIndexRoute
@@ -176,6 +184,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_private': typeof PrivateRouteRouteWithChildren
   '/_private/': typeof PrivateIndexRoute
+  '/_private/(reception)/pets': typeof PrivatereceptionPetsRouteRouteWithChildren
   '/_private/(reception)/owners/$ownerId': typeof PrivatereceptionOwnersOwnerIdRoute
   '/_private/(reception)/pets/$petId': typeof PrivatereceptionPetsPetIdRoute
   '/_private/(clinical)/consultations/': typeof PrivateclinicalConsultationsIndexRoute
@@ -197,6 +206,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/pets'
     | '/owners/$ownerId'
     | '/pets/$petId'
     | '/consultations/'
@@ -236,6 +246,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_private'
     | '/_private/'
+    | '/_private/(reception)/pets'
     | '/_private/(reception)/owners/$ownerId'
     | '/_private/(reception)/pets/$petId'
     | '/_private/(clinical)/consultations/'
@@ -272,6 +283,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof PrivateIndexRouteImport
+      parentRoute: typeof PrivateRouteRoute
+    }
+    '/_private/(reception)/pets': {
+      id: '/_private/(reception)/pets'
+      path: '/pets'
+      fullPath: '/pets'
+      preLoaderRoute: typeof PrivatereceptionPetsRouteRouteImport
       parentRoute: typeof PrivateRouteRoute
     }
     '/_private/(clinical)/consultations/': {
@@ -367,17 +385,17 @@ declare module '@tanstack/react-router' {
     }
     '/_private/(reception)/pets/': {
       id: '/_private/(reception)/pets/'
-      path: '/pets'
+      path: '/'
       fullPath: '/pets/'
       preLoaderRoute: typeof PrivatereceptionPetsIndexRouteImport
-      parentRoute: typeof PrivateRouteRoute
+      parentRoute: typeof PrivatereceptionPetsRouteRoute
     }
     '/_private/(reception)/pets/$petId': {
       id: '/_private/(reception)/pets/$petId'
-      path: '/pets/$petId'
+      path: '/$petId'
       fullPath: '/pets/$petId'
       preLoaderRoute: typeof PrivatereceptionPetsPetIdRouteImport
-      parentRoute: typeof PrivateRouteRoute
+      parentRoute: typeof PrivatereceptionPetsRouteRoute
     }
     '/_private/(reception)/queue/': {
       id: '/_private/(reception)/queue/'
@@ -389,10 +407,26 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface PrivatereceptionPetsRouteRouteChildren {
+  PrivatereceptionPetsPetIdRoute: typeof PrivatereceptionPetsPetIdRoute
+  PrivatereceptionPetsIndexRoute: typeof PrivatereceptionPetsIndexRoute
+}
+
+const PrivatereceptionPetsRouteRouteChildren: PrivatereceptionPetsRouteRouteChildren =
+  {
+    PrivatereceptionPetsPetIdRoute: PrivatereceptionPetsPetIdRoute,
+    PrivatereceptionPetsIndexRoute: PrivatereceptionPetsIndexRoute,
+  }
+
+const PrivatereceptionPetsRouteRouteWithChildren =
+  PrivatereceptionPetsRouteRoute._addFileChildren(
+    PrivatereceptionPetsRouteRouteChildren,
+  )
+
 interface PrivateRouteRouteChildren {
   PrivateIndexRoute: typeof PrivateIndexRoute
+  PrivatereceptionPetsRouteRoute: typeof PrivatereceptionPetsRouteRouteWithChildren
   PrivatereceptionOwnersOwnerIdRoute: typeof PrivatereceptionOwnersOwnerIdRoute
-  PrivatereceptionPetsPetIdRoute: typeof PrivatereceptionPetsPetIdRoute
   PrivateclinicalConsultationsIndexRoute: typeof PrivateclinicalConsultationsIndexRoute
   PrivateclinicalDiagnosticsIndexRoute: typeof PrivateclinicalDiagnosticsIndexRoute
   PrivateclinicalSurgeryIndexRoute: typeof PrivateclinicalSurgeryIndexRoute
@@ -405,14 +439,13 @@ interface PrivateRouteRouteChildren {
   PrivatepharmacyProcurementIndexRoute: typeof PrivatepharmacyProcurementIndexRoute
   PrivatereceptionAppointmentsIndexRoute: typeof PrivatereceptionAppointmentsIndexRoute
   PrivatereceptionOwnersIndexRoute: typeof PrivatereceptionOwnersIndexRoute
-  PrivatereceptionPetsIndexRoute: typeof PrivatereceptionPetsIndexRoute
   PrivatereceptionQueueIndexRoute: typeof PrivatereceptionQueueIndexRoute
 }
 
 const PrivateRouteRouteChildren: PrivateRouteRouteChildren = {
   PrivateIndexRoute: PrivateIndexRoute,
+  PrivatereceptionPetsRouteRoute: PrivatereceptionPetsRouteRouteWithChildren,
   PrivatereceptionOwnersOwnerIdRoute: PrivatereceptionOwnersOwnerIdRoute,
-  PrivatereceptionPetsPetIdRoute: PrivatereceptionPetsPetIdRoute,
   PrivateclinicalConsultationsIndexRoute:
     PrivateclinicalConsultationsIndexRoute,
   PrivateclinicalDiagnosticsIndexRoute: PrivateclinicalDiagnosticsIndexRoute,
@@ -427,7 +460,6 @@ const PrivateRouteRouteChildren: PrivateRouteRouteChildren = {
   PrivatereceptionAppointmentsIndexRoute:
     PrivatereceptionAppointmentsIndexRoute,
   PrivatereceptionOwnersIndexRoute: PrivatereceptionOwnersIndexRoute,
-  PrivatereceptionPetsIndexRoute: PrivatereceptionPetsIndexRoute,
   PrivatereceptionQueueIndexRoute: PrivatereceptionQueueIndexRoute,
 }
 

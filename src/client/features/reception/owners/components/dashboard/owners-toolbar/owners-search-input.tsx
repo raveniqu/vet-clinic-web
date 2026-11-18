@@ -1,19 +1,20 @@
 import { Search, X } from "lucide-react";
+import { useOwnersSearchInput } from "#/client/features/reception/owners/hooks/use-owners-search-input";
+import { AppInputGroup, AppInputGroupInput } from "#/client/shared/components/app-input-group";
 import {
   InputGroupAddon,
   InputGroupButton,
 } from "#/client/shared/shadcn/components/ui/input-group";
-import { useOwnersSearch } from "#/client/features/reception/owners/hooks/use-owner-search";
-import { AppInputGroup, AppInputGroupInput } from "#/client/shared/components/app-input-group";
 
 export function OwnersSearchInput() {
-  const { inputRef, searchTerm, handleSearchChange, hasSearchTerm, clearSearch } =
-    useOwnersSearch();
+  const { inputRef, searchInput, handleSearchChange, hasSearchTerm, clearSearch } =
+    useOwnersSearchInput();
+
   return (
     <AppInputGroup className="col-span-7">
       <AppInputGroupInput
         ref={inputRef}
-        value={searchTerm}
+        value={searchInput}
         onChange={handleSearchChange}
         placeholder="Name, phone, LINE ID, or tax ID..."
         aria-label="Search owners"

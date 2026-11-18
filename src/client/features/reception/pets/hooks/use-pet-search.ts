@@ -1,7 +1,7 @@
 import { useSearchInput } from "#/client/shared/hooks/use-search-input";
-import { usePetsDashboardContext } from "../contexts/pets-dashboard-provider";
+import { usePetsSearch } from "./use-pets-search";
 
 export function usePetSearch() {
-  const { searchTerm, setSearchTerm } = usePetsDashboardContext();
+  const { searchTerm, setSearchTerm } = usePetsSearch();
   return useSearchInput({ searchTerm, setSearchTerm });
 }

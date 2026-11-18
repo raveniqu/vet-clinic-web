@@ -18,13 +18,12 @@ export function useUpdatePetMutation() {
       },
       errorToast: "Failed to update pet profile. Please check the details and try again.",
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       queryClient.setQueryData(petKeys.detail(data.id), data);
-      void queryClient.invalidateQueries({ queryKey: petKeys.lists() });
-      if (data.ownerId) {
-        void queryClient.invalidateQueries({ queryKey: ownerKeys.detail(data.ownerId) });
-        void queryClient.invalidateQueries({ queryKey: ownerKeys.lists() });
-      }
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: petKeys.lists() }),
+        queryClient.invalidateQueries({ queryKey: ownerKeys.all }),
+      ]);
     },
   });
 }

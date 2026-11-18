@@ -1,24 +1,26 @@
-import { useForm, useSelector } from "@tanstack/react-form";
-import type { AnyFieldLikeMetaBase, ReactFormExtendedApi } from "@tanstack/react-form";
+import { useSelector } from "@tanstack/react-form";
+import type {
+  AnyFieldLikeMetaBase,
+  DeepKeys,
+  DeepValue,
+  FormValidateFn,
+  GlobalFormValidationError,
+} from "@tanstack/react-form";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useCallback, useState } from "react";
 import type { ZodType } from "zod";
+import {
+  createZodStepValidatorErrors,
+  extractFormErrorMessage,
+  useAppForm,
+} from "#/client/shared/components/app-form";
+import type { AppFormApi } from "#/client/shared/components/app-form";
 
 export type WizardStepNumber = 1 | 2 | 3;
 
-export type WizardFormApi<TValues extends Record<string, unknown>> = ReactFormExtendedApi<
+export type WizardFormApi<TValues extends Record<string, unknown>> = AppFormApi<
   TValues,
-  undefined,
-  undefined,
-  undefined,
-  undefined,
-  undefined,
-  undefined,
-  undefined,
-  undefined,
-  undefined,
-  undefined,
-  never
+  FormValidateFn<TValues>
 >;
 
 export interface UseWizardFormOptions<TValues extends Record<string, unknown>> {
@@ -35,6 +37,7 @@ export interface UseWizardFormOptions<TValues extends Record<string, unknown>> {
     field: TField,
     value: TValues[TField]
   ) => TValues;
+  onSubmit?: (values: TValues) => Promise<void> | void;
 }
 
 export interface UseWizardFormReturn<TValues extends Record<string, unknown>> {
@@ -43,14 +46,15 @@ export interface UseWizardFormReturn<TValues extends Record<string, unknown>> {
   setIsOpen: (open: boolean) => void;
   currentStep: WizardStepNumber;
   setCurrentStep: (step: WizardStepNumber) => void;
+  isSubmitting: boolean;
   clearFieldError: (fieldName: string) => void;
   setFieldValue: <TField extends keyof TValues>(field: TField, value: TValues[TField]) => void;
   setMultipleFields: (patch: Partial<TValues>) => void;
   validateStep: (step: WizardStepNumber) => boolean;
-  validateAll: () => { success: true; data: TValues } | { success: false };
   nextStep: () => boolean;
   prevStep: () => void;
   goToStep: (step: WizardStepNumber) => void;
+  submitForm: () => Promise<void>;
   resetWizardState: (customValues?: TValues) => void;
 }
 
@@ -65,7 +69,7 @@ function shallowEqualRecord<T extends Record<PropertyKey, unknown>>(a: T, b: T):
   return true;
 }
 
-function createFieldMetaBase(
+function createInitialFieldMeta(
   prev: AnyFieldLikeMetaBase | undefined,
   patch: Partial<AnyFieldLikeMetaBase>
 ): AnyFieldLikeMetaBase {
@@ -82,17 +86,20 @@ function createFieldMetaBase(
   };
 }
 
-function extractFirstIssuePerField(
-  issues: readonly { path: PropertyKey[]; message: string }[]
-): Record<string, string> {
-  const fieldErrors: Record<string, string> = {};
-  for (const issue of issues) {
-    const key = issue.path[0];
-    if (typeof key === "string" && !fieldErrors[key]) {
-      fieldErrors[key] = issue.message;
+export function resolveFirstFailedWizardStep(
+  failedFieldKeys: readonly string[],
+  resolveFieldStep?: (fieldKey: string) => WizardStepNumber
+): WizardStepNumber {
+  if (!resolveFieldStep) return 1;
+
+  let firstFailedStep: WizardStepNumber = 3;
+  for (const key of failedFieldKeys) {
+    const step = resolveFieldStep(key);
+    if (step < firstFailedStep) {
+      firstFailedStep = step;
     }
   }
-  return fieldErrors;
+  return firstFailedStep;
 }
 
 export function useFormValues<
@@ -125,9 +132,9 @@ export function useFormErrors<
         { errors?: readonly unknown[] } | undefined
       >;
       for (const key of keys) {
-        const firstErr = fieldMeta[String(key)]?.errors?.[0];
-        if (typeof firstErr === "string" && firstErr.length > 0) {
-          slice[key] = firstErr;
+        const message = extractFormErrorMessage(fieldMeta[String(key)]?.errors?.[0]);
+        if (message) {
+          slice[key] = message;
         }
       }
       return slice;
@@ -152,8 +159,7 @@ export function useFormFieldError<
       string,
       { errors?: readonly unknown[] } | undefined
     >;
-    const firstErr = fieldMeta[String(key)]?.errors?.[0];
-    return typeof firstErr === "string" && firstErr.length > 0 ? firstErr : undefined;
+    return extractFormErrorMessage(fieldMeta[String(key)]?.errors?.[0]);
   });
 }
 
@@ -167,6 +173,7 @@ export function useWizardForm<TValues extends Record<string, unknown>>({
   fullSchema,
   resolveFieldStep,
   onFieldChangeSideEffects,
+  onSubmit,
 }: UseWizardFormOptions<TValues>): UseWizardFormReturn<TValues> {
   const navigate = useNavigate();
   const search = useSearch({ strict: false });
@@ -201,14 +208,27 @@ export function useWizardForm<TValues extends Record<string, unknown>>({
   const [currentStep, setCurrentStep] = useState<WizardStepNumber>(1);
   const [resolvedDefaultValues] = useState<TValues>(initialValues);
 
-  const form: WizardFormApi<TValues> = useForm<
+  const validateFullOnSubmit: FormValidateFn<TValues> = useCallback(
+    ({ value }): GlobalFormValidationError<TValues> | undefined => {
+      const fieldErrors = createZodStepValidatorErrors(fullSchema, value);
+      if (Object.keys(fieldErrors).length === 0) {
+        return undefined;
+      }
+      return {
+        fields: fieldErrors as GlobalFormValidationError<TValues>["fields"],
+      };
+    },
+    [fullSchema]
+  );
+
+  const form = useAppForm<
     TValues,
     undefined,
     undefined,
     undefined,
     undefined,
     undefined,
-    undefined,
+    FormValidateFn<TValues>,
     undefined,
     undefined,
     undefined,
@@ -216,63 +236,31 @@ export function useWizardForm<TValues extends Record<string, unknown>>({
     never
   >({
     defaultValues: resolvedDefaultValues,
+    validators: {
+      onSubmit: validateFullOnSubmit,
+    },
+    onSubmitInvalid: ({ formApi }) => {
+      const fieldsErrors = formApi.getAllErrors().fields;
+      const failedKeys = Object.keys(fieldsErrors);
+      if (failedKeys.length > 0 && resolveFieldStep) {
+        setCurrentStep(resolveFirstFailedWizardStep(failedKeys, resolveFieldStep));
+      }
+    },
+    onSubmit: async ({ value }) => {
+      if (!onSubmit) return;
+      const parsed = fullSchema.parse(value);
+      await onSubmit(parsed);
+    },
   });
 
-  const applyFieldErrors = useCallback(
-    (fieldErrors: Record<string, string>) => {
-      form.baseStore.setState((prev) => {
-        const existingEntries = Object.entries(prev.fieldMetaBase) as [
-          string,
-          AnyFieldLikeMetaBase | undefined,
-        ][];
-        const hasNewErrors = Object.keys(fieldErrors).length > 0;
-        const hasExistingSubmitErrors = existingEntries.some(
-          ([, meta]) => meta?.errorMap?.onSubmit !== undefined
-        );
+  const isSubmitting = useSelector(form.store, (state) => state.isSubmitting);
 
-        if (!hasNewErrors && !hasExistingSubmitErrors) {
-          return prev;
-        }
-
-        const nextFieldMetaBase: Record<string, AnyFieldLikeMetaBase | undefined> = {};
-
-        for (const [key, meta] of existingEntries) {
-          if (!meta) continue;
-          if (meta.errorMap?.onSubmit !== undefined && !(key in fieldErrors)) {
-            nextFieldMetaBase[key] = createFieldMetaBase(meta, {
-              errorMap: { ...meta.errorMap, onSubmit: undefined },
-            });
-          } else {
-            nextFieldMetaBase[key] = meta;
-          }
-        }
-
-        for (const [key, message] of Object.entries(fieldErrors)) {
-          const existing = nextFieldMetaBase[key];
-          nextFieldMetaBase[key] = createFieldMetaBase(existing, {
-            errorMap: { ...existing?.errorMap, onSubmit: message },
-            errorSourceMap: { ...existing?.errorSourceMap, onSubmit: "form" },
-          });
-        }
-
-        return {
-          ...prev,
-          fieldMetaBase: nextFieldMetaBase as typeof prev.fieldMetaBase,
-        };
-      });
-    },
-    [form]
-  );
-
-  const clearFieldError = useCallback(
-    (fieldName: string) => {
-      const currentMeta = form.baseStore.state.fieldMetaBase[fieldName as never] as
-        | AnyFieldLikeMetaBase
-        | undefined;
-      if (!currentMeta?.errorMap?.onSubmit) return;
-
-      form.setFieldMeta(fieldName as never, (prev) =>
-        createFieldMetaBase(prev, {
+  const clearSubmitErrorOnField = useCallback(
+    (fieldKey: DeepKeys<TValues>) => {
+      const meta = form.getFieldMeta(fieldKey);
+      if (!meta?.errorMap?.onSubmit) return;
+      form.setFieldMeta(fieldKey, (prev) =>
+        createInitialFieldMeta(prev, {
           errorMap: { ...prev?.errorMap, onSubmit: undefined },
         })
       );
@@ -280,105 +268,92 @@ export function useWizardForm<TValues extends Record<string, unknown>>({
     [form]
   );
 
+  const clearAllSubmitErrors = useCallback(() => {
+    const metaKeys = Object.keys(form.state.fieldMeta) as DeepKeys<TValues>[];
+    for (const key of metaKeys) {
+      clearSubmitErrorOnField(key);
+    }
+  }, [form, clearSubmitErrorOnField]);
+
+  const applyStepErrors = useCallback(
+    (fieldErrors: Partial<Record<Extract<keyof TValues, string>, string>>) => {
+      const activeErrorKeys = new Set(Object.keys(fieldErrors));
+      const existingKeys = Object.keys(form.state.fieldMeta) as DeepKeys<TValues>[];
+
+      for (const key of existingKeys) {
+        if (!activeErrorKeys.has(String(key))) {
+          clearSubmitErrorOnField(key);
+        }
+      }
+
+      for (const [key, message] of Object.entries(fieldErrors)) {
+        if (!message) continue;
+        const fieldKey = key as DeepKeys<TValues>;
+        form.setFieldMeta(fieldKey, (prev) =>
+          createInitialFieldMeta(prev, {
+            errorMap: { ...prev?.errorMap, onSubmit: message },
+            errorSourceMap: { ...prev?.errorSourceMap, onSubmit: "form" },
+          })
+        );
+      }
+    },
+    [form, clearSubmitErrorOnField]
+  );
+
+  const clearFieldError = useCallback(
+    (fieldName: string) => {
+      clearSubmitErrorOnField(fieldName as DeepKeys<TValues>);
+    },
+    [clearSubmitErrorOnField]
+  );
+
   const setFieldValue = useCallback(
     <TField extends keyof TValues>(field: TField, value: TValues[TField]) => {
-      form.baseStore.setState((prev) => {
-        const currentValues = prev.values;
-        const nextValues = onFieldChangeSideEffects
-          ? onFieldChangeSideEffects(currentValues, field, value)
-          : { ...currentValues, [field]: value };
+      if (onFieldChangeSideEffects) {
+        const nextValues = onFieldChangeSideEffects(form.state.values, field, value);
+        for (const key of Object.keys(nextValues) as (keyof TValues & string)[]) {
+          if (key === field || !Object.is(nextValues[key], form.state.values[key])) {
+            const fieldKey = key as DeepKeys<TValues>;
+            form.setFieldValue(fieldKey, nextValues[key] as DeepValue<TValues, DeepKeys<TValues>>);
+            clearSubmitErrorOnField(fieldKey);
+          }
+        }
+        return;
+      }
 
-        const fieldKey = String(field);
-        const existingMeta = prev.fieldMetaBase[fieldKey as never] as
-          | AnyFieldLikeMetaBase
-          | undefined;
-
-        const nextFieldMetaBase: Record<string, AnyFieldLikeMetaBase | undefined> = {
-          ...prev.fieldMetaBase,
-          [fieldKey]: createFieldMetaBase(existingMeta, {
-            isTouched: true,
-            isDirty: true,
-            errorMap: { ...existingMeta?.errorMap, onSubmit: undefined },
-          }),
-        };
-
-        return {
-          ...prev,
-          values: nextValues,
-          fieldMetaBase: nextFieldMetaBase as typeof prev.fieldMetaBase,
-        };
-      });
+      const fieldKey = String(field) as DeepKeys<TValues>;
+      form.setFieldValue(fieldKey, value as DeepValue<TValues, DeepKeys<TValues>>);
+      clearSubmitErrorOnField(fieldKey);
     },
-    [form, onFieldChangeSideEffects]
+    [form, onFieldChangeSideEffects, clearSubmitErrorOnField]
   );
 
   const setMultipleFields = useCallback(
     (patch: Partial<TValues>) => {
-      form.baseStore.setState((prev) => {
-        const nextValues = { ...prev.values, ...patch };
-        const nextFieldMetaBase: Record<string, AnyFieldLikeMetaBase | undefined> = {
-          ...prev.fieldMetaBase,
-        };
-
-        for (const key of Object.keys(patch)) {
-          const existingMeta = nextFieldMetaBase[key];
-          nextFieldMetaBase[key] = createFieldMetaBase(existingMeta, {
-            isTouched: true,
-            isDirty: true,
-            errorMap: { ...existingMeta?.errorMap, onSubmit: undefined },
-          });
-        }
-
-        return {
-          ...prev,
-          values: nextValues,
-          fieldMetaBase: nextFieldMetaBase as typeof prev.fieldMetaBase,
-        };
-      });
+      for (const [key, value] of Object.entries(patch)) {
+        if (value === undefined) continue;
+        const fieldKey = key as DeepKeys<TValues>;
+        form.setFieldValue(fieldKey, value as DeepValue<TValues, DeepKeys<TValues>>);
+        clearSubmitErrorOnField(fieldKey);
+      }
     },
-    [form]
+    [form, clearSubmitErrorOnField]
   );
 
   const validateStep = useCallback(
     (step: WizardStepNumber): boolean => {
       const schema = stepSchemas[step];
-      const currentValues = form.state.values;
-      const result = schema.safeParse(currentValues);
-      if (result.success) {
-        applyFieldErrors({});
+      const fieldErrors = createZodStepValidatorErrors(schema, form.state.values);
+      if (Object.keys(fieldErrors).length === 0) {
+        clearAllSubmitErrors();
         return true;
       }
 
-      applyFieldErrors(extractFirstIssuePerField(result.error.issues));
+      applyStepErrors(fieldErrors);
       return false;
     },
-    [stepSchemas, form, applyFieldErrors]
+    [stepSchemas, form, clearAllSubmitErrors, applyStepErrors]
   );
-
-  const validateAll = useCallback((): { success: true; data: TValues } | { success: false } => {
-    const currentValues = form.state.values;
-    const result = fullSchema.safeParse(currentValues);
-    if (result.success) {
-      applyFieldErrors({});
-      return { success: true, data: result.data };
-    }
-
-    const fieldErrors = extractFirstIssuePerField(result.error.issues);
-    applyFieldErrors(fieldErrors);
-
-    if (resolveFieldStep) {
-      let firstFailedStep: WizardStepNumber = 3;
-      for (const key of Object.keys(fieldErrors)) {
-        const step = resolveFieldStep(key);
-        if (step < firstFailedStep) {
-          firstFailedStep = step;
-        }
-      }
-      setCurrentStep(firstFailedStep);
-    }
-
-    return { success: false };
-  }, [fullSchema, form, applyFieldErrors, resolveFieldStep]);
 
   const nextStep = useCallback(() => {
     const isValid = validateStep(currentStep);
@@ -386,24 +361,28 @@ export function useWizardForm<TValues extends Record<string, unknown>>({
 
     if (currentStep < 3) {
       setCurrentStep((s) => (s + 1) as WizardStepNumber);
-      applyFieldErrors({});
+      clearAllSubmitErrors();
       return true;
     }
     return true;
-  }, [currentStep, validateStep, applyFieldErrors]);
+  }, [currentStep, validateStep, clearAllSubmitErrors]);
 
   const prevStep = useCallback(() => {
-    applyFieldErrors({});
+    clearAllSubmitErrors();
     setCurrentStep((s) => (s > 1 ? ((s - 1) as WizardStepNumber) : s));
-  }, [applyFieldErrors]);
+  }, [clearAllSubmitErrors]);
 
   const goToStep = useCallback(
     (step: WizardStepNumber) => {
-      applyFieldErrors({});
+      clearAllSubmitErrors();
       setCurrentStep(step);
     },
-    [applyFieldErrors]
+    [clearAllSubmitErrors]
   );
+
+  const submitForm = useCallback(async () => {
+    await form.handleSubmit();
+  }, [form]);
 
   const resetWizardState = useCallback(
     (customValues?: TValues) => {
@@ -419,14 +398,15 @@ export function useWizardForm<TValues extends Record<string, unknown>>({
     setIsOpen,
     currentStep,
     setCurrentStep,
+    isSubmitting,
     clearFieldError,
     setFieldValue,
     setMultipleFields,
     validateStep,
-    validateAll,
     nextStep,
     prevStep,
     goToStep,
+    submitForm,
     resetWizardState,
   };
 }

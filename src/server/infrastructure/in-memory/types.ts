@@ -31,7 +31,7 @@ export interface BreedRecord {
 }
 
 export interface CustomerRecord {
-  id: number;
+  id: string;
   customerCode: string;
   customerType: CustomerType;
   prefix: string;
@@ -47,16 +47,16 @@ export interface CustomerRecord {
 }
 
 export interface CustomerContactRecord {
-  id: number;
-  customerId: number;
+  id: string;
+  customerId: string;
   contactType: "PHONE" | "EMAIL" | "LINE";
   contactValue: string;
   isPrimary: boolean;
 }
 
 export interface CustomerAddressRecord {
-  id: number;
-  customerId: number;
+  id: string;
+  customerId: string;
   addressType: "RESIDENTIAL" | "BILLING" | "SHIPPING";
   addressLine: string;
   subdistrict: string;
@@ -68,8 +68,8 @@ export interface CustomerAddressRecord {
 }
 
 export interface CustomerPreferenceRecord {
-  id: number;
-  customerId: number;
+  id: string;
+  customerId: string;
   referralSource: string;
   preferredChannel: PreferredChannel;
   preferredTime: string;
@@ -81,7 +81,7 @@ export interface CustomerPreferenceRecord {
 }
 
 export interface PetRecord {
-  id: number;
+  id: string;
   petCode: string;
   petName: string;
   speciesId: number;
@@ -106,9 +106,9 @@ export interface PetRecord {
 }
 
 export interface PetOwnershipRecord {
-  id: number;
-  petId: number;
-  customerId: number;
+  id: string;
+  petId: string;
+  customerId: string;
   ownershipType: "PRIMARY" | "CO_OWNER";
   isPrimary: boolean;
   startDate: string;

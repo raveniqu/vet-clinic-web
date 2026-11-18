@@ -4,7 +4,7 @@ import type { PetDto } from "#/shared/schemas/pet.schema";
 export class GetPetsByOwnerUseCase {
   constructor(private readonly petRepository: IPetRepository) {}
 
-  async execute(ownerId: number): Promise<PetDto[]> {
+  async execute(ownerId: string): Promise<PetDto[]> {
     return this.petRepository.getByOwnerId(ownerId);
   }
 }

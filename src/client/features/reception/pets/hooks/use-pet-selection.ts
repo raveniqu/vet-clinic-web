@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useMemo } from "react";
 import { speciesQueryOptions } from "#/client/caches/pets/queries/pets.query";
-import { usePetsDashboardContext } from "../contexts/pets-dashboard-provider";
+import { usePetsSearch } from "./use-pets-search";
 
 export function usePetSelection() {
-  const { selectedSpeciesId, setSelectedSpeciesId } = usePetsDashboardContext();
+  const { selectedSpeciesId, setSelectedSpeciesId } = usePetsSearch();
   const { data: speciesList = [] } = useQuery(speciesQueryOptions());
 
   const selectItems = useMemo(

@@ -130,6 +130,3 @@ export function RecentVisits() {
     </AppCard>
   );
 }
-
-// Backwards compatibility alias
-export const NextAppointment = RecentVisits;

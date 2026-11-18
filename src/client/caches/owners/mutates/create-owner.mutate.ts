@@ -18,9 +18,9 @@ export function useCreateOwnerMutation() {
       },
       errorToast: "Failed to register new owner. Please check the details and try again.",
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       queryClient.setQueryData(ownerKeys.detail(data.id), data);
-      void queryClient.invalidateQueries({ queryKey: ownerKeys.lists() });
+      await queryClient.invalidateQueries({ queryKey: ownerKeys.lists() });
     },
   });
 }

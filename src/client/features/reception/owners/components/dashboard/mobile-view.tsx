@@ -1,26 +1,13 @@
-import {
-  Building2,
-  Check,
-  Copy,
-  Eye,
-  PawPrint,
-  Pencil,
-  Phone,
-  ShieldAlert,
-  ShieldCheck,
-  UsersRound,
-  X,
-} from "lucide-react";
-
+import { Building2, Check, Copy, Eye, PawPrint, Pencil, Phone, UsersRound } from "lucide-react";
+import { OwnerRowProvider } from "#/client/features/reception/owners/contexts/owner-row.context";
 import { useOwnersMobile } from "#/client/features/reception/owners/hooks/use-owners-mobile";
 import {
   formatFullAddress,
   formatPreferredChannelDetail,
   getOwnerDisplayName,
   getOwnerInitials,
-  getPdpaConsentSummary,
 } from "#/client/features/reception/owners/models/owners-table";
-import { SuccessBadge, WarningBadge } from "#/client/shared/components/app-badge";
+import { AppButtonLink } from "#/client/shared/components/app-link";
 import { AppSpeciesIcon } from "#/client/shared/components/app-species-icon";
 import { formatPhoneNumber, formatTaxId } from "#/client/shared/helpers/formatters";
 import { Avatar, AvatarFallback } from "#/client/shared/shadcn/components/ui/avatar";
@@ -58,6 +45,7 @@ import {
   PopoverTrigger,
 } from "#/client/shared/shadcn/components/ui/popover";
 import { Separator } from "#/client/shared/shadcn/components/ui/separator";
+import { OwnerPdpaPopover } from "./owner-pdpa-popover";
 
 export function MobileView() {
   const {
@@ -73,10 +61,7 @@ export function MobileView() {
     speciesCodeById,
     copyPhone,
     isPhoneCopied,
-    openPdpaPopoverOwnerId,
-    onPdpaPopoverOpenChange,
-    openEditConsent,
-    setEditingOwner,
+    openEditDialog,
   } = useOwnersMobile();
 
   if (mobileOwners.length === 0) {
@@ -113,7 +98,6 @@ export function MobileView() {
       {mobileOwners.map((owner) => {
         const displayName = getOwnerDisplayName(owner);
         const pets = petsByOwnerId.get(owner.id) ?? [];
-        const pdpa = getPdpaConsentSummary(owner);
         const phoneCopied = isPhoneCopied(owner.id);
 
         return (
@@ -249,90 +233,30 @@ export function MobileView() {
             </CardContent>
 
             <CardFooter className="flex-wrap gap-2 px-4 pt-1">
-              <Popover
-                open={openPdpaPopoverOwnerId === owner.id}
-                onOpenChange={(open) => onPdpaPopoverOpenChange(owner.id, open)}
-              >
-                <PopoverTrigger
-                  render={
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      className="min-h-11 rounded-full px-1 hover:bg-transparent"
-                      aria-label={`Inspect PDPA consent details for ${displayName}`}
-                    />
-                  }
-                >
-                  {pdpa.isFullConsent ? (
-                    <SuccessBadge>
-                      <ShieldCheck data-icon="inline-start" aria-hidden="true" />
-                      <span>{pdpa.badgeLabel}</span>
-                    </SuccessBadge>
-                  ) : (
-                    <WarningBadge>
-                      <ShieldAlert data-icon="inline-start" aria-hidden="true" />
-                      <span>{pdpa.badgeLabel}</span>
-                    </WarningBadge>
-                  )}
-                </PopoverTrigger>
-                <PopoverContent align="start" className="w-72 gap-3">
-                  <PopoverHeader>
-                    <PopoverTitle className="text-sm">PDPA Consent Status</PopoverTitle>
-                    <PopoverDescription className="text-xs">
-                      {pdpa.grantedCount} of {pdpa.totalCount} permissions granted
-                    </PopoverDescription>
-                  </PopoverHeader>
-                  <Separator />
-                  <ul className="flex flex-col gap-2 text-xs">
-                    {pdpa.items.map((item) => (
-                      <li key={item.key} className="flex items-center justify-between gap-2">
-                        <span className="flex items-center gap-2 text-foreground">
-                          {item.granted ? (
-                            <Check className="size-3.5 text-primary" aria-hidden="true" />
-                          ) : (
-                            <X className="size-3.5 text-muted-foreground" aria-hidden="true" />
-                          )}
-                          <span>{item.label}</span>
-                        </span>
-                        <span
-                          className={
-                            item.granted ? "font-medium text-foreground" : "text-muted-foreground"
-                          }
-                        >
-                          {item.granted ? "Granted" : "Declined"}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Separator />
-                  <Button
-                    type="button"
-                    size="default"
-                    variant="outline"
-                    className="min-h-11 w-full"
-                    onClick={() => openEditConsent(owner)}
-                  >
-                    <Pencil data-icon="inline-start" aria-hidden="true" />
-                    <span>Edit Consent</span>
-                  </Button>
-                </PopoverContent>
-              </Popover>
+              <OwnerRowProvider owner={owner}>
+                <OwnerPdpaPopover />
+              </OwnerRowProvider>
 
               <div className="ml-auto flex items-center gap-2">
                 <Button
                   type="button"
-                  size="default"
+                  size="xs"
                   variant="outline"
-                  className="min-h-11"
-                  onClick={() => setEditingOwner(owner)}
+                  onClick={() => openEditDialog(owner)}
                 >
                   <Pencil data-icon="inline-start" aria-hidden="true" />
                   <span>Edit</span>
                 </Button>
-                <Button type="button" size="default" variant="secondary" className="min-h-11">
+                <AppButtonLink
+                  to="/owners/$ownerId"
+                  params={{ ownerId: owner.id }}
+                  type="button"
+                  size="xs"
+                  variant="link"
+                >
                   <Eye data-icon="inline-start" aria-hidden="true" />
                   <span>View Profile</span>
-                </Button>
+                </AppButtonLink>
               </div>
             </CardFooter>
           </Card>

@@ -1,4 +1,13 @@
-import { Calendar, CircleUserRound, PawPrint, PhoneCall, Plus, Receipt, Undo2 } from "lucide-react";
+import {
+  Calendar,
+  CircleUserRound,
+  Edit,
+  PawPrint,
+  PhoneCall,
+  Plus,
+  Receipt,
+  Undo2,
+} from "lucide-react";
 import {
   AppDashboardActions,
   AppDashboardContent,
@@ -45,7 +54,7 @@ export function OwnerDetailsScreen() {
         </AppButtonLink>
       ) : null}
       <AppDashboardHeader>
-        <AppDashboardTitle className="flex flex-wrap gap-2">
+        <AppDashboardTitle className="flex flex-wrap items-center gap-2">
           <span>{displayName}</span>
           <InfoBadge className="flex gap-2 p-2 text-xs md:p-3 md:text-sm lg:p-4 lg:text-base">
             <PhoneCall />
@@ -56,6 +65,10 @@ export function OwnerDetailsScreen() {
         </AppDashboardTitle>
         <AppDashboardDescription className="flex items-center gap-2"></AppDashboardDescription>
         <AppDashboardActions>
+          <Button size={isMobile ? "icon-sm" : "sm"} variant="outline">
+            <Edit />
+            <span className="sr-only md:not-sr-only">Edit Owner</span>
+          </Button>
           <Button size={isMobile ? "icon-sm" : "sm"}>
             <Plus />
             <span className="sr-only md:not-sr-only">Add New Pet</span>
@@ -66,7 +79,7 @@ export function OwnerDetailsScreen() {
         <Tabs className="col-span-full">
           <TabsList
             variant="line"
-            className="w-full **:after:bg-primary **:aria-selected:text-primary md:w-fit"
+            className="w-full overflow-x-auto **:after:bg-primary **:aria-selected:text-primary md:w-fit"
           >
             <TabsTrigger value="general-info">
               <CircleUserRound />

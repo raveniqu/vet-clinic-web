@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { PAGE_SIZE_OPTIONS } from "#/shared/schemas/pagination.schema";
 
 export const petSexEnum = z.enum(["Male", "Female", "Unknown"]);
 export type PetSex = z.infer<typeof petSexEnum>;
@@ -22,7 +23,7 @@ export type TemperamentAlert = z.infer<typeof temperamentAlertEnum>;
 
 // Step 1: Owner Link & Pet Identity
 export const step1PetIdentitySchema = z.object({
-  ownerId: z.number().int().positive("Please select an owner for this pet"),
+  ownerId: z.uuid("Please select an owner for this pet"),
   petName: z.string().trim().min(1, "Pet name is required"),
   speciesId: z.number().int().positive("Please select a species"),
   breedId: z.number().int().positive("Please select a breed"),
@@ -83,7 +84,7 @@ export type CreatePetInput = z.infer<typeof createPetInputSchema>;
 
 // Pet DTO Schema (output / stored shape)
 export const petDtoSchema = createPetInputSchema.extend({
-  id: z.number().int().positive(),
+  id: z.uuid(),
   petCode: z.string(),
   speciesName: z.string(),
   breedName: z.string(),
@@ -115,12 +116,12 @@ export type BreedItem = z.infer<typeof breedItemSchema>;
 
 // Input Query Schemas
 export const getPetByIdSchema = z.object({
-  id: z.number().int().positive(),
+  id: z.uuid(),
 });
 export type GetPetByIdInput = z.infer<typeof getPetByIdSchema>;
 
 export const getPetsByOwnerSchema = z.object({
-  ownerId: z.number().int().positive(),
+  ownerId: z.uuid(),
 });
 export type GetPetsByOwnerInput = z.infer<typeof getPetsByOwnerSchema>;
 
@@ -131,6 +132,44 @@ export type GetBreedsBySpeciesInput = z.infer<typeof getBreedsBySpeciesSchema>;
 
 // Update Pet Input Schema
 export const updatePetInputSchema = createPetInputSchema.extend({
-  id: z.number().int().positive(),
+  id: z.uuid(),
 });
 export type UpdatePetInput = z.infer<typeof updatePetInputSchema>;
+
+export const petQuickFilterKeySchema = z.enum([
+  "hasAllergies",
+  "alertTemperament",
+  "intact",
+  "missingMicrochip",
+]);
+
+export type PetQuickFilterKey = z.infer<typeof petQuickFilterKeySchema>;
+
+export const petTabSchema = z.enum(["list", "grid"]);
+
+export type PetTabValue = z.infer<typeof petTabSchema>;
+
+const petPageSizeSchema = z.coerce
+  .number()
+  .int()
+  .refine((value) => (PAGE_SIZE_OPTIONS as readonly number[]).includes(value));
+
+export const petsSearchSchema = z.object({
+  openAddNewForm: z.boolean().optional().catch(undefined),
+  editPetId: z.uuid().optional().catch(undefined),
+  search: z.string().optional().catch(undefined),
+  speciesId: z.coerce.number().int().min(0).optional().catch(undefined),
+  quickFilters: z
+    .array(z.unknown())
+    .transform((items) =>
+      items.filter(
+        (item): item is PetQuickFilterKey => petQuickFilterKeySchema.safeParse(item).success
+      )
+    )
+    .optional()
+    .catch(undefined),
+  tab: petTabSchema.optional().catch(undefined),
+  page: z.coerce.number().int().min(1).optional().catch(undefined),
+  pageSize: petPageSizeSchema.optional().catch(undefined),
+});
+export type PetsSearch = z.infer<typeof petsSearchSchema>;

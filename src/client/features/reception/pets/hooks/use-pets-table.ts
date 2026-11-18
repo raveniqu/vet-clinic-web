@@ -1,45 +1,133 @@
+import type { OnChangeFn, PaginationState } from "@tanstack/react-table";
+import { functionalUpdate, useTable } from "@tanstack/react-table";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { speciesQueryOptions } from "#/client/caches/pets/queries/pets.query";
+import {
+  createAppColumnHelper,
+  dataTableFeatures,
+} from "#/client/shared/components/app-data-table";
 import { useClipboardCopy } from "#/client/shared/hooks/use-clipboard-copy";
-import { useDataTable } from "#/client/shared/hooks/use-data-table";
-import { usePetsDashboardContext } from "../contexts/pets-dashboard-provider";
-import { TABLE_PAGE_SIZE_ITEMS } from "../models/pets-table";
+import type { PetDto } from "#/shared/schemas/pet.schema";
+import { usePetsContext } from "../contexts/pets.context";
+import { usePetsList } from "./use-pets-list";
+import { usePetsSearch } from "./use-pets-search";
 
-export function usePetsTable(pageSize = 10) {
-  const {
-    allPets,
-    filteredPets,
-    hasActiveFilter,
-    clearFilters,
-    filterResetKey,
-    visibleColumns,
-    setEditingPet,
-  } = usePetsDashboardContext();
+const columnHelper = createAppColumnHelper<PetDto>();
 
+export const petTableColumns = columnHelper.columns([
+  columnHelper.accessor("petName", {
+    id: "pet",
+    header: "Pet",
+    enableSorting: false,
+    meta: {
+      headClassName: "min-w-52",
+    },
+  }),
+  columnHelper.accessor("speciesName", {
+    id: "speciesBreed",
+    header: "Species / Breed",
+    enableSorting: false,
+    meta: {
+      headClassName: "min-w-44",
+    },
+  }),
+  columnHelper.accessor("dateOfBirth", {
+    id: "age",
+    header: "Age",
+    enableSorting: false,
+    meta: {
+      cellClassName: "text-foreground",
+    },
+  }),
+  columnHelper.accessor("weight", {
+    id: "weight",
+    header: "Weight",
+    enableSorting: false,
+    meta: {
+      headClassName: "text-right",
+      cellClassName: "text-right font-medium text-foreground",
+    },
+  }),
+  columnHelper.accessor("allergies", {
+    id: "allergies",
+    header: "Allergies",
+    enableSorting: false,
+    meta: {
+      headClassName: "min-w-44",
+    },
+  }),
+  columnHelper.accessor("ownerName", {
+    id: "owner",
+    header: "Owner",
+    enableSorting: false,
+    meta: {
+      headClassName: "min-w-40",
+    },
+  }),
+  columnHelper.accessor("sex", {
+    id: "sexReproductive",
+    header: "Sex / Neutered",
+    enableSorting: false,
+  }),
+  columnHelper.accessor("temperament", {
+    id: "temperament",
+    header: "Temperament",
+    enableSorting: false,
+  }),
+  columnHelper.accessor("microchipNumber", {
+    id: "microchip",
+    header: "Microchip",
+    enableSorting: false,
+    meta: {
+      headClassName: "min-w-44",
+    },
+  }),
+  columnHelper.accessor("color", {
+    id: "color",
+    header: "Color",
+    enableSorting: false,
+  }),
+  columnHelper.accessor("medicalNotes", {
+    id: "medicalNotes",
+    header: "Medical Notes",
+    enableSorting: false,
+    meta: {
+      headClassName: "min-w-48",
+    },
+  }),
+  columnHelper.accessor("status", {
+    id: "status",
+    header: "Status",
+    enableSorting: false,
+  }),
+  columnHelper.accessor("createdAt", {
+    id: "createdAt",
+    header: "Registered",
+    enableSorting: false,
+    meta: {
+      cellClassName: "text-xs text-muted-foreground",
+    },
+  }),
+  columnHelper.display({
+    id: "actions",
+    header: "Actions",
+    enableSorting: false,
+    meta: {
+      headClassName: "sticky right-0 z-10 w-0 p-0 pointer-coarse:w-auto pointer-coarse:px-3",
+      cellClassName:
+        "sticky right-0 z-10 w-0 p-0 text-right align-middle pointer-coarse:w-auto pointer-coarse:px-3",
+      headerSrOnly: true,
+    },
+  }),
+]);
+
+export function usePetsTable() {
+  const { filteredPets, isLoading } = usePetsList();
+  const { page, pageSize, setPage, setPageSize } = usePetsSearch();
+  const { columnVisibility } = usePetsContext();
   const { data: speciesList = [] } = useQuery(speciesQueryOptions());
-
-  const {
-    paginatedItems: paginatedPets,
-    pagination,
-    pageSizeItems,
-    onPageSizeChange,
-    totalCount,
-    isEmptyDataset,
-    hasColumn,
-    visibleColSpan,
-  } = useDataTable({
-    allItems: allPets,
-    filteredItems: filteredPets,
-    visibleColumns,
-    hasActiveFilter,
-    clearFilters,
-    filterResetKey,
-    initialPageSize: pageSize,
-    pageSizeItems: TABLE_PAGE_SIZE_ITEMS,
-  });
-
-  const { copiedKey: copiedMicrochipPetId, copyValue: copyMicrochip } = useClipboardCopy<number>();
+  const { copiedKey: copiedMicrochipPetId, copyValue: copyMicrochip } = useClipboardCopy<string>();
 
   const speciesCodeById = useMemo(() => {
     const map = new Map<number, string>();
@@ -49,20 +137,54 @@ export function usePetsTable(pageSize = 10) {
     return map;
   }, [speciesList]);
 
+  const pageCount = Math.max(1, Math.ceil(filteredPets.length / pageSize));
+  const safePageIndex = isLoading
+    ? Math.max(0, page - 1)
+    : Math.min(Math.max(0, page - 1), pageCount - 1);
+
+  const pagination = useMemo<PaginationState>(
+    () => ({
+      pageIndex: safePageIndex,
+      pageSize,
+    }),
+    [safePageIndex, pageSize]
+  );
+
+  const handlePaginationChange = useCallback<OnChangeFn<PaginationState>>(
+    (updater) => {
+      const next = functionalUpdate(updater, pagination);
+      if (next.pageSize !== pageSize) {
+        setPageSize(next.pageSize);
+        return;
+      }
+
+      const nextPage = next.pageIndex + 1;
+      if (nextPage !== page) {
+        setPage(nextPage);
+      }
+    },
+    [pagination, pageSize, page, setPageSize, setPage]
+  );
+
+  const table = useTable({
+    features: dataTableFeatures,
+    data: filteredPets,
+    columns: petTableColumns,
+    enableSorting: false,
+    autoResetPageIndex: false,
+    getRowId: (row) => row.id,
+    state: {
+      pagination,
+      columnVisibility,
+    },
+    onPaginationChange: handlePaginationChange,
+  });
+
   return {
-    paginatedPets,
-    totalCount,
-    isEmptyDataset,
-    hasActiveFilter,
-    clearFilters,
-    pagination,
-    pageSizeItems,
-    onPageSizeChange,
-    hasColumn,
-    visibleColSpan,
+    table,
+    isLoading,
     speciesCodeById,
     copiedMicrochipPetId,
     copyMicrochip,
-    setEditingPet,
   };
 }

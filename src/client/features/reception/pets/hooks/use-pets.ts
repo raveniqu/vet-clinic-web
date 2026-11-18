@@ -1,54 +1,17 @@
+import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { usePetsDashboardContext } from "../contexts/pets-dashboard-provider";
+import { petsListQueryOptions } from "#/client/caches/pets/queries/pets.query";
+import { computePetsMetrics } from "../models/pets-table";
 
 export function usePets() {
-  const {
-    allPets,
-    filteredPets,
-    isLoading,
-    isError,
-    error,
-    hasActiveFilter,
-    clearFilters,
-    editingPet,
-    setEditingPet,
-  } = usePetsDashboardContext();
+  const { data: allPets = [], isLoading, isError, error } = useQuery(petsListQueryOptions());
 
-  const metrics = useMemo(() => {
-    let totalDogs = 0;
-    let totalCats = 0;
-    let totalAllergies = 0;
-
-    for (const pet of allPets) {
-      if (pet.speciesName === "Dog") {
-        totalDogs += 1;
-      } else if (pet.speciesName === "Cat") {
-        totalCats += 1;
-      }
-
-      if (pet.allergies && pet.allergies.trim() !== "") {
-        totalAllergies += 1;
-      }
-    }
-
-    return {
-      totalPets: allPets.length,
-      totalDogs,
-      totalCats,
-      totalAllergies,
-    };
-  }, [allPets]);
+  const metrics = useMemo(() => computePetsMetrics(allPets), [allPets]);
 
   return {
-    allPets,
-    filteredPets,
     isLoading,
     isError,
     error,
-    hasActiveFilter,
-    clearFilters,
-    editingPet,
-    setEditingPet,
     ...metrics,
   };
 }

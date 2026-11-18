@@ -87,7 +87,7 @@ erDiagram
     pets ||--o{ pet_documents : has
 
     customers {
-        bigint customer_id PK
+        uuid customer_id PK
         varchar customer_code
         varchar customer_type
         varchar first_name
@@ -100,8 +100,8 @@ erDiagram
     }
 
     customer_contacts {
-        bigint contact_id PK
-        bigint customer_id FK
+        uuid contact_id PK
+        uuid customer_id FK
         varchar contact_type
         varchar contact_value
         boolean is_primary
@@ -109,8 +109,8 @@ erDiagram
     }
 
     customer_addresses {
-        bigint address_id PK
-        bigint customer_id FK
+        uuid address_id PK
+        uuid customer_id FK
         varchar address_type
         varchar address_line
         varchar province
@@ -119,22 +119,22 @@ erDiagram
     }
 
     customer_preferences {
-        bigint preference_id PK
-        bigint customer_id FK
+        uuid preference_id PK
+        uuid customer_id FK
         varchar preference_type
         text preference_value
     }
 
     customer_documents {
-        bigint document_id PK
-        bigint customer_id FK
+        uuid document_id PK
+        uuid customer_id FK
         varchar document_type
         varchar file_reference
     }
 
     customer_consents {
-        bigint consent_id PK
-        bigint customer_id FK
+        uuid consent_id PK
+        uuid customer_id FK
         varchar consent_type
         boolean consent_granted
         datetime consented_at
@@ -142,11 +142,11 @@ erDiagram
     }
 
     pets {
-        bigint pet_id PK
+        uuid pet_id PK
         varchar pet_code
         varchar pet_name
-        bigint species_id FK
-        bigint breed_id FK
+        uuid species_id FK
+        uuid breed_id FK
         varchar sex
         date date_of_birth
         varchar color
@@ -155,20 +155,20 @@ erDiagram
     }
 
     species {
-        bigint species_id PK
+        uuid species_id PK
         varchar species_name
     }
 
     breeds {
-        bigint breed_id PK
-        bigint species_id FK
+        uuid breed_id PK
+        uuid species_id FK
         varchar breed_name
     }
 
     pet_ownerships {
-        bigint ownership_id PK
-        bigint pet_id FK
-        bigint customer_id FK
+        uuid ownership_id PK
+        uuid pet_id FK
+        uuid customer_id FK
         varchar ownership_type
         boolean is_primary
         date start_date
@@ -176,37 +176,37 @@ erDiagram
     }
 
     pet_caregivers {
-        bigint caregiver_id PK
-        bigint pet_id FK
-        bigint customer_id FK
+        uuid caregiver_id PK
+        uuid pet_id FK
+        uuid customer_id FK
         varchar relationship
         date start_date
         date end_date
     }
 
     pet_identifications {
-        bigint identification_id PK
-        bigint pet_id FK
+        uuid identification_id PK
+        uuid pet_id FK
         varchar identification_type
         varchar identification_number
     }
 
     pet_weights {
-        bigint weight_id PK
-        bigint pet_id FK
+        uuid weight_id PK
+        uuid pet_id FK
         decimal weight_value
         datetime measured_at
     }
 
     pet_photos {
-        bigint photo_id PK
-        bigint pet_id FK
+        uuid photo_id PK
+        uuid pet_id FK
         varchar file_reference
     }
 
     pet_documents {
-        bigint document_id PK
-        bigint pet_id FK
+        uuid document_id PK
+        uuid pet_id FK
         varchar document_type
         varchar file_reference
     }
@@ -256,11 +256,11 @@ erDiagram
     appointments ||--o{ resource_reservations : reserves
 
     appointments {
-        bigint appointment_id PK
-        bigint customer_id FK
-        bigint pet_id FK
-        bigint appointment_type_id FK
-        bigint branch_id FK
+        uuid appointment_id PK
+        uuid customer_id FK
+        uuid pet_id FK
+        uuid appointment_type_id FK
+        uuid branch_id FK
         datetime scheduled_start
         datetime scheduled_end
         varchar status
@@ -268,129 +268,129 @@ erDiagram
     }
 
     appointment_confirmations {
-        bigint confirmation_id PK
-        bigint appointment_id FK
+        uuid confirmation_id PK
+        uuid appointment_id FK
         datetime confirmed_at
         varchar confirmation_channel
         varchar status
     }
 
     appointment_modifications {
-        bigint modification_id PK
-        bigint appointment_id FK
+        uuid modification_id PK
+        uuid appointment_id FK
         datetime old_start
         datetime new_start
         text reason
     }
 
     appointment_cancellations {
-        bigint cancellation_id PK
-        bigint appointment_id FK
+        uuid cancellation_id PK
+        uuid appointment_id FK
         text cancellation_reason
         datetime cancelled_at
     }
 
     appointment_reminders {
-        bigint reminder_id PK
-        bigint appointment_id FK
+        uuid reminder_id PK
+        uuid appointment_id FK
         datetime scheduled_at
         varchar channel
         varchar status
     }
 
     service_registrations {
-        bigint registration_id PK
-        bigint appointment_id FK
-        bigint pet_id FK
-        bigint customer_id FK
+        uuid registration_id PK
+        uuid appointment_id FK
+        uuid pet_id FK
+        uuid customer_id FK
         varchar registration_type
         datetime registered_at
         varchar status
     }
 
     check_ins {
-        bigint check_in_id PK
-        bigint registration_id FK
+        uuid check_in_id PK
+        uuid registration_id FK
         datetime checked_in_at
         varchar status
     }
 
     queues {
-        bigint queue_id PK
-        bigint branch_id FK
+        uuid queue_id PK
+        uuid branch_id FK
         date queue_date
         varchar queue_type
         varchar status
     }
 
     queue_tickets {
-        bigint queue_ticket_id PK
-        bigint queue_id FK
-        bigint registration_id FK
-        bigint pet_id FK
+        uuid queue_ticket_id PK
+        uuid queue_id FK
+        uuid registration_id FK
+        uuid pet_id FK
         varchar ticket_number
         int priority
         varchar status
     }
 
     queue_calls {
-        bigint queue_call_id PK
-        bigint queue_ticket_id FK
+        uuid queue_call_id PK
+        uuid queue_ticket_id FK
         datetime called_at
-        bigint employee_id FK
+        uuid employee_id FK
     }
 
     queue_status_histories {
-        bigint history_id PK
-        bigint queue_ticket_id FK
+        uuid history_id PK
+        uuid queue_ticket_id FK
         varchar old_status
         varchar new_status
         datetime changed_at
     }
 
     queue_assignments {
-        bigint assignment_id PK
-        bigint queue_ticket_id FK
-        bigint employee_id FK
-        bigint room_id FK
+        uuid assignment_id PK
+        uuid queue_ticket_id FK
+        uuid employee_id FK
+        uuid room_id FK
     }
 
     triage_assessments {
-        bigint triage_id PK
-        bigint pet_id FK
-        bigint registration_id FK
+        uuid triage_id PK
+        uuid pet_id FK
+        uuid registration_id FK
         bigint assessed_by FK
         varchar urgency_level
         datetime assessed_at
     }
 
     triage_observations {
-        bigint observation_id PK
-        bigint triage_id FK
+        uuid observation_id PK
+        uuid triage_id FK
         varchar observation_type
         text observation_value
     }
 
     rooms {
-        bigint room_id PK
-        bigint branch_id FK
+        uuid room_id PK
+        uuid branch_id FK
         varchar room_name
         varchar room_type
         varchar status
     }
 
     room_schedules {
-        bigint room_schedule_id PK
-        bigint room_id FK
+        uuid room_schedule_id PK
+        uuid room_id FK
         datetime start_at
         datetime end_at
     }
 
     resource_reservations {
-        bigint reservation_id PK
-        bigint appointment_id FK
+        uuid reservation_id PK
+        uuid appointment_id FK
         varchar resource_type
-        bigint resource_id
+        uuid resource_id
         datetime start_at
         datetime end_at
     }
@@ -441,20 +441,20 @@ erDiagram
     pets ||--o{ pet_vaccinations : receives
 
     clinical_encounters {
-        bigint encounter_id PK
-        bigint pet_id FK
-        bigint registration_id FK
-        bigint branch_id FK
+        uuid encounter_id PK
+        uuid pet_id FK
+        uuid registration_id FK
+        uuid branch_id FK
         datetime started_at
         datetime closed_at
-        bigint primary_veterinarian_id FK
+        uuid primary_veterinarian_id FK
         varchar encounter_type
         varchar status
     }
 
     medical_records {
-        bigint medical_record_id PK
-        bigint encounter_id FK
+        uuid medical_record_id PK
+        uuid encounter_id FK
         varchar record_number
         datetime created_at
         bigint created_by FK
@@ -462,8 +462,8 @@ erDiagram
     }
 
     clinical_notes {
-        bigint clinical_note_id PK
-        bigint encounter_id FK
+        uuid clinical_note_id PK
+        uuid encounter_id FK
         varchar note_type
         text note_content
         bigint created_by FK
@@ -471,16 +471,16 @@ erDiagram
     }
 
     physical_examinations {
-        bigint examination_id PK
-        bigint encounter_id FK
+        uuid examination_id PK
+        uuid encounter_id FK
         text examination_findings
         bigint examined_by FK
         datetime examined_at
     }
 
     vital_signs {
-        bigint vital_sign_id PK
-        bigint examination_id FK
+        uuid vital_sign_id PK
+        uuid examination_id FK
         varchar measurement_type
         decimal measurement_value
         varchar unit
@@ -488,16 +488,16 @@ erDiagram
     }
 
     diagnosis_catalogs {
-        bigint diagnosis_catalog_id PK
+        uuid diagnosis_catalog_id PK
         varchar diagnosis_code
         varchar diagnosis_name
         varchar description
     }
 
     diagnoses {
-        bigint diagnosis_id PK
-        bigint encounter_id FK
-        bigint diagnosis_catalog_id FK
+        uuid diagnosis_id PK
+        uuid encounter_id FK
+        uuid diagnosis_catalog_id FK
         varchar diagnosis_type
         boolean is_primary
         text clinical_evidence
@@ -506,8 +506,8 @@ erDiagram
     }
 
     clinical_problem_lists {
-        bigint problem_id PK
-        bigint pet_id FK
+        uuid problem_id PK
+        uuid pet_id FK
         varchar problem_name
         varchar status
         date identified_date
@@ -515,8 +515,8 @@ erDiagram
     }
 
     treatment_plans {
-        bigint treatment_plan_id PK
-        bigint encounter_id FK
+        uuid treatment_plan_id PK
+        uuid encounter_id FK
         varchar plan_name
         text plan_description
         bigint created_by FK
@@ -524,8 +524,8 @@ erDiagram
     }
 
     treatment_plan_items {
-        bigint plan_item_id PK
-        bigint treatment_plan_id FK
+        uuid plan_item_id PK
+        uuid treatment_plan_id FK
         varchar item_type
         varchar item_description
         datetime planned_at
@@ -533,17 +533,17 @@ erDiagram
     }
 
     prescriptions {
-        bigint prescription_id PK
-        bigint encounter_id FK
+        uuid prescription_id PK
+        uuid encounter_id FK
         bigint prescribed_by FK
         datetime prescribed_at
         varchar status
     }
 
     prescription_items {
-        bigint prescription_item_id PK
-        bigint prescription_id FK
-        bigint product_id FK
+        uuid prescription_item_id PK
+        uuid prescription_id FK
+        uuid product_id FK
         decimal prescribed_quantity
         varchar dosage
         varchar route
@@ -553,8 +553,8 @@ erDiagram
     }
 
     pet_allergies {
-        bigint allergy_id PK
-        bigint pet_id FK
+        uuid allergy_id PK
+        uuid pet_id FK
         varchar allergen
         varchar reaction
         varchar severity
@@ -562,16 +562,16 @@ erDiagram
     }
 
     pet_chronic_conditions {
-        bigint condition_id PK
-        bigint pet_id FK
+        uuid condition_id PK
+        uuid pet_id FK
         varchar condition_name
         date diagnosed_date
         varchar status
     }
 
     pet_vaccinations {
-        bigint vaccination_id PK
-        bigint pet_id FK
+        uuid vaccination_id PK
+        uuid pet_id FK
         varchar vaccine_name
         date administered_date
         date next_due_date
@@ -579,16 +579,16 @@ erDiagram
     }
 
     clinical_follow_ups {
-        bigint follow_up_id PK
-        bigint encounter_id FK
+        uuid follow_up_id PK
+        uuid encounter_id FK
         datetime follow_up_date
         text follow_up_notes
         varchar status
     }
 
     clinical_discharges {
-        bigint discharge_id PK
-        bigint encounter_id FK
+        uuid discharge_id PK
+        uuid encounter_id FK
         datetime discharged_at
         text discharge_instructions
         bigint approved_by FK
@@ -632,7 +632,7 @@ erDiagram
     stock_transfers ||--|{ stock_transfer_items : contains
 
     products {
-        bigint product_id PK
+        uuid product_id PK
         varchar product_code
         varchar product_name
         varchar product_type
@@ -642,24 +642,24 @@ erDiagram
     }
 
     product_units {
-        bigint product_unit_id PK
-        bigint product_id FK
+        uuid product_unit_id PK
+        uuid product_id FK
         varchar unit_name
         decimal conversion_factor
         boolean is_base_unit
     }
 
     warehouses {
-        bigint warehouse_id PK
-        bigint branch_id FK
+        uuid warehouse_id PK
+        uuid branch_id FK
         varchar warehouse_name
         varchar status
     }
 
     inventory_lots {
-        bigint lot_id PK
-        bigint product_id FK
-        bigint warehouse_id FK
+        uuid lot_id PK
+        uuid product_id FK
+        uuid warehouse_id FK
         varchar lot_number
         date manufactured_date
         date expiry_date
@@ -668,20 +668,20 @@ erDiagram
     }
 
     stock_balances {
-        bigint stock_balance_id PK
-        bigint product_id FK
-        bigint warehouse_id FK
-        bigint lot_id FK
+        uuid stock_balance_id PK
+        uuid product_id FK
+        uuid warehouse_id FK
+        uuid lot_id FK
         decimal quantity_on_hand
         decimal quantity_reserved
         decimal quantity_available
     }
 
     stock_movements {
-        bigint movement_id PK
-        bigint product_id FK
-        bigint lot_id FK
-        bigint warehouse_id FK
+        uuid movement_id PK
+        uuid product_id FK
+        uuid lot_id FK
+        uuid warehouse_id FK
         varchar movement_type
         decimal quantity
         decimal unit_cost
@@ -690,38 +690,38 @@ erDiagram
     }
 
     dispensings {
-        bigint dispensing_id PK
-        bigint prescription_id FK
-        bigint customer_id FK
-        bigint pet_id FK
+        uuid dispensing_id PK
+        uuid prescription_id FK
+        uuid customer_id FK
+        uuid pet_id FK
         bigint dispensed_by FK
         datetime dispensed_at
         varchar status
     }
 
     dispensing_items {
-        bigint dispensing_item_id PK
-        bigint dispensing_id FK
-        bigint prescription_item_id FK
-        bigint product_id FK
-        bigint lot_id FK
+        uuid dispensing_item_id PK
+        uuid dispensing_id FK
+        uuid prescription_item_id FK
+        uuid product_id FK
+        uuid lot_id FK
         decimal dispensed_quantity
         decimal unit_price
     }
 
     stock_transfers {
-        bigint transfer_id PK
-        bigint source_warehouse_id FK
-        bigint destination_warehouse_id FK
+        uuid transfer_id PK
+        uuid source_warehouse_id FK
+        uuid destination_warehouse_id FK
         datetime transferred_at
         varchar status
     }
 
     stock_transfer_items {
-        bigint transfer_item_id PK
-        bigint transfer_id FK
-        bigint product_id FK
-        bigint lot_id FK
+        uuid transfer_item_id PK
+        uuid transfer_id FK
+        uuid product_id FK
+        uuid lot_id FK
         decimal quantity
     }
 ```
@@ -765,8 +765,8 @@ erDiagram
     laboratory_equipment ||--o{ quality_control_records : controlled_by
 
     diagnostic_orders {
-        bigint diagnostic_order_id PK
-        bigint encounter_id FK
+        uuid diagnostic_order_id PK
+        uuid encounter_id FK
         bigint ordered_by FK
         datetime ordered_at
         varchar priority
@@ -774,14 +774,14 @@ erDiagram
     }
 
     diagnostic_order_items {
-        bigint order_item_id PK
-        bigint diagnostic_order_id FK
-        bigint diagnostic_catalog_id FK
+        uuid order_item_id PK
+        uuid diagnostic_order_id FK
+        uuid diagnostic_catalog_id FK
         varchar item_status
     }
 
     diagnostic_catalogs {
-        bigint diagnostic_catalog_id PK
+        uuid diagnostic_catalog_id PK
         varchar test_code
         varchar test_name
         varchar test_type
@@ -790,8 +790,8 @@ erDiagram
     }
 
     specimens {
-        bigint specimen_id PK
-        bigint diagnostic_order_id FK
+        uuid specimen_id PK
+        uuid diagnostic_order_id FK
         varchar specimen_code
         varchar specimen_type
         datetime collected_at
@@ -800,9 +800,9 @@ erDiagram
     }
 
     laboratory_works {
-        bigint laboratory_work_id PK
-        bigint specimen_id FK
-        bigint equipment_id FK
+        uuid laboratory_work_id PK
+        uuid specimen_id FK
+        uuid equipment_id FK
         bigint performed_by FK
         datetime started_at
         datetime completed_at
@@ -810,17 +810,17 @@ erDiagram
     }
 
     laboratory_results {
-        bigint result_id PK
-        bigint laboratory_work_id FK
+        uuid result_id PK
+        uuid laboratory_work_id FK
         datetime result_at
         bigint verified_by FK
         varchar result_status
     }
 
     laboratory_result_values {
-        bigint result_value_id PK
-        bigint result_id FK
-        bigint diagnostic_catalog_id FK
+        uuid result_value_id PK
+        uuid result_id FK
+        uuid diagnostic_catalog_id FK
         decimal numeric_value
         varchar text_value
         varchar unit
@@ -829,27 +829,27 @@ erDiagram
     }
 
     imaging_studies {
-        bigint imaging_study_id PK
-        bigint diagnostic_order_id FK
+        uuid imaging_study_id PK
+        uuid diagnostic_order_id FK
         varchar imaging_type
         varchar body_region
-        bigint equipment_id FK
+        uuid equipment_id FK
         bigint performed_by FK
         datetime performed_at
         varchar status
     }
 
     medical_images {
-        bigint medical_image_id PK
-        bigint imaging_study_id FK
+        uuid medical_image_id PK
+        uuid imaging_study_id FK
         varchar file_reference
         varchar image_type
         datetime captured_at
     }
 
     imaging_reports {
-        bigint imaging_report_id PK
-        bigint imaging_study_id FK
+        uuid imaging_report_id PK
+        uuid imaging_study_id FK
         text findings
         text conclusion
         bigint reported_by FK
@@ -858,7 +858,7 @@ erDiagram
     }
 
     laboratory_equipment {
-        bigint equipment_id PK
+        uuid equipment_id PK
         varchar equipment_code
         varchar equipment_name
         varchar serial_number
@@ -866,8 +866,8 @@ erDiagram
     }
 
     quality_control_records {
-        bigint quality_control_id PK
-        bigint equipment_id FK
+        uuid quality_control_id PK
+        uuid equipment_id FK
         varchar control_type
         decimal measured_value
         varchar result_status
@@ -912,9 +912,9 @@ erDiagram
     surgery_records ||--o{ surgery_complications : may_have
 
     surgery_requests {
-        bigint surgery_request_id PK
-        bigint encounter_id FK
-        bigint surgery_catalog_id FK
+        uuid surgery_request_id PK
+        uuid encounter_id FK
+        uuid surgery_catalog_id FK
         bigint requested_by FK
         varchar priority
         text medical_indication
@@ -922,7 +922,7 @@ erDiagram
     }
 
     surgery_catalogs {
-        bigint surgery_catalog_id PK
+        uuid surgery_catalog_id PK
         varchar surgery_code
         varchar surgery_name
         varchar surgery_type
@@ -931,8 +931,8 @@ erDiagram
     }
 
     preoperative_assessments {
-        bigint assessment_id PK
-        bigint surgery_request_id FK
+        uuid assessment_id PK
+        uuid surgery_request_id FK
         bigint assessed_by FK
         text assessment_result
         varchar risk_level
@@ -940,27 +940,27 @@ erDiagram
     }
 
     surgery_consents {
-        bigint consent_id PK
-        bigint surgery_request_id FK
-        bigint customer_id FK
+        uuid consent_id PK
+        uuid surgery_request_id FK
+        uuid customer_id FK
         varchar consent_type
         datetime consented_at
         varchar document_reference
     }
 
     surgery_schedules {
-        bigint schedule_id PK
-        bigint surgery_request_id FK
-        bigint room_id FK
+        uuid schedule_id PK
+        uuid surgery_request_id FK
+        uuid room_id FK
         datetime scheduled_start
         datetime scheduled_end
         varchar status
     }
 
     surgery_records {
-        bigint surgery_record_id PK
-        bigint schedule_id FK
-        bigint encounter_id FK
+        uuid surgery_record_id PK
+        uuid schedule_id FK
+        uuid encounter_id FK
         datetime started_at
         datetime completed_at
         text operation_details
@@ -969,17 +969,17 @@ erDiagram
     }
 
     anesthesia_records {
-        bigint anesthesia_id PK
-        bigint surgery_record_id FK
+        uuid anesthesia_id PK
+        uuid surgery_record_id FK
         varchar anesthesia_type
-        bigint anesthetist_id FK
+        uuid anesthetist_id FK
         datetime started_at
         datetime ended_at
     }
 
     anesthesia_monitorings {
-        bigint monitoring_id PK
-        bigint anesthesia_id FK
+        uuid monitoring_id PK
+        uuid anesthesia_id FK
         datetime recorded_at
         varchar parameter_name
         decimal parameter_value
@@ -987,31 +987,31 @@ erDiagram
     }
 
     surgery_team_members {
-        bigint team_member_id PK
-        bigint surgery_record_id FK
-        bigint employee_id FK
+        uuid team_member_id PK
+        uuid surgery_record_id FK
+        uuid employee_id FK
         varchar responsibility
     }
 
     surgery_material_usages {
-        bigint material_usage_id PK
-        bigint surgery_record_id FK
-        bigint product_id FK
-        bigint lot_id FK
+        uuid material_usage_id PK
+        uuid surgery_record_id FK
+        uuid product_id FK
+        uuid lot_id FK
         decimal quantity_used
     }
 
     postoperative_records {
-        bigint postoperative_id PK
-        bigint surgery_record_id FK
+        uuid postoperative_id PK
+        uuid surgery_record_id FK
         datetime recorded_at
         text observation
         bigint recorded_by FK
     }
 
     surgery_complications {
-        bigint complication_id PK
-        bigint surgery_record_id FK
+        uuid complication_id PK
+        uuid surgery_record_id FK
         varchar complication_type
         text description
         datetime occurred_at
@@ -1057,9 +1057,9 @@ erDiagram
     service_catalogs ||--o{ invoice_items : billed_as
 
     invoices {
-        bigint invoice_id PK
-        bigint customer_id FK
-        bigint encounter_id FK
+        uuid invoice_id PK
+        uuid customer_id FK
+        uuid encounter_id FK
         varchar invoice_number
         datetime invoice_date
         decimal subtotal
@@ -1071,11 +1071,11 @@ erDiagram
     }
 
     invoice_items {
-        bigint invoice_item_id PK
-        bigint invoice_id FK
-        bigint service_catalog_id FK
+        uuid invoice_item_id PK
+        uuid invoice_id FK
+        uuid service_catalog_id FK
         varchar source_domain
-        bigint source_record_id
+        uuid source_record_id
         varchar description_snapshot
         decimal quantity
         decimal unit_price_snapshot
@@ -1085,8 +1085,8 @@ erDiagram
     }
 
     payments {
-        bigint payment_id PK
-        bigint customer_id FK
+        uuid payment_id PK
+        uuid customer_id FK
         varchar payment_number
         decimal amount
         varchar payment_method
@@ -1095,16 +1095,16 @@ erDiagram
     }
 
     payment_allocations {
-        bigint allocation_id PK
-        bigint payment_id FK
-        bigint invoice_id FK
+        uuid allocation_id PK
+        uuid payment_id FK
+        uuid invoice_id FK
         decimal allocated_amount
     }
 
     refunds {
-        bigint refund_id PK
-        bigint payment_id FK
-        bigint invoice_id FK
+        uuid refund_id PK
+        uuid payment_id FK
+        uuid invoice_id FK
         decimal refund_amount
         varchar refund_reason
         datetime refunded_at
@@ -1112,8 +1112,8 @@ erDiagram
     }
 
     customer_deposits {
-        bigint deposit_id PK
-        bigint customer_id FK
+        uuid deposit_id PK
+        uuid customer_id FK
         decimal deposit_amount
         decimal remaining_amount
         datetime received_at
@@ -1121,14 +1121,14 @@ erDiagram
     }
 
     deposit_allocations {
-        bigint deposit_allocation_id PK
-        bigint deposit_id FK
-        bigint invoice_id FK
+        uuid deposit_allocation_id PK
+        uuid deposit_id FK
+        uuid invoice_id FK
         decimal allocated_amount
     }
 
     service_catalogs {
-        bigint service_catalog_id PK
+        uuid service_catalog_id PK
         varchar service_code
         varchar service_name
         varchar service_type
@@ -1136,8 +1136,8 @@ erDiagram
     }
 
     service_prices {
-        bigint service_price_id PK
-        bigint service_catalog_id FK
+        uuid service_price_id PK
+        uuid service_catalog_id FK
         decimal price
         date effective_from
         date effective_to
@@ -1191,7 +1191,7 @@ erDiagram
     customer_complaints ||--o{ complaint_actions : handled
 
     campaigns {
-        bigint campaign_id PK
+        uuid campaign_id PK
         varchar campaign_name
         varchar campaign_type
         date start_date
@@ -1200,8 +1200,8 @@ erDiagram
     }
 
     leads {
-        bigint lead_id PK
-        bigint customer_id FK
+        uuid lead_id PK
+        uuid customer_id FK
         varchar lead_source
         varchar contact_channel
         varchar status
@@ -1209,15 +1209,15 @@ erDiagram
     }
 
     campaign_customers {
-        bigint campaign_customer_id PK
-        bigint campaign_id FK
-        bigint customer_id FK
+        uuid campaign_customer_id PK
+        uuid campaign_id FK
+        uuid customer_id FK
         varchar participation_status
     }
 
     promotions {
-        bigint promotion_id PK
-        bigint campaign_id FK
+        uuid promotion_id PK
+        uuid campaign_id FK
         varchar promotion_name
         varchar promotion_type
         decimal discount_value
@@ -1226,25 +1226,25 @@ erDiagram
     }
 
     coupons {
-        bigint coupon_id PK
-        bigint promotion_id FK
+        uuid coupon_id PK
+        uuid promotion_id FK
         varchar coupon_code
         varchar coupon_type
         varchar status
     }
 
     customer_coupons {
-        bigint customer_coupon_id PK
-        bigint customer_id FK
-        bigint coupon_id FK
+        uuid customer_coupon_id PK
+        uuid customer_id FK
+        uuid coupon_id FK
         datetime issued_at
         datetime used_at
         varchar status
     }
 
     memberships {
-        bigint membership_id PK
-        bigint customer_id FK
+        uuid membership_id PK
+        uuid customer_id FK
         varchar membership_level
         int points_balance
         datetime enrolled_at
@@ -1252,8 +1252,8 @@ erDiagram
     }
 
     loyalty_transactions {
-        bigint loyalty_transaction_id PK
-        bigint membership_id FK
+        uuid loyalty_transaction_id PK
+        uuid membership_id FK
         varchar transaction_type
         int points
         datetime transaction_at
@@ -1261,8 +1261,8 @@ erDiagram
     }
 
     customer_interactions {
-        bigint interaction_id PK
-        bigint customer_id FK
+        uuid interaction_id PK
+        uuid customer_id FK
         varchar interaction_type
         varchar channel
         text interaction_detail
@@ -1270,9 +1270,9 @@ erDiagram
     }
 
     customer_communications {
-        bigint communication_id PK
-        bigint customer_id FK
-        bigint campaign_id FK
+        uuid communication_id PK
+        uuid customer_id FK
+        uuid campaign_id FK
         varchar channel
         text message_content
         datetime sent_at
@@ -1280,17 +1280,17 @@ erDiagram
     }
 
     customer_feedback {
-        bigint feedback_id PK
-        bigint customer_id FK
-        bigint encounter_id FK
+        uuid feedback_id PK
+        uuid customer_id FK
+        uuid encounter_id FK
         int rating
         text feedback_text
         datetime submitted_at
     }
 
     customer_complaints {
-        bigint complaint_id PK
-        bigint customer_id FK
+        uuid complaint_id PK
+        uuid customer_id FK
         varchar complaint_type
         text complaint_detail
         varchar status
@@ -1298,8 +1298,8 @@ erDiagram
     }
 
     complaint_actions {
-        bigint complaint_action_id PK
-        bigint complaint_id FK
+        uuid complaint_action_id PK
+        uuid complaint_id FK
         bigint assigned_to FK
         text action_detail
         datetime action_at
@@ -1349,7 +1349,7 @@ erDiagram
     supplier_invoices ||--o{ purchase_document_matchings : matched
 
     suppliers {
-        bigint supplier_id PK
+        uuid supplier_id PK
         varchar supplier_code
         varchar supplier_name
         varchar tax_id
@@ -1357,38 +1357,38 @@ erDiagram
     }
 
     supplier_contacts {
-        bigint supplier_contact_id PK
-        bigint supplier_id FK
+        uuid supplier_contact_id PK
+        uuid supplier_id FK
         varchar contact_name
         varchar phone
         varchar email
     }
 
     supplier_addresses {
-        bigint supplier_address_id PK
-        bigint supplier_id FK
+        uuid supplier_address_id PK
+        uuid supplier_id FK
         varchar address_type
         text address
     }
 
     supplier_documents {
-        bigint supplier_document_id PK
-        bigint supplier_id FK
+        uuid supplier_document_id PK
+        uuid supplier_id FK
         varchar document_type
         varchar file_reference
     }
 
     supplier_products {
-        bigint supplier_product_id PK
-        bigint supplier_id FK
-        bigint product_id FK
+        uuid supplier_product_id PK
+        uuid supplier_id FK
+        uuid product_id FK
         varchar supplier_product_code
         decimal purchase_price
         varchar purchase_unit
     }
 
     purchase_requisitions {
-        bigint requisition_id PK
+        uuid requisition_id PK
         bigint requested_by FK
         datetime requested_at
         varchar status
@@ -1396,59 +1396,59 @@ erDiagram
     }
 
     purchase_requisition_items {
-        bigint requisition_item_id PK
-        bigint requisition_id FK
-        bigint product_id FK
+        uuid requisition_item_id PK
+        uuid requisition_id FK
+        uuid product_id FK
         decimal requested_quantity
     }
 
     purchase_orders {
-        bigint purchase_order_id PK
-        bigint supplier_id FK
-        bigint requisition_id FK
+        uuid purchase_order_id PK
+        uuid supplier_id FK
+        uuid requisition_id FK
         varchar purchase_order_number
         datetime ordered_at
         varchar status
     }
 
     purchase_order_items {
-        bigint purchase_order_item_id PK
-        bigint purchase_order_id FK
-        bigint product_id FK
+        uuid purchase_order_item_id PK
+        uuid purchase_order_id FK
+        uuid product_id FK
         decimal ordered_quantity
         decimal unit_price
         decimal line_total
     }
 
     supplier_deliveries {
-        bigint delivery_id PK
-        bigint purchase_order_id FK
+        uuid delivery_id PK
+        uuid purchase_order_id FK
         datetime delivered_at
         varchar delivery_reference
         varchar status
     }
 
     goods_receipts {
-        bigint goods_receipt_id PK
-        bigint delivery_id FK
-        bigint warehouse_id FK
+        uuid goods_receipt_id PK
+        uuid delivery_id FK
+        uuid warehouse_id FK
         datetime received_at
         bigint received_by FK
         varchar status
     }
 
     goods_receipt_items {
-        bigint goods_receipt_item_id PK
-        bigint goods_receipt_id FK
-        bigint purchase_order_item_id FK
-        bigint product_id FK
+        uuid goods_receipt_item_id PK
+        uuid goods_receipt_id FK
+        uuid purchase_order_item_id FK
+        uuid product_id FK
         decimal received_quantity
         decimal rejected_quantity
     }
 
     supplier_invoices {
-        bigint supplier_invoice_id PK
-        bigint supplier_id FK
+        uuid supplier_invoice_id PK
+        uuid supplier_id FK
         varchar invoice_number
         date invoice_date
         decimal total_amount
@@ -1456,19 +1456,19 @@ erDiagram
     }
 
     supplier_invoice_items {
-        bigint supplier_invoice_item_id PK
-        bigint supplier_invoice_id FK
-        bigint product_id FK
+        uuid supplier_invoice_item_id PK
+        uuid supplier_invoice_id FK
+        uuid product_id FK
         decimal quantity
         decimal unit_price
         decimal line_total
     }
 
     purchase_document_matchings {
-        bigint matching_id PK
-        bigint purchase_order_id FK
-        bigint goods_receipt_id FK
-        bigint supplier_invoice_id FK
+        uuid matching_id PK
+        uuid purchase_order_id FK
+        uuid goods_receipt_id FK
+        uuid supplier_invoice_id FK
         varchar matching_status
         datetime matched_at
     }
@@ -1509,7 +1509,7 @@ erDiagram
     employees ||--o{ payroll_items : paid
 
     employees {
-        bigint employee_id PK
+        uuid employee_id PK
         varchar employee_code
         varchar first_name
         varchar last_name
@@ -1518,22 +1518,22 @@ erDiagram
     }
 
     departments {
-        bigint department_id PK
+        uuid department_id PK
         varchar department_name
         varchar status
     }
 
     positions {
-        bigint position_id PK
-        bigint department_id FK
+        uuid position_id PK
+        uuid department_id FK
         varchar position_name
         varchar position_type
     }
 
     employments {
-        bigint employment_id PK
-        bigint employee_id FK
-        bigint position_id FK
+        uuid employment_id PK
+        uuid employee_id FK
+        uuid position_id FK
         date start_date
         date end_date
         decimal base_salary
@@ -1541,16 +1541,16 @@ erDiagram
     }
 
     employee_qualifications {
-        bigint qualification_id PK
-        bigint employee_id FK
+        uuid qualification_id PK
+        uuid employee_id FK
         varchar qualification_name
         varchar institution
         date issued_date
     }
 
     employee_licenses {
-        bigint license_id PK
-        bigint employee_id FK
+        uuid license_id PK
+        uuid employee_id FK
         varchar license_number
         varchar license_type
         date issued_date
@@ -1559,39 +1559,39 @@ erDiagram
     }
 
     employee_skills {
-        bigint employee_skill_id PK
-        bigint employee_id FK
+        uuid employee_skill_id PK
+        uuid employee_id FK
         varchar skill_name
         varchar skill_level
     }
 
     shifts {
-        bigint shift_id PK
+        uuid shift_id PK
         varchar shift_name
         time start_time
         time end_time
     }
 
     employee_shifts {
-        bigint employee_shift_id PK
-        bigint employee_id FK
-        bigint shift_id FK
-        bigint branch_id FK
+        uuid employee_shift_id PK
+        uuid employee_id FK
+        uuid shift_id FK
+        uuid branch_id FK
         date work_date
         varchar status
     }
 
     attendance_records {
-        bigint attendance_id PK
-        bigint employee_shift_id FK
+        uuid attendance_id PK
+        uuid employee_shift_id FK
         datetime check_in
         datetime check_out
         varchar status
     }
 
     leave_requests {
-        bigint leave_request_id PK
-        bigint employee_id FK
+        uuid leave_request_id PK
+        uuid employee_id FK
         varchar leave_type
         date start_date
         date end_date
@@ -1599,8 +1599,8 @@ erDiagram
     }
 
     overtime_requests {
-        bigint overtime_request_id PK
-        bigint employee_id FK
+        uuid overtime_request_id PK
+        uuid employee_id FK
         datetime start_at
         datetime end_at
         decimal hours
@@ -1608,7 +1608,7 @@ erDiagram
     }
 
     payroll_runs {
-        bigint payroll_run_id PK
+        uuid payroll_run_id PK
         date period_start
         date period_end
         datetime processed_at
@@ -1616,9 +1616,9 @@ erDiagram
     }
 
     payroll_items {
-        bigint payroll_item_id PK
-        bigint payroll_run_id FK
-        bigint employee_id FK
+        uuid payroll_item_id PK
+        uuid payroll_run_id FK
+        uuid employee_id FK
         decimal base_salary
         decimal overtime_amount
         decimal deductions

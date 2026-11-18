@@ -4,6 +4,7 @@ import { ownersListQueryOptions } from "#/client/caches/owners/queries/owners.qu
 import { useAddNewPetFormContext } from "#/client/features/reception/pets/contexts/add-new-pet-form-provider";
 import { useFormField, useFormFieldError } from "#/client/shared/hooks/use-wizard-form";
 import type { OwnerDto } from "#/shared/schemas/owner.schema";
+import { mapOwnerToSelectedSummary } from "../models/pet-form";
 
 export function usePetOwnerSelection() {
   const {
@@ -31,33 +32,21 @@ export function usePetOwnerSelection() {
   // Auto-sync owner details (including primary phone) from cache if summary has empty phone
   useEffect(() => {
     if (selectedOwner && !selectedOwnerSummary?.phone) {
-      setSelectedOwnerSummary({
-        id: selectedOwner.id,
-        customerCode: selectedOwner.customerCode,
-        fullName:
-          `${selectedOwner.customerType === "INDIVIDUAL" ? selectedOwner.prefix : `${selectedOwner.prefix}:`} ${selectedOwner.firstName} ${selectedOwner.lastName}`.trim(),
-        phone: selectedOwner.phonePrimary,
-      });
+      setSelectedOwnerSummary(mapOwnerToSelectedSummary(selectedOwner));
     }
   }, [selectedOwner, selectedOwnerSummary, setSelectedOwnerSummary]);
 
   const handleSelectOwner = useCallback(
     (owner: OwnerDto) => {
       setFieldValue("ownerId", owner.id);
-      setSelectedOwnerSummary({
-        id: owner.id,
-        customerCode: owner.customerCode,
-        fullName:
-          `${owner.customerType === "INDIVIDUAL" ? owner.prefix : `${owner.prefix}:`} ${owner.firstName} ${owner.lastName}`.trim(),
-        phone: owner.phonePrimary,
-      });
+      setSelectedOwnerSummary(mapOwnerToSelectedSummary(owner));
     },
     [setFieldValue, setSelectedOwnerSummary]
   );
 
   const handleClearOwner = useCallback(() => {
     setSelectedOwnerSummary(null);
-    setFieldValue("ownerId", 0);
+    setFieldValue("ownerId", "");
   }, [setFieldValue, setSelectedOwnerSummary]);
 
   const openNewOwnerModal = useCallback(() => {

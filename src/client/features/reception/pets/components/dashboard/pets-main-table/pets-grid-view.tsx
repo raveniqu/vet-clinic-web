@@ -1,19 +1,10 @@
 import { cn } from "cn";
-import { CheckCircle, Info, Microscope, PawPrint, Pencil } from "lucide-react";
-
-import { Alert, AlertTitle } from "#/client/shared/shadcn/components/ui/alert";
-import { Avatar, AvatarFallback, AvatarImage } from "#/client/shared/shadcn/components/ui/avatar";
-import { Badge } from "#/client/shared/shadcn/components/ui/badge";
+import { PawPrint } from "lucide-react";
+import { PetGridCard } from "../pet-grid-card";
+import { PetRowProvider } from "#/client/features/reception/pets/contexts/pet-row.context";
+import { usePetsGrid } from "#/client/features/reception/pets/hooks/use-pets-grid";
 import { Button } from "#/client/shared/shadcn/components/ui/button";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "#/client/shared/shadcn/components/ui/card";
+import { Card, CardContent } from "#/client/shared/shadcn/components/ui/card";
 import {
   Empty,
   EmptyContent,
@@ -22,11 +13,6 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "#/client/shared/shadcn/components/ui/empty";
-
-import { usePetsGrid } from "#/client/features/reception/pets/hooks/use-pets-grid";
-import { getPetInitials } from "#/client/features/reception/pets/models/pets-table";
-import { useSidebar } from "#/client/shared/shadcn/components/ui/sidebar";
-import { formatMicrochipNumber, formatPetAge } from "#/client/shared/helpers/formatters";
 
 export function PetsGridView() {
   const {
@@ -40,9 +26,8 @@ export function PetsGridView() {
     isEmptyDataset,
     hasActiveFilter,
     clearFilters,
-    setEditingPet,
+    isSidebarOpen,
   } = usePetsGrid();
-  const { open: isSidebarOpen } = useSidebar();
 
   if (displayedPets.length === 0) {
     return (
@@ -83,90 +68,9 @@ export function PetsGridView() {
         })}
       >
         {displayedPets.map((pet) => (
-          <Card key={pet.id} className="justify-start">
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Avatar className="size-16">
-                  <AvatarImage src={pet.photo} alt={pet.petName} />
-                  <AvatarFallback>{getPetInitials(pet.petName)}</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col gap-1">
-                  <CardTitle>{pet.petName}</CardTitle>
-                  <CardDescription className="text-xs">{pet.breedName}</CardDescription>
-
-                  <div className="flex items-center gap-1">
-                    <Badge variant="secondary">{pet.sex}</Badge>
-                    <Badge
-                      variant={pet.reproductiveStatus === "Intact" ? "destructive" : "outline"}
-                    >
-                      {pet.reproductiveStatus}
-                    </Badge>
-                  </div>
-                </div>
-              </div>
-              <CardAction>
-                <Button
-                  size="icon-xs"
-                  variant="ghost"
-                  onClick={() => setEditingPet(pet)}
-                  aria-label={`Edit ${pet.petName}`}
-                >
-                  <Pencil aria-hidden="true" />
-                </Button>
-              </CardAction>
-            </CardHeader>
-            <CardContent className="mt-auto flex flex-col gap-4">
-              <div className="flex justify-between rounded-xl bg-muted-foreground/5 p-4">
-                <p className="text-xs">
-                  <span>Age:</span>
-                  <span className="font-semibold"> {formatPetAge(pet)}</span>
-                </p>
-                <p className="text-xs">
-                  <span>Latest Weight:</span>
-                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                    {" "}
-                    {pet.weight}
-                  </span>
-                  <span className="font-semibold text-emerald-600 dark:text-emerald-400"> kg.</span>
-                </p>
-              </div>
-              <div className="flex items-center justify-between">
-                <p className="text-xs">
-                  <span>Owner:</span>
-                  <span className="font-semibold"> {pet.ownerName}</span>
-                </p>
-
-                {pet.microchipNumber ? (
-                  <Badge variant="secondary" className="font-mono">
-                    {formatMicrochipNumber(pet.microchipNumber)}
-                  </Badge>
-                ) : null}
-              </div>
-              {pet.allergies ? (
-                <Alert className="border-0 bg-primary/5 px-2 py-1 text-primary ring-1 ring-primary/50 dark:bg-primary/5 dark:text-primary dark:ring-primary/50">
-                  <Info aria-hidden="true" />
-                  <AlertTitle className="text-sm font-medium">{pet.allergies}</AlertTitle>
-                </Alert>
-              ) : (
-                <Alert className="border-0 px-2 py-1 ring-1 ring-border">
-                  <CheckCircle
-                    className="stroke-emerald-600 dark:stroke-emerald-400"
-                    aria-hidden="true"
-                  />
-                  <AlertTitle className="text-sm font-medium">No Allergy Records</AlertTitle>
-                </Alert>
-              )}
-            </CardContent>
-            <CardFooter className="justify-between border-t">
-              <Button size="xs" variant="outline">
-                <Microscope data-icon="inline-start" aria-hidden="true" />
-                <span>Open EMR</span>
-              </Button>
-              <Button size="xs" variant="link">
-                View Profile
-              </Button>
-            </CardFooter>
-          </Card>
+          <PetRowProvider key={pet.id} pet={pet}>
+            <PetGridCard />
+          </PetRowProvider>
         ))}
       </div>
 

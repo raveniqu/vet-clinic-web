@@ -1,10 +1,9 @@
+import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, Loader2Icon } from "lucide-react";
 import { useOwnerFormShell } from "#/client/features/reception/owners/hooks/use-owner-form-shell";
 import { Button } from "#/client/shared/shadcn/components/ui/button";
-import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, Loader2Icon } from "lucide-react";
 
 export function OwnerFormActions() {
-  const { currentStep, nextStep, prevStep, submitForm, isSubmitting, setIsOpen, isEdit } =
-    useOwnerFormShell();
+  const { currentStep, nextStep, prevStep, isSubmitting, setIsOpen, isEdit } = useOwnerFormShell();
 
   return (
     <div className="flex w-full items-center justify-between gap-3">
@@ -50,7 +49,7 @@ export function OwnerFormActions() {
                 <ArrowRightIcon className="ml-1.5 size-4" />
               </Button>
             )}
-            <Button type="button" size="sm" onClick={submitForm} disabled={isSubmitting}>
+            <Button type="submit" size="sm" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
                   <Loader2Icon className="mr-1.5 size-4 animate-spin" />
@@ -70,7 +69,7 @@ export function OwnerFormActions() {
             <ArrowRightIcon className="ml-1.5 size-4" />
           </Button>
         ) : (
-          <Button type="button" size="sm" onClick={submitForm} disabled={isSubmitting}>
+          <Button type="submit" size="sm" disabled={isSubmitting}>
             {isSubmitting ? (
               <>
                 <Loader2Icon className="mr-1.5 size-4 animate-spin" />

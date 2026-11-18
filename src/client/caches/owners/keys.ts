@@ -3,5 +3,5 @@ export const ownerKeys = {
   lists: () => [...ownerKeys.all, "list"] as const,
   list: (filters?: Record<string, unknown>) => [...ownerKeys.lists(), filters] as const,
   details: () => [...ownerKeys.all, "detail"] as const,
-  detail: (id: number) => [...ownerKeys.details(), id] as const,
+  detail: (id: string) => [...ownerKeys.details(), id] as const,
 };

@@ -19,10 +19,12 @@ export function useUpdateOwnerMutation() {
       },
       errorToast: "Failed to update owner profile. Please check the details and try again.",
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       queryClient.setQueryData(ownerKeys.detail(data.id), data);
-      void queryClient.invalidateQueries({ queryKey: ownerKeys.lists() });
-      void queryClient.invalidateQueries({ queryKey: petKeys.all });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ownerKeys.lists() }),
+        queryClient.invalidateQueries({ queryKey: petKeys.all }),
+      ]);
     },
   });
 }

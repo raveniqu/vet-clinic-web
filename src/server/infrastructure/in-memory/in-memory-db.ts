@@ -30,28 +30,21 @@ export class InMemoryDb {
 
   private species = new Map<number, SpeciesRecord>();
   private breeds = new Map<number, BreedRecord>();
-  private customers = new Map<number, CustomerRecord>();
-  private contacts = new Map<number, CustomerContactRecord>();
-  private addresses = new Map<number, CustomerAddressRecord>();
-  private preferences = new Map<number, CustomerPreferenceRecord>();
-  private pets = new Map<number, PetRecord>();
-  private ownerships = new Map<number, PetOwnershipRecord>();
+  private customers = new Map<string, CustomerRecord>();
+  private contacts = new Map<string, CustomerContactRecord>();
+  private addresses = new Map<string, CustomerAddressRecord>();
+  private preferences = new Map<string, CustomerPreferenceRecord>();
+  private pets = new Map<string, PetRecord>();
+  private ownerships = new Map<string, PetOwnershipRecord>();
 
   // Secondary Relational Indexes (O(1) joins instead of O(N*M) Map scans)
   private cachedActiveSpecies: SpeciesItem[] = [];
   private cachedAllActiveBreeds: BreedItem[] = [];
   private activeBreedsBySpeciesId = new Map<number, BreedItem[]>();
-  private contactsByCustomerId = new Map<number, CustomerContactRecord[]>();
-  private primaryAddressByCustomerId = new Map<number, CustomerAddressRecord>();
-  private preferenceByCustomerId = new Map<number, CustomerPreferenceRecord>();
-  private primaryOwnershipByPetId = new Map<number, PetOwnershipRecord>();
-
-  private nextCustomerId = 11;
-  private nextPetId = 31;
-  private nextContactId = 200;
-  private nextAddressId = 300;
-  private nextPreferenceId = 400;
-  private nextOwnershipId = 100;
+  private contactsByCustomerId = new Map<string, CustomerContactRecord[]>();
+  private primaryAddressByCustomerId = new Map<string, CustomerAddressRecord>();
+  private preferenceByCustomerId = new Map<string, CustomerPreferenceRecord>();
+  private primaryOwnershipByPetId = new Map<string, PetOwnershipRecord>();
 
   private constructor() {
     this.seed();
@@ -177,16 +170,16 @@ export class InMemoryDb {
         results.push(this.mapPetRecordToDto(pet));
       }
     }
-    return results.sort((a, b) => b.id - a.id);
+    return results.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   }
 
-  public getPetById(id: number): PetDto | null {
+  public getPetById(id: string): PetDto | null {
     const pet = this.pets.get(id);
     if (!pet || pet.status === "DECEASED") return null;
     return this.mapPetRecordToDto(pet);
   }
 
-  public getPetsByOwnerId(ownerId: number): PetDto[] {
+  public getPetsByOwnerId(ownerId: string): PetDto[] {
     const results: PetDto[] = [];
     for (const ownership of this.ownerships.values()) {
       if (ownership.customerId === ownerId && !ownership.endDate) {
@@ -200,8 +193,8 @@ export class InMemoryDb {
   }
 
   public insertPet(input: CreatePetInput): PetDto {
-    const newId = this.nextPetId++;
-    const petCode = `PET-2026-${String(newId).padStart(4, "0")}`;
+    const newId = crypto.randomUUID();
+    const petCode = `PET-2026-${String(this.pets.size + 1).padStart(4, "0")}`;
     const now = new Date().toISOString();
 
     const record: PetRecord = {
@@ -230,7 +223,7 @@ export class InMemoryDb {
 
     this.pets.set(newId, record);
 
-    const ownershipId = this.nextOwnershipId++;
+    const ownershipId = crypto.randomUUID();
     const ownershipRecord: PetOwnershipRecord = {
       id: ownershipId,
       petId: newId,
@@ -275,7 +268,7 @@ export class InMemoryDb {
     if (ownership && ownership.customerId !== input.ownerId) {
       ownership.customerId = input.ownerId;
     } else if (!ownership) {
-      const ownershipId = this.nextOwnershipId++;
+      const ownershipId = crypto.randomUUID();
       const newOwnership: PetOwnershipRecord = {
         id: ownershipId,
         petId: input.id,
@@ -307,7 +300,7 @@ export class InMemoryDb {
       ? customer.displayName || `${customer.firstName} ${customer.lastName}`.trim()
       : "Unknown Owner";
 
-    const ownerId = customer ? customer.id : 1;
+    const ownerId = customer ? customer.id : "";
 
     return {
       id: record.id,
@@ -346,18 +339,18 @@ export class InMemoryDb {
         results.push(this.mapCustomerRecordToDto(c));
       }
     }
-    return results.sort((a, b) => b.id - a.id);
+    return results.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   }
 
-  public getOwnerById(id: number): OwnerDto | null {
+  public getOwnerById(id: string): OwnerDto | null {
     const customer = this.customers.get(id);
     if (customer?.status !== "ACTIVE") return null;
     return this.mapCustomerRecordToDto(customer);
   }
 
   public insertOwner(input: CreateOwnerInput): OwnerDto {
-    const newId = this.nextCustomerId++;
-    const customerCode = `CUS-2026-${String(newId).padStart(4, "0")}`;
+    const newId = crypto.randomUUID();
+    const customerCode = `CUS-2026-${String(this.pets.size + 1).padStart(4, "0")}`;
     const now = new Date().toISOString();
 
     const displayName =
@@ -382,7 +375,7 @@ export class InMemoryDb {
     this.customers.set(newId, customerRecord);
 
     // Primary Phone
-    const contactPhoneId = this.nextContactId++;
+    const contactPhoneId = crypto.randomUUID();
     const primaryPhoneRecord: CustomerContactRecord = {
       id: contactPhoneId,
       customerId: newId,
@@ -395,7 +388,7 @@ export class InMemoryDb {
 
     // Secondary Phone
     if (input.phoneSecondary.trim() !== "") {
-      const contactPhoneSecId = this.nextContactId++;
+      const contactPhoneSecId = crypto.randomUUID();
       const secondaryPhoneRecord: CustomerContactRecord = {
         id: contactPhoneSecId,
         customerId: newId,
@@ -409,7 +402,7 @@ export class InMemoryDb {
 
     // Line ID
     if (input.lineId.trim() !== "") {
-      const contactLineId = this.nextContactId++;
+      const contactLineId = crypto.randomUUID();
       const lineRecord: CustomerContactRecord = {
         id: contactLineId,
         customerId: newId,
@@ -423,7 +416,7 @@ export class InMemoryDb {
 
     // Email
     if (input.email.trim() !== "") {
-      const contactEmailId = this.nextContactId++;
+      const contactEmailId = crypto.randomUUID();
       const emailRecord: CustomerContactRecord = {
         id: contactEmailId,
         customerId: newId,
@@ -436,7 +429,7 @@ export class InMemoryDb {
     }
 
     // Address
-    const addressId = this.nextAddressId++;
+    const addressId = crypto.randomUUID();
     const addressRecord: CustomerAddressRecord = {
       id: addressId,
       customerId: newId,
@@ -453,7 +446,7 @@ export class InMemoryDb {
     this.primaryAddressByCustomerId.set(newId, addressRecord);
 
     // Preferences & PDPA
-    const prefId = this.nextPreferenceId++;
+    const prefId = crypto.randomUUID();
     const prefRecord: CustomerPreferenceRecord = {
       id: prefId,
       customerId: newId,
@@ -501,7 +494,7 @@ export class InMemoryDb {
     if (primaryPhoneContact) {
       primaryPhoneContact.contactValue = input.phonePrimary;
     } else {
-      const contactId = this.nextContactId++;
+      const contactId = crypto.randomUUID();
       const newContact: CustomerContactRecord = {
         id: contactId,
         customerId: input.id,
@@ -521,7 +514,7 @@ export class InMemoryDb {
       if (secondaryPhoneContact) {
         secondaryPhoneContact.contactValue = input.phoneSecondary;
       } else {
-        const contactId = this.nextContactId++;
+        const contactId = crypto.randomUUID();
         const newContact: CustomerContactRecord = {
           id: contactId,
           customerId: input.id,
@@ -543,7 +536,7 @@ export class InMemoryDb {
       if (lineContact) {
         lineContact.contactValue = input.lineId;
       } else {
-        const contactId = this.nextContactId++;
+        const contactId = crypto.randomUUID();
         const newContact: CustomerContactRecord = {
           id: contactId,
           customerId: input.id,
@@ -565,7 +558,7 @@ export class InMemoryDb {
       if (emailContact) {
         emailContact.contactValue = input.email;
       } else {
-        const contactId = this.nextContactId++;
+        const contactId = crypto.randomUUID();
         const newContact: CustomerContactRecord = {
           id: contactId,
           customerId: input.id,
@@ -590,7 +583,7 @@ export class InMemoryDb {
       address.province = input.province;
       address.postalCode = input.postalCode;
     } else {
-      const addressId = this.nextAddressId++;
+      const addressId = crypto.randomUUID();
       const newAddress: CustomerAddressRecord = {
         id: addressId,
         customerId: input.id,
@@ -619,7 +612,7 @@ export class InMemoryDb {
       pref.pdpaMarketing = input.pdpaMarketing;
       pref.pdpaMedia = input.pdpaMedia;
     } else {
-      const prefId = this.nextPreferenceId++;
+      const prefId = crypto.randomUUID();
       const newPref: CustomerPreferenceRecord = {
         id: prefId,
         customerId: input.id,

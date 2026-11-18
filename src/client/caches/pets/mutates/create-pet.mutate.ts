@@ -18,15 +18,19 @@ export function useCreatePetMutation() {
       },
       errorToast: "Failed to register new pet. Please check the details and try again.",
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       queryClient.setQueryData(petKeys.detail(data.id), data);
-      void queryClient.invalidateQueries({ queryKey: petKeys.lists() });
+      const invalidations = [queryClient.invalidateQueries({ queryKey: petKeys.lists() })];
 
       // Invalidate owner's pets & details in owners cache (Bi-directional sync!)
       if (data.ownerId) {
-        void queryClient.invalidateQueries({ queryKey: ownerKeys.detail(data.ownerId) });
-        void queryClient.invalidateQueries({ queryKey: ownerKeys.lists() });
+        invalidations.push(
+          queryClient.invalidateQueries({ queryKey: ownerKeys.detail(data.ownerId) }),
+          queryClient.invalidateQueries({ queryKey: ownerKeys.lists() })
+        );
       }
+
+      await Promise.all(invalidations);
     },
   });
 }

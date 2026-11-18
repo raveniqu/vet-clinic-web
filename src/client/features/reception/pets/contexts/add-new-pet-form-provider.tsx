@@ -1,102 +1,12 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useMemo } from "react";
 import type { ReactNode } from "react";
-import { useCreatePetMutation } from "#/client/caches/pets/mutates/create-pet.mutate";
-import { useUpdatePetMutation } from "#/client/caches/pets/mutates/update-pet.mutate";
-import { useWizardForm } from "#/client/shared/hooks/use-wizard-form";
+import { useAddNewPetForm } from "#/client/features/reception/pets/hooks/use-add-new-pet-form";
 import type { WizardFormApi, WizardStepNumber } from "#/client/shared/hooks/use-wizard-form";
 import type { OwnerDto } from "#/shared/schemas/owner.schema";
-import {
-  createPetInputSchema,
-  step1PetIdentitySchema,
-  step2PetPhysicalSchema,
-  step3PetCautionSchema,
-} from "#/shared/schemas/pet.schema";
 import type { CreatePetInput, PetDto } from "#/shared/schemas/pet.schema";
+import type { SelectedOwnerSummary } from "../models/pet-form";
 
 export type PetWizardStep = WizardStepNumber;
-
-export const initialPetValues: CreatePetInput = {
-  ownerId: 0,
-  petName: "",
-  speciesId: 1, // Default: Dog
-  breedId: 101, // Default: Mixed Breed
-  customBreedName: "",
-  photo: "",
-  sex: "Unknown",
-  reproductiveStatus: "Unknown",
-  birthDateIsEstimated: false,
-  dateOfBirth: "",
-  estimatedYears: 0,
-  estimatedMonths: 0,
-  color: "",
-  weight: "",
-  microchipNumber: "",
-  temperament: "Docile",
-  allergies: "",
-  medicalNotes: "",
-};
-
-const PET_STEP_SCHEMAS = {
-  1: step1PetIdentitySchema,
-  2: step2PetPhysicalSchema,
-  3: step3PetCautionSchema,
-} as const;
-
-const PET_STEP_1_FIELDS = new Set<string>([
-  "ownerId",
-  "petName",
-  "speciesId",
-  "breedId",
-  "customBreedName",
-  "photo",
-]);
-
-const PET_STEP_2_FIELDS = new Set<string>([
-  "sex",
-  "reproductiveStatus",
-  "birthDateIsEstimated",
-  "dateOfBirth",
-  "estimatedYears",
-  "estimatedMonths",
-  "color",
-  "weight",
-]);
-
-function resolvePetFieldStep(fieldKey: string): PetWizardStep {
-  if (PET_STEP_1_FIELDS.has(fieldKey)) return 1;
-  if (PET_STEP_2_FIELDS.has(fieldKey)) return 2;
-  return 3;
-}
-
-export function mapPetToInput(pet: PetDto): CreatePetInput {
-  return {
-    ownerId: pet.ownerId,
-    petName: pet.petName,
-    speciesId: pet.speciesId,
-    breedId: pet.breedId,
-    customBreedName: pet.customBreedName,
-    photo: pet.photo,
-    sex: pet.sex,
-    reproductiveStatus: pet.reproductiveStatus,
-    birthDateIsEstimated: pet.birthDateIsEstimated,
-    dateOfBirth: pet.dateOfBirth,
-    estimatedYears: pet.estimatedYears,
-    estimatedMonths: pet.estimatedMonths,
-    color: pet.color,
-    weight: pet.weight,
-    microchipNumber: pet.microchipNumber,
-    temperament: pet.temperament,
-    allergies: pet.allergies,
-    medicalNotes: pet.medicalNotes,
-  };
-}
-
-export interface SelectedOwnerSummary {
-  id: number;
-  customerCode: string;
-  fullName: string;
-  phone: string;
-}
 
 interface AddNewPetFormContextValue {
   form: WizardFormApi<CreatePetInput>;
@@ -147,105 +57,39 @@ export function AddNewPetFormProvider({
 }: AddNewPetFormProviderProps) {
   const {
     form,
+    isEdit,
     isOpen,
     setIsOpen,
     currentStep,
+    goToStep,
+    nextStep,
+    prevStep,
     clearFieldError,
     setFieldValue,
     setMultipleFields,
-    validateAll,
-    nextStep,
-    prevStep,
-    goToStep,
-    resetWizardState,
-  } = useWizardForm<CreatePetInput>({
-    initialValues: () => (mode === "edit" && pet ? mapPetToInput(pet) : initialPetValues),
-    resetValues: initialPetValues,
-    routePath: "/pets",
+    isNewOwnerModalOpen,
+    setIsNewOwnerModalOpen,
+    isQrModalOpen,
+    setIsQrModalOpen,
+    selectedOwnerSummary,
+    setSelectedOwnerSummary,
+    handleOwnerCreated,
+    isSubmitting,
+    submitForm,
+    resetForm,
+  } = useAddNewPetForm({
+    mode,
+    pet,
     isOpenControlled,
     onOpenChangeControlled,
-    stepSchemas: PET_STEP_SCHEMAS,
-    fullSchema: createPetInputSchema,
-    resolveFieldStep: resolvePetFieldStep,
+    onSuccess,
   });
-
-  const [isNewOwnerModalOpen, setIsNewOwnerModalOpen] = useState(false);
-  const [isQrModalOpen, setIsQrModalOpen] = useState(false);
-
-  const [selectedOwnerSummary, setSelectedOwnerSummary] = useState<SelectedOwnerSummary | null>(
-    () => {
-      if (mode === "edit" && pet) {
-        return {
-          id: pet.ownerId,
-          customerCode: "",
-          fullName: pet.ownerName,
-          phone: "",
-        };
-      }
-      return null;
-    }
-  );
-
-  const createMutation = useCreatePetMutation();
-  const updateMutation = useUpdatePetMutation();
-
-  // Sync values when pet changes in edit mode
-  useEffect(() => {
-    if (mode === "edit" && pet) {
-      resetWizardState(mapPetToInput(pet));
-      setSelectedOwnerSummary({
-        id: pet.ownerId,
-        customerCode: "",
-        fullName: pet.ownerName,
-        phone: "",
-      });
-    }
-  }, [mode, pet, resetWizardState]);
-
-  const resetForm = useCallback(() => {
-    resetWizardState();
-    setSelectedOwnerSummary(null);
-  }, [resetWizardState]);
-
-  // When a new owner is registered via the embedded owner modal
-  const handleOwnerCreated = useCallback(
-    (newOwner: OwnerDto) => {
-      setFieldValue("ownerId", newOwner.id);
-      setSelectedOwnerSummary({
-        id: newOwner.id,
-        customerCode: newOwner.customerCode,
-        fullName:
-          `${newOwner.customerType === "INDIVIDUAL" ? newOwner.prefix : `${newOwner.prefix}:`} ${newOwner.firstName} ${newOwner.lastName}`.trim(),
-        phone: newOwner.phonePrimary,
-      });
-      setIsNewOwnerModalOpen(false);
-    },
-    [setFieldValue]
-  );
-
-  const submitForm = useCallback(async () => {
-    const validated = validateAll();
-    if (!validated.success) return;
-
-    if (mode === "edit" && pet) {
-      const updated = await updateMutation.mutateAsync({
-        ...validated.data,
-        id: pet.id,
-      });
-      setIsOpen(false);
-      onSuccess?.(updated);
-    } else {
-      await createMutation.mutateAsync(validated.data);
-      setIsOpen(false);
-      resetForm();
-    }
-  }, [validateAll, mode, pet, updateMutation, createMutation, setIsOpen, onSuccess, resetForm]);
 
   const value = useMemo<AddNewPetFormContextValue>(
     () => ({
       form,
       mode,
-      isEdit: mode === "edit",
+      isEdit,
       isOpen,
       setIsOpen,
       currentStep,
@@ -262,13 +106,14 @@ export function AddNewPetFormProvider({
       selectedOwnerSummary,
       setSelectedOwnerSummary,
       handleOwnerCreated,
-      isSubmitting: createMutation.isPending || updateMutation.isPending,
+      isSubmitting,
       submitForm,
       resetForm,
     }),
     [
       form,
       mode,
+      isEdit,
       isOpen,
       setIsOpen,
       currentStep,
@@ -279,17 +124,23 @@ export function AddNewPetFormProvider({
       setFieldValue,
       setMultipleFields,
       isNewOwnerModalOpen,
+      setIsNewOwnerModalOpen,
       isQrModalOpen,
+      setIsQrModalOpen,
       selectedOwnerSummary,
+      setSelectedOwnerSummary,
       handleOwnerCreated,
-      createMutation.isPending,
-      updateMutation.isPending,
+      isSubmitting,
       submitForm,
       resetForm,
     ]
   );
 
-  return <AddNewPetFormContext.Provider value={value}>{children}</AddNewPetFormContext.Provider>;
+  return (
+    <AddNewPetFormContext.Provider value={value}>
+      <form.AppForm>{children}</form.AppForm>
+    </AddNewPetFormContext.Provider>
+  );
 }
 
 export function useAddNewPetFormContext() {
