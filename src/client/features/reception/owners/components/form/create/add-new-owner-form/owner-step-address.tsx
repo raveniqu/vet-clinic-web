@@ -53,11 +53,11 @@ export function OwnerStepAddress() {
       <AppFieldSet>
         <AppFieldLegend>
           <SparklesIcon className="animate-pulse text-amber-500!" />
-          <span>Smart Address Search</span>
+          <span>ค้นหาที่อยู่อัตโนมัติ</span>
         </AppFieldLegend>
         <FieldContent className="gap-3">
           <AppFieldLabel htmlFor="geo-search-input">
-            Type 5-digit postal code or district name
+            พิมพ์รหัสไปรษณีย์ 5 หลัก หรือชื่อแขวง / เขต / อำเภอ
           </AppFieldLabel>
           <Combobox<GeoAddressSuggestion>
             items={suggestions}
@@ -69,7 +69,7 @@ export function OwnerStepAddress() {
           >
             <ComboboxInput
               id="geo-search-input"
-              placeholder="e.g., 10110, Vadhana, or Khlong Tan..."
+              placeholder="เช่น 10110, วัฒนา หรือ คลองตันเหนือ..."
               showClear
               className="w-full text-xs placeholder:text-xs!"
             >
@@ -86,8 +86,8 @@ export function OwnerStepAddress() {
               <ComboboxList>
                 <ComboboxEmpty className="py-3 text-center text-xs text-muted-foreground">
                   {query.trim().length < 2
-                    ? "Type at least 2 characters to search addresses..."
-                    : "No matching Thai addresses found."}
+                    ? "พิมพ์อย่างน้อย 2 ตัวอักษรเพื่อค้นหาที่อยู่..."
+                    : "ไม่พบข้อมูลที่อยู่ที่ตรงกัน"}
                 </ComboboxEmpty>
                 {suggestions.map((item) => (
                   <ComboboxItem key={item.id} value={item} className="text-xs">
@@ -104,27 +104,25 @@ export function OwnerStepAddress() {
       <AppFieldSet>
         <AppFieldLegend>
           <MapPinIcon />
-          <span>Address Details</span>
+          <span>รายละเอียดที่อยู่</span>
         </AppFieldLegend>
         <FieldContent className="gap-6">
           <Field data-invalid={!!errors.addressLine}>
             <AppFieldLabel htmlFor="owner-addressline">
-              Street Address (House No., Building, Alley, Road)
+              ที่อยู่ (บ้านเลขที่ อาคาร หมู่บ้าน ซอย ถนน)
               <span className="font-bold text-destructive">*</span>
             </AppFieldLabel>
             <Input
               id="owner-addressline"
               value={values.addressLine}
               onChange={handleAddressLineChange}
-              placeholder="e.g., 88/12 Thong Lo Soi 13, Sukhumvit 55 Rd."
+              placeholder="เช่น 88/12 ซ.ทองหล่อ 13 ถ.สุขุมวิท 55"
               aria-invalid={!!errors.addressLine}
             />
             {errors.addressLine ? (
               <AppFieldError>{errors.addressLine}</AppFieldError>
             ) : (
-              <AppFieldDescription>
-                Specify building number, village, alley, and road.
-              </AppFieldDescription>
+              <AppFieldDescription>ระบุบ้านเลขที่ อาคาร หมู่บ้าน ซอย และถนน</AppFieldDescription>
             )}
           </Field>
 
@@ -132,7 +130,7 @@ export function OwnerStepAddress() {
             {/* Subdistrict / Tambon: Can be searched or chosen first without prior district selection */}
             <Field data-invalid={!!errors.subdistrict}>
               <AppFieldLabel htmlFor="owner-subdistrict">
-                Subdistrict / Tambon
+                แขวง / ตำบล
                 <span className="font-bold text-destructive">*</span>
               </AppFieldLabel>
               <Combobox<SubdistrictItem>
@@ -145,7 +143,7 @@ export function OwnerStepAddress() {
               >
                 <ComboboxInput
                   id="owner-subdistrict"
-                  placeholder="Select or search subdistrict / tambon..."
+                  placeholder="เลือกหรือค้นหาแขวง / ตำบล..."
                   showClear
                   className="w-full"
                   aria-invalid={!!errors.subdistrict}
@@ -157,7 +155,7 @@ export function OwnerStepAddress() {
                 >
                   <ComboboxList>
                     <ComboboxEmpty className="py-3 text-center text-xs text-muted-foreground">
-                      Type at least 2 characters to search subdistricts...
+                      พิมพ์อย่างน้อย 2 ตัวอักษรเพื่อค้นหาแขวง / ตำบล...
                     </ComboboxEmpty>
                     {subdistrictItems.map((sub) => (
                       <ComboboxItem key={sub.id} value={sub} className="text-xs">
@@ -173,7 +171,7 @@ export function OwnerStepAddress() {
             {/* District / Amphoe: Can be chosen independently, auto-filling province */}
             <Field data-invalid={!!errors.district}>
               <AppFieldLabel htmlFor="owner-district">
-                District / Amphoe
+                เขต / อำเภอ
                 <span className="font-bold text-destructive">*</span>
               </AppFieldLabel>
               <Combobox<DistrictItem>
@@ -186,7 +184,7 @@ export function OwnerStepAddress() {
               >
                 <ComboboxInput
                   id="owner-district"
-                  placeholder="Select or search district / amphoe..."
+                  placeholder="เลือกหรือค้นหาเขต / อำเภอ..."
                   showClear
                   className="w-full"
                   aria-invalid={!!errors.district}
@@ -198,7 +196,7 @@ export function OwnerStepAddress() {
                 >
                   <ComboboxList>
                     <ComboboxEmpty className="py-3 text-center text-xs text-muted-foreground">
-                      No matching districts found.
+                      ไม่พบเขต / อำเภอที่ตรงกัน
                     </ComboboxEmpty>
                     {districtItems.map((dist) => (
                       <ComboboxItem key={dist.id} value={dist} className="text-xs">
@@ -214,7 +212,7 @@ export function OwnerStepAddress() {
             {/* Province */}
             <Field data-invalid={!!errors.province}>
               <AppFieldLabel htmlFor="owner-province">
-                Province
+                จังหวัด
                 <span className="font-bold text-destructive">*</span>
               </AppFieldLabel>
               <Combobox<string>
@@ -225,7 +223,7 @@ export function OwnerStepAddress() {
               >
                 <ComboboxInput
                   id="owner-province"
-                  placeholder="Select or search province..."
+                  placeholder="เลือกหรือค้นหาจังหวัด..."
                   showClear
                   className="w-full"
                   aria-invalid={!!errors.province}
@@ -237,7 +235,7 @@ export function OwnerStepAddress() {
                 >
                   <ComboboxList>
                     <ComboboxEmpty className="py-3 text-center text-xs text-muted-foreground">
-                      No provinces found.
+                      ไม่พบจังหวัดที่ตรงกัน
                     </ComboboxEmpty>
                     {provinceOptions.map((prov) => (
                       <ComboboxItem key={prov} value={prov} className="text-xs">
@@ -253,7 +251,7 @@ export function OwnerStepAddress() {
             {/* Postal Code: Supports typing 5 digits to auto-detect province and district */}
             <Field data-invalid={!!errors.postalCode}>
               <AppFieldLabel htmlFor="owner-postalcode">
-                Postal Code
+                รหัสไปรษณีย์
                 <span className="font-bold text-destructive">*</span>
               </AppFieldLabel>
               <Input
@@ -262,7 +260,7 @@ export function OwnerStepAddress() {
                 maxLength={5}
                 value={values.postalCode}
                 onChange={handlePostalCodeChange}
-                placeholder="e.g., 10110"
+                placeholder="เช่น 10110"
                 aria-invalid={!!errors.postalCode}
                 className="tracking-wider"
               />

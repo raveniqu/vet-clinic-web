@@ -53,9 +53,9 @@ export function PetsToolbar() {
       <AppCardHeader>
         <AppCardTitle>
           <PawPrint className="size-4 text-primary" aria-hidden="true" />
-          <span className="line-clamp-1 text-ellipsis">Search Pets</span>
+          <span className="line-clamp-1 text-ellipsis">ค้นหาสัตว์เลี้ยง</span>
         </AppCardTitle>
-        <AppCardDescription>Search and filter pets by conditions.</AppCardDescription>
+        <AppCardDescription>ค้นหาและกรองรายชื่อสัตว์เลี้ยงตามเงื่อนไขที่ต้องการ</AppCardDescription>
         <AppCardAction>
           {isMobile ? (
             <PetsSpeciesSelect />
@@ -82,7 +82,7 @@ export function PetsToolbar() {
           onQuickFiltersChange={onQuickFiltersChange}
           clearAllFilters={clearAllFilters}
           iconMeta={QUICK_FILTER_ICON_META}
-          ariaLabel="Quick pet filters"
+          ariaLabel="ตัวกรองด่วนสัตว์เลี้ยง"
           labelVisibility="lg"
         />
       </AppCardFooter>

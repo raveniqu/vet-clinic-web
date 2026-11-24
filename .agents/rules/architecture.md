@@ -28,7 +28,7 @@ trigger: always_on
 - `composition/`: DI Container รวม Object Graph (ผูก Infrastructure Repositories เข้ากับ Use Cases) แบบ Singleton
 - `config/`: ตรวจสอบความถูกต้องของ Server Environment Variables ด้วย Zod Schema (`env.ts`) แบบ Fail-fast
 - `domain/`: Business Invariants และกฎทางธุรกิจหลัก (Entities, Aggregate Roots, Interfaces, Domain Errors)
-- `infrastructure/`: เชื่อมต่อระบบภายนอกจริง (PostgreSQL ผ่าน Drizzle ORM, Clerk Auth) ตาม Repository Interface
+- `infrastructure/`: เชื่อมต่อระบบภายนอกจริง (PostgreSQL ผ่าน Drizzle ORM, External Auth Provider เช่น Better Auth หรือ Clerk) ตาม Repository / Gateway Interface
 
 #### Domain
 
@@ -56,7 +56,7 @@ trigger: always_on
 `server/composition/`: ศูนย์รวม Dependency Injection (DI)
 
 - `server/composition/<module>.container.ts`: ประกอบ Use Cases ประจำโมดูลและ Inject Repositories เข้าไป
-- `server/composition/repositories.ts`: สร้าง Instance ของ Repositories, Unit of Work และ Clerk Provider จาก `db`
+- `server/composition/repositories.ts`: สร้าง Instance ของ Repositories, Unit of Work และ External Providers จาก `db`
 
 #### Config
 
@@ -141,7 +141,7 @@ flowchart LR
 
 - `client/features/**/*`: รวมศูนย์พื้นที่ทั้งหมด ตามโครงสร้าง Multi-Screen:
   - `screens/*.tsx`: Composition Roots ประจำแต่ละหน้าและ Layout (`layout.screen.tsx`, `home.screen.tsx`, `contact.screen.tsx`, `profile.screen.tsx`) ประกอบ Layout และ Zero Props Components จาก `components/`
-  - `layout/`: Public Header, Navigation, Footer, และ Modal Auth Controls
+  - `layout/`: Public Header, Navigation, Footer, และ Auth Controls
 - โครงสร้างทั่วไปของโมดูลฟีเจอร์:
   - `components/**/*.tsx`: Presentation Components แบบ **Zero Props** (Pure UI ไม่ถือ Logic อ่าน State/Actions ผ่าน Hooks เท่านั้น)
   - `contexts/**/*.tsx`: Compound Context ประจำฟีเจอร์ กระจาย State โดยไม่ใช้ Prop Drilling (ถ้ามี)
@@ -151,8 +151,8 @@ flowchart LR
 
 ### Authentication & Route Protection Boundary
 
-- **Modal-based Auth**: ระบบใช้ Authentication ในรูปแบบ Modal Dialog ทั้งหมด ห้ามสร้างหน้าเฉพาะแยกสำหรับ `/sign-in` หรือ `/sign-up`
-- **Polite Auth Gate**: เมื่อผู้ใช้งานเข้าถึงหน้าที่ต้องการ Authentication ในขณะที่ยังไม่ได้ล็อกอิน ให้ออกแบบ UI เป็น Auth Gate Component พร้อมปุ่มเรียก Auth Modal Dialog โดยตรง ห้ามโยน `redirect({ to: "/sign-in" })`
+- **Flexible Auth Flow (Dedicated Routes หรือ Modal-based Auth)**: ระบบรองรับทั้งการทำ Authentication ผ่านหน้าเฉพาะ (`/sign-in`, `/sign-up` ภายใต้ Pathless Layout Route เช่น `_public/**`) หรือในรูปแบบ Modal Dialog ตามความต้องการของโปรเจกต์
+- **Route Guard หรือ Polite Auth Gate**: เมื่อผู้ใช้งานเข้าถึงหน้าที่ต้องการ Authentication สามารถเลือกใช้ Route Guard (`beforeLoad` พร้อม `redirect({ to: "/sign-in" })` ภายใต้ Pathless Layout Route เช่น `_auth/**`) หรือแสดง Polite Auth Gate Component บนหน้าจอได้ตาม UX ที่โปรเจกต์กำหนด โดยต้องแยก Logic การตรวจสอบสิทธิ์ไว้ที่ Route / Hook / Cache / Middleware เสมอ
 
 ### Shared
 

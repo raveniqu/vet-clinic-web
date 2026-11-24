@@ -44,7 +44,7 @@ export function AppSidebar() {
       <SidebarFooter>
         <AppProfile />
       </SidebarFooter>
-      <SidebarRail />
+      <SidebarRail title="สลับแถบเมนูด้านข้าง" aria-label="สลับแถบเมนูด้านข้าง" />
     </Sidebar>
   );
 }

@@ -35,9 +35,9 @@ describe("Pet form pure helpers", () => {
       customerCode: "CUS-2026-0001",
       createdAt: "2026-01-10T00:00:00.000Z",
       customerType: "INDIVIDUAL",
-      prefix: "Ms.",
-      firstName: "Emily",
-      lastName: "Watson",
+      prefix: "นางสาว",
+      firstName: "วิภาดา",
+      lastName: "ศรีสุวรรณ",
       taxId: "1100500123456",
       dateOfBirth: "1990-02-14",
       gender: "Female",
@@ -46,14 +46,14 @@ describe("Pet form pure helpers", () => {
       lineId: "",
       email: "",
       addressLine: "88/12",
-      subdistrict: "Khlong Tan Nuea",
-      district: "Watthana",
-      province: "Bangkok",
+      subdistrict: "คลองตันเหนือ",
+      district: "วัฒนา",
+      province: "กรุงเทพมหานคร",
       postalCode: "10110",
-      referralSource: "Walk-in",
+      referralSource: "มาที่คลินิกโดยตรง",
       preferredChannel: "LINE",
       preferredTime: "13:00 - 17:00",
-      preferredLanguage: "EN",
+      preferredLanguage: "TH",
       pdpaPrivacyNotice: true,
       pdpaReminders: true,
       pdpaMarketing: false,
@@ -64,17 +64,17 @@ describe("Pet form pure helpers", () => {
       ...individualOwner,
       id: "01950f4b-3d44-7000-8000-000000000102",
       customerType: "JURISTIC",
-      prefix: "Company",
-      firstName: "Happy Pet Care Co.",
+      prefix: "บริษัท",
+      firstName: "แฮปปี้เพ็ท แคร์ จำกัด",
       lastName: "",
     };
 
-    assert.equal(formatOwnerSummaryName(individualOwner), "Ms. Emily Watson");
-    assert.equal(formatOwnerSummaryName(juristicOwner), "Company: Happy Pet Care Co.");
+    assert.equal(formatOwnerSummaryName(individualOwner), "นางสาว วิภาดา ศรีสุวรรณ");
+    assert.equal(formatOwnerSummaryName(juristicOwner), "บริษัท แฮปปี้เพ็ท แคร์ จำกัด");
     assert.deepEqual(mapOwnerToSelectedSummary(juristicOwner), {
       id: juristicOwner.id,
       customerCode: "CUS-2026-0001",
-      fullName: "Company: Happy Pet Care Co.",
+      fullName: "บริษัท แฮปปี้เพ็ท แคร์ จำกัด",
       phone: "0891234567",
     });
 
@@ -82,12 +82,12 @@ describe("Pet form pure helpers", () => {
       id: "01950f4b-3d44-7000-8000-000000000001",
       petCode: "PET-2026-0001",
       ownerId: individualOwner.id,
-      ownerName: "Ms. Emily Watson",
-      petName: "Bella",
+      ownerName: "นางสาว วิภาดา ศรีสุวรรณ",
+      petName: "เบลล่า",
       speciesId: 1,
-      speciesName: "Dog",
+      speciesName: "สุนัข",
       breedId: 10,
-      breedName: "Beagle",
+      breedName: "บีเกิ้ล",
       customBreedName: "",
       photo: "",
       sex: "Female",
@@ -96,7 +96,7 @@ describe("Pet form pure helpers", () => {
       dateOfBirth: "2022-05-01",
       estimatedYears: 0,
       estimatedMonths: 0,
-      color: "Tricolor",
+      color: "สามสี",
       weight: "10.4",
       microchipNumber: "900123456789012",
       temperament: "Docile",
@@ -106,11 +106,11 @@ describe("Pet form pure helpers", () => {
       createdAt: "2026-01-10T00:00:00.000Z",
     };
 
-    assert.equal(mapPetToInput(pet).petName, "Bella");
+    assert.equal(mapPetToInput(pet).petName, "เบลล่า");
     assert.deepEqual(mapPetToSelectedOwnerSummary(pet), {
       id: individualOwner.id,
       customerCode: "",
-      fullName: "Ms. Emily Watson",
+      fullName: "นางสาว วิภาดา ศรีสุวรรณ",
       phone: "",
     });
   });

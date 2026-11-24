@@ -15,25 +15,25 @@ export function PetsSummary() {
 
   const summary = [
     {
-      title: "Total Pets",
+      title: "สัตว์เลี้ยงทั้งหมด",
       value: totalPets,
       icon: <PawPrint className="size-5" />,
       iconColor: "bg-primary/10 text-primary",
     },
     {
-      title: "Dogs",
+      title: "สุนัข",
       value: totalDogs,
       icon: <Dog className="size-5" />,
       iconColor: "bg-amber-500/10 text-amber-500",
     },
     {
-      title: "Cats",
+      title: "แมว",
       value: totalCats,
       icon: <Cat className="size-5" />,
       iconColor: "bg-green-500/10 text-green-500",
     },
     {
-      title: "Allergies",
+      title: "มีประวัติแพ้",
       value: totalAllergies,
       icon: <AlertTriangle className="size-5" />,
       iconColor: "bg-rose-500/10 text-rose-500",

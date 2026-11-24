@@ -6,6 +6,7 @@ import {
   petsByOwnerQueryOptions,
   speciesQueryOptions,
 } from "#/client/caches/pets/queries/pets.query";
+import { formatThaiLongDate } from "#/client/shared/helpers/formatters";
 import { toast } from "#/client/shared/shadcn/components/ui/toast";
 import { formatFullAddress, getOwnerDisplayName } from "../models/owners-table";
 
@@ -24,12 +25,7 @@ export function useOwnerDetails() {
   const fullBillingAddress = formatFullAddress(owner);
 
   const formattedRegisteredDate = useMemo(
-    () =>
-      new Date(owner.createdAt).toLocaleDateString("th-TH", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
+    () => formatThaiLongDate(owner.createdAt),
     [owner.createdAt]
   );
 
@@ -43,7 +39,7 @@ export function useOwnerDetails() {
 
   const handleOpenEmr = useCallback(() => {
     toast.add({
-      title: "Waiting for Domain 3",
+      title: "ฟีเจอร์เวชระเบียน (EMR) อยู่ระหว่างการพัฒนา",
     });
   }, []);
 

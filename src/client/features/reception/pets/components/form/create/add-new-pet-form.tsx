@@ -34,16 +34,16 @@ export function AddNewPetForm() {
         }
       >
         <Dog className="size-4" />
-        <span className="sr-only md:not-sr-only md:text-xs lg:text-sm">Add New Pet</span>
+        <span className="sr-only md:not-sr-only md:text-xs lg:text-sm">เพิ่มสัตว์เลี้ยงใหม่</span>
       </SheetTrigger>
 
       <SheetContent className="flex h-full w-full! gap-0 bg-secondary sm:max-w-md! md:max-w-xl! lg:max-w-2xl!">
         <form className="contents" noValidate onSubmit={handleFormSubmit}>
           {/* Header */}
           <SheetHeader className="pt-6 pb-3 text-left">
-            <SheetTitle className="text-base sm:text-lg">Register New Pet</SheetTitle>
+            <SheetTitle className="text-base sm:text-lg">ลงทะเบียนสัตว์เลี้ยงใหม่</SheetTitle>
             <SheetDescription className="text-xs">
-              Create new pet profile, link primary owner, and record initial medical baseline.
+              สร้างประวัติสัตว์เลี้ยง เชื่อมโยงเจ้าของหลัก และบันทึกข้อมูลสุขภาพเบื้องต้น
             </SheetDescription>
           </SheetHeader>
 

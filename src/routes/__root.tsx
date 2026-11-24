@@ -22,7 +22,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         name: "description",
-        content: "A simple TanStack Start template with Shadcn UI",
+        content: "ระบบบริหารจัดการคลินิกสัตวแพทย์ครบวงจร",
       },
     ],
     links: [

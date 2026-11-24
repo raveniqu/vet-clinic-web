@@ -241,7 +241,7 @@ export class InMemoryDb {
   public updatePet(input: UpdatePetInput): PetDto {
     const record = this.pets.get(input.id);
     if (!record || record.status === "DECEASED") {
-      throw new Error(`Pet not found with ID ${input.id}`);
+      throw new Error(`ไม่พบข้อมูลสัตว์เลี้ยงรหัส ${input.id}`);
     }
 
     const now = new Date().toISOString();
@@ -294,11 +294,11 @@ export class InMemoryDb {
     const breedName =
       record.customBreedName && record.customBreedName.trim() !== ""
         ? record.customBreedName
-        : (breed?.breedName ?? "Unknown");
+        : (breed?.breedName ?? "ไม่ระบุ");
 
     const ownerName = customer
       ? customer.displayName || `${customer.firstName} ${customer.lastName}`.trim()
-      : "Unknown Owner";
+      : "ไม่ระบุเจ้าของ";
 
     const ownerId = customer ? customer.id : "";
 
@@ -309,7 +309,7 @@ export class InMemoryDb {
       ownerId,
       ownerName,
       speciesId: record.speciesId,
-      speciesName: species?.name ?? "Other",
+      speciesName: species?.nameTh ?? species?.name ?? "อื่นๆ",
       breedId: record.breedId,
       breedName,
       customBreedName: record.customBreedName ?? "",
@@ -468,7 +468,7 @@ export class InMemoryDb {
   public updateOwner(input: UpdateOwnerInput): OwnerDto {
     const customer = this.customers.get(input.id);
     if (customer?.status !== "ACTIVE") {
-      throw new Error(`Owner not found with ID ${input.id}`);
+      throw new Error(`ไม่พบข้อมูลเจ้าของสัตว์เลี้ยงรหัส ${input.id}`);
     }
 
     const now = new Date().toISOString();
@@ -676,10 +676,10 @@ export class InMemoryDb {
       district: primaryAddress?.district ?? "",
       province: primaryAddress?.province ?? "",
       postalCode: primaryAddress?.postalCode ?? "",
-      referralSource: pref?.referralSource ?? "Walk-in",
+      referralSource: pref?.referralSource ?? "มาที่คลินิกโดยตรง",
       preferredChannel: pref?.preferredChannel ?? "LINE",
       preferredTime: pref?.preferredTime ?? "13:00 - 17:00",
-      preferredLanguage: pref?.preferredLanguage ?? "EN",
+      preferredLanguage: pref?.preferredLanguage ?? "TH",
       pdpaPrivacyNotice: pref?.pdpaPrivacyNotice ?? true,
       pdpaReminders: pref?.pdpaReminders ?? true,
       pdpaMarketing: pref?.pdpaMarketing ?? false,

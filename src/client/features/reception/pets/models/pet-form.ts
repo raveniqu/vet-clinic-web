@@ -91,8 +91,11 @@ export function mapPetToInput(pet: PetDto): CreatePetInput {
 }
 
 export function formatOwnerSummaryName(owner: OwnerDto): string {
-  const prefixLabel = owner.customerType === "INDIVIDUAL" ? owner.prefix : `${owner.prefix}:`;
-  return `${prefixLabel} ${owner.firstName} ${owner.lastName}`.trim();
+  const parts =
+    owner.customerType === "JURISTIC"
+      ? [owner.prefix, owner.firstName]
+      : [owner.prefix, owner.firstName, owner.lastName];
+  return parts.filter((part) => part.trim().length > 0).join(" ");
 }
 
 export function mapOwnerToSelectedSummary(owner: OwnerDto): SelectedOwnerSummary {

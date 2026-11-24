@@ -10,14 +10,14 @@ import type { AppSidebarMenusProps } from "./app-sidebar-menus";
 const managementMenus: AppSidebarMenusProps[] = [
   {
     id: "staff",
-    title: "Staff",
+    title: "บุคลากร",
     href: "/staff",
     icon: UserRoundGroup,
     items: [],
   },
   {
     id: "settings",
-    title: "Settings",
+    title: "ตั้งค่าระบบ",
     href: "/settings",
     icon: Settings,
     items: [],
@@ -27,7 +27,7 @@ const managementMenus: AppSidebarMenusProps[] = [
 export function AppSidebarMenuManagement() {
   return (
     <SidebarGroup className="mt-auto">
-      <SidebarGroupLabel>Management</SidebarGroupLabel>
+      <SidebarGroupLabel>การจัดการระบบ</SidebarGroupLabel>
       <SidebarGroupContent>
         <AppSidebarMenus menus={managementMenus} />
       </SidebarGroupContent>

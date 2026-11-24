@@ -16,16 +16,16 @@ export type PreferredLanguage = z.infer<typeof preferredLanguageEnum>;
 // Step 1: Identity & Contact Schema Base Object
 export const step1IdentityContactBaseSchema = z.object({
   customerType: customerTypeEnum.default("INDIVIDUAL"),
-  prefix: z.string().min(1, "Please select or enter a prefix"),
+  prefix: z.string().min(1, "กรุณาเลือกหรือระบุคำนำหน้าชื่อ"),
   firstName: z.string(),
   lastName: z.string().optional().default(""),
-  taxId: z.string().min(1, "Tax ID is required"),
+  taxId: z.string().min(1, "กรุณาระบุเลขประจำตัวผู้เสียภาษี / เลขบัตรประชาชน"),
   dateOfBirth: z.string().optional().default(""),
   gender: genderEnum.default("Not Specified"),
   phonePrimary: z
     .string()
-    .min(9, "Primary phone number must be at least 9 digits")
-    .max(15, "Phone number is too long"),
+    .min(9, "เบอร์โทรศัพท์หลักต้องมีอย่างน้อย 9 หลัก")
+    .max(15, "เบอร์โทรศัพท์ยาวเกินกว่าที่กำหนด"),
   phoneSecondary: z.string().optional().default(""),
   lineId: z.string().optional().default(""),
   email: z.string().optional().default(""),
@@ -39,21 +39,21 @@ function refineIdentityContact(
     if (!data.firstName || data.firstName.trim() === "") {
       ctx.addIssue({
         code: "custom",
-        message: "First name is required",
+        message: "กรุณาระบุชื่อจริง",
         path: ["firstName"],
       });
     }
     if (!data.lastName || data.lastName.trim() === "") {
       ctx.addIssue({
         code: "custom",
-        message: "Last name is required",
+        message: "กรุณาระบุนามสกุล",
         path: ["lastName"],
       });
     }
     if (data.taxId && !/^[0-9]{13}$/.test(data.taxId)) {
       ctx.addIssue({
         code: "custom",
-        message: "Citizen / Tax ID must be 13 digits",
+        message: "เลขบัตรประชาชน / เลขประจำตัวผู้เสียภาษีต้องเป็นตัวเลข 13 หลัก",
         path: ["taxId"],
       });
     }
@@ -61,14 +61,14 @@ function refineIdentityContact(
     if (!data.firstName || data.firstName.trim() === "") {
       ctx.addIssue({
         code: "custom",
-        message: "Organization name is required",
+        message: "กรุณาระบุชื่อองค์กรหรือนิติบุคคล",
         path: ["firstName"],
       });
     }
     if (data.taxId && !/^0[0-9]{12}$/.test(data.taxId)) {
       ctx.addIssue({
         code: "custom",
-        message: "Organization Tax ID must be 13 digits starting with 0",
+        message: "เลขประจำตัวผู้เสียภาษีนิติบุคคลต้องเป็นตัวเลข 13 หลักและขึ้นต้นด้วย 0",
         path: ["taxId"],
       });
     }
@@ -80,21 +80,21 @@ export const step1IdentityContactSchema =
 
 // Step 2: Address Schema
 export const step2AddressSchema = z.object({
-  addressLine: z.string().min(1, "Street address line is required"),
-  subdistrict: z.string().min(1, "Subdistrict is required"),
-  district: z.string().min(1, "District is required"),
-  province: z.string().min(1, "Province is required"),
-  postalCode: z.string().regex(/^[0-9]{5}$/, "Postal code must be 5 digits"),
+  addressLine: z.string().min(1, "กรุณาระบุที่อยู่ (บ้านเลขที่ อาคาร ซอย ถนน)"),
+  subdistrict: z.string().min(1, "กรุณาระบุแขวง / ตำบล"),
+  district: z.string().min(1, "กรุณาระบุเขต / อำเภอ"),
+  province: z.string().min(1, "กรุณาระบุจังหวัด"),
+  postalCode: z.string().regex(/^[0-9]{5}$/, "รหัสไปรษณีย์ต้องเป็นตัวเลข 5 หลัก"),
 });
 
 // Step 3: Preferences & PDPA Schema
 export const step3PreferencesPdpaSchema = z.object({
-  referralSource: z.string().default("Walk-in"),
+  referralSource: z.string().default("มาที่คลินิกโดยตรง"),
   preferredChannel: preferredChannelEnum.default("LINE"),
   preferredTime: z.string().default("13:00 - 17:00"),
-  preferredLanguage: preferredLanguageEnum.default("EN"),
+  preferredLanguage: preferredLanguageEnum.default("TH"),
   pdpaPrivacyNotice: z.boolean().refine((val) => val === true, {
-    message: "Privacy policy acknowledgment is required",
+    message: "กรุณายืนยันการรับทราบนโยบายความเป็นส่วนตัว",
   }),
   pdpaReminders: z.boolean().default(true),
   pdpaMarketing: z.boolean().default(false),

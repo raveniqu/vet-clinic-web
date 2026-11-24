@@ -10,28 +10,28 @@ import type { AppSidebarMenusProps } from "./app-sidebar-menus";
 const receptionMenus: AppSidebarMenusProps[] = [
   {
     id: "owners",
-    title: "Owners",
+    title: "เจ้าของสัตว์เลี้ยง",
     href: "/owners",
     icon: UsersRound,
     items: [],
   },
   {
     id: "pets",
-    title: "Pets",
+    title: "สัตว์เลี้ยง",
     href: "/pets",
     icon: PawPrint,
     items: [],
   },
   {
     id: "queue",
-    title: "Queue",
+    title: "คิวตรวจ",
     href: "/queue",
     icon: ClipboardList,
     items: [],
   },
   {
     id: "appointments",
-    title: "Appointments",
+    title: "นัดหมาย",
     href: "/appointments",
     icon: CalendarCheck,
     items: [],
@@ -41,7 +41,7 @@ const receptionMenus: AppSidebarMenusProps[] = [
 export function AppSidebarMenuReception() {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Reception</SidebarGroupLabel>
+      <SidebarGroupLabel>งานต้อนรับ</SidebarGroupLabel>
       <SidebarGroupContent>
         <AppSidebarMenus menus={receptionMenus} />
       </SidebarGroupContent>

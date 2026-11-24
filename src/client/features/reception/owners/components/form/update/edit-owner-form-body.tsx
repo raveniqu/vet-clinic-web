@@ -22,9 +22,9 @@ export function EditOwnerFormBody() {
         <form className="contents" noValidate onSubmit={handleFormSubmit}>
           {/* Header */}
           <SheetHeader className="pt-6 pb-3 text-left">
-            <SheetTitle className="text-base sm:text-lg">Edit Owner Profile</SheetTitle>
+            <SheetTitle className="text-base sm:text-lg">แก้ไขข้อมูลเจ้าของสัตว์เลี้ยง</SheetTitle>
             <SheetDescription className="text-xs">
-              Update owner contact channels, address, and PDPA consent preferences.
+              อัปเดตข้อมูลส่วนตัว ช่องทางการติดต่อ ที่อยู่ และความยินยอม PDPA
             </SheetDescription>
           </SheetHeader>
 

@@ -24,7 +24,7 @@ export function AppSidebarTrigger({
       {...props}
     >
       {open ? <PanelLeftClose /> : <PanelLeftOpen />}
-      <span className="sr-only">{open ? "Open" : "Close"}</span>
+      <span className="sr-only">{open ? "ย่อแถบเมนูด้านข้าง" : "ขยายแถบเมนูด้านข้าง"}</span>
     </Button>
   );
 }

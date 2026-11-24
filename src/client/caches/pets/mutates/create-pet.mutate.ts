@@ -14,9 +14,9 @@ export function useCreatePetMutation() {
     meta: {
       successToast: (data) => {
         const pet = data as PetDto;
-        return `New pet registered successfully (${pet.petName} - ${pet.petCode})`;
+        return `ลงทะเบียนสัตว์เลี้ยงเรียบร้อยแล้ว (${pet.petName} - ${pet.petCode})`;
       },
-      errorToast: "Failed to register new pet. Please check the details and try again.",
+      errorToast: "ไม่สามารถลงทะเบียนสัตว์เลี้ยงได้ กรุณาตรวจสอบข้อมูลและลองใหม่อีกครั้ง",
     },
     onSuccess: async (data) => {
       queryClient.setQueryData(petKeys.detail(data.id), data);

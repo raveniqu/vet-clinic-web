@@ -36,7 +36,7 @@ export function AppRowsPerPageSelector({
   pageSizeItems = DEFAULT_PAGE_SIZE_ITEMS,
   onPageSizeChange,
   totalCount,
-  itemLabel = "items",
+  itemLabel = "รายการ",
 }: AppRowsPerPageSelectorProps) {
   const selectId = useId();
   const { open: isSidebarOpen } = useSidebar();
@@ -60,7 +60,7 @@ export function AppRowsPerPageSelector({
     <div className="flex flex-wrap items-center gap-3">
       <div className="flex items-center gap-2">
         <Label htmlFor={selectId} className="text-xs text-muted-foreground">
-          Rows per page
+          แสดงต่อหน้า
         </Label>
         <Select
           value={pagination.pageSize}
@@ -94,7 +94,7 @@ export function AppRowsPerPageSelector({
           "md:hidden lg:block": isSidebarOpen,
         })}
       >
-        Showing {pagination.startItemIndex}-{pagination.endItemIndex} of {resolvedTotalCount}{" "}
+        แสดง {pagination.startItemIndex}-{pagination.endItemIndex} จาก {resolvedTotalCount}{" "}
         {itemLabel}
       </span>
     </div>

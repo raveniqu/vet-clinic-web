@@ -8,7 +8,7 @@ export function PetDetailEditButton() {
   return (
     <Button variant="outline" onClick={openEditDialog}>
       <Edit aria-hidden="true" />
-      <span>Edit Pet</span>
+      <span>แก้ไขข้อมูลสัตว์เลี้ยง</span>
     </Button>
   );
 }

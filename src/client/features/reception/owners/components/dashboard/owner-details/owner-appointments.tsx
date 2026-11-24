@@ -12,11 +12,13 @@ export function OwnerAppointments() {
       <AppCardHeader>
         <AppCardTitle>
           <Calendar className="size-4 text-primary" />
-          <span>Appointment Record</span>
+          <span>ประวัตินัดหมาย</span>
         </AppCardTitle>
       </AppCardHeader>
       <AppCardContent>
-        <p className="text-lg">Waiting for Domain 2</p>
+        <p className="text-sm text-muted-foreground">
+          ยังไม่มีข้อมูลประวัตินัดหมาย (โมดูลนัดหมายอยู่ระหว่างการพัฒนา)
+        </p>
       </AppCardContent>
     </AppCard>
   );

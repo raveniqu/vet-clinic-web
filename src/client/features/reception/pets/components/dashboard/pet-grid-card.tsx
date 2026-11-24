@@ -15,7 +15,11 @@ import {
   CardTitle,
 } from "#/client/shared/shadcn/components/ui/card";
 import { usePetRowActions } from "#/client/features/reception/pets/hooks/use-pet-row-actions";
-import { getPetInitials } from "#/client/features/reception/pets/models/pets-table";
+import {
+  getPetInitials,
+  PET_SEX_LABEL_MAP,
+  REPRODUCTIVE_STATUS_LABEL_MAP,
+} from "#/client/features/reception/pets/models/pets-table";
 
 export function PetGridCard() {
   const { pet, handleEdit } = usePetRowActions();
@@ -33,9 +37,9 @@ export function PetGridCard() {
             <CardDescription className="text-xs">{pet.breedName}</CardDescription>
 
             <div className="flex items-center gap-1">
-              <Badge variant="secondary">{pet.sex}</Badge>
+              <Badge variant="secondary">{PET_SEX_LABEL_MAP[pet.sex]}</Badge>
               <Badge variant={pet.reproductiveStatus === "Intact" ? "destructive" : "outline"}>
-                {pet.reproductiveStatus}
+                {REPRODUCTIVE_STATUS_LABEL_MAP[pet.reproductiveStatus]}
               </Badge>
             </div>
           </div>
@@ -45,7 +49,7 @@ export function PetGridCard() {
             size="icon-xs"
             variant="ghost"
             onClick={handleEdit}
-            aria-label={`Edit ${pet.petName}`}
+            aria-label={`แก้ไขข้อมูลของ ${pet.petName}`}
           >
             <Pencil aria-hidden="true" />
           </Button>
@@ -54,21 +58,21 @@ export function PetGridCard() {
       <CardContent className="mt-auto flex flex-col gap-4">
         <div className="flex justify-between rounded-xl bg-muted-foreground/5 p-4">
           <p className="text-xs">
-            <span>Age:</span>
+            <span>อายุ:</span>
             <span className="font-semibold"> {formatPetAge(pet)}</span>
           </p>
           <p className="text-xs">
-            <span>Latest Weight:</span>
+            <span>น้ำหนักล่าสุด:</span>
             <span className="font-semibold text-emerald-600 dark:text-emerald-400">
               {" "}
               {pet.weight}
             </span>
-            <span className="font-semibold text-emerald-600 dark:text-emerald-400"> kg.</span>
+            <span className="font-semibold text-emerald-600 dark:text-emerald-400"> กก.</span>
           </p>
         </div>
         <div className="flex items-center justify-between">
           <p className="text-xs">
-            <span>Owner:</span>
+            <span>เจ้าของ:</span>
             <span className="font-semibold"> {pet.ownerName}</span>
           </p>
 
@@ -89,14 +93,14 @@ export function PetGridCard() {
               className="stroke-emerald-600 dark:stroke-emerald-400"
               aria-hidden="true"
             />
-            <AlertTitle className="text-sm font-medium">No Allergy Records</AlertTitle>
+            <AlertTitle className="text-sm font-medium">ไม่มีประวัติแพ้ยา / อาหาร</AlertTitle>
           </Alert>
         )}
       </CardContent>
       <CardFooter className="justify-between border-t">
         <Button size="xs" variant="outline">
           <Microscope data-icon="inline-start" aria-hidden="true" />
-          <span>Open EMR</span>
+          <span>เปิดเวชระเบียน (EMR)</span>
         </Button>
         <AppButtonLink
           to="/pets/$petId"
@@ -105,7 +109,7 @@ export function PetGridCard() {
           variant="link"
         >
           <Eye aria-hidden="true" />
-          <span>View Profile</span>
+          <span>ดูประวัติ</span>
         </AppButtonLink>
       </CardFooter>
     </Card>

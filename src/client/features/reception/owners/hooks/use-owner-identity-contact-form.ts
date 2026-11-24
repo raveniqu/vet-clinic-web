@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 import type { ChangeEvent } from "react";
 import { ownersListQueryOptions } from "#/client/caches/owners/queries/owners.query";
 import { useAddNewOwnerFormContext } from "#/client/features/reception/owners/contexts/add-new-owner-form-provider";
+import { formatThaiShortDate } from "#/client/shared/helpers/formatters";
 import { useFormErrors, useFormValues } from "#/client/shared/hooks/use-wizard-form";
 import { genderEnum } from "#/shared/schemas/owner.schema";
 
@@ -50,11 +51,7 @@ export function useOwnerIdentityContactForm() {
 
   const formattedDobLabel = useMemo(() => {
     if (!values.dateOfBirth) return null;
-    return new Date(values.dateOfBirth).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
+    return formatThaiShortDate(values.dateOfBirth);
   }, [values.dateOfBirth]);
 
   const calendarStartMonth = useMemo(() => new Date(1940, 0), []);
@@ -78,7 +75,7 @@ export function useOwnerIdentityContactForm() {
 
   const handlePrefixChange = useCallback(
     (val: string | null) => {
-      setFieldValue("prefix", val ?? (isJuristic ? "Company" : "Mr."));
+      setFieldValue("prefix", val ?? (isJuristic ? "บริษัท" : "คุณ"));
     },
     [isJuristic, setFieldValue]
   );

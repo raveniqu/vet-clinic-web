@@ -10,21 +10,21 @@ import type { AppSidebarMenusProps } from "./app-sidebar-menus";
 const clinicalMenus: AppSidebarMenusProps[] = [
   {
     id: "dispense",
-    title: "Dispense",
+    title: "จ่ายยา",
     href: "/dispense",
     icon: PillBottle,
     items: [],
   },
   {
     id: "inventory",
-    title: "Inventory",
+    title: "คลังยาและเวชภัณฑ์",
     href: "/inventory",
     icon: Boxes,
     items: [],
   },
   {
     id: "procurement",
-    title: "Procurement",
+    title: "จัดซื้อ",
     href: "/procurement",
     icon: Truck,
     items: [],
@@ -34,7 +34,7 @@ const clinicalMenus: AppSidebarMenusProps[] = [
 export function AppSidebarMenuPharmacy() {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Pharmacy</SidebarGroupLabel>
+      <SidebarGroupLabel>ห้องยาและคลัง</SidebarGroupLabel>
       <SidebarGroupContent>
         <AppSidebarMenus menus={clinicalMenus} />
       </SidebarGroupContent>

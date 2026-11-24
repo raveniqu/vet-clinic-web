@@ -22,9 +22,9 @@ export function EditPetFormBody() {
         <form className="contents" noValidate onSubmit={handleFormSubmit}>
           {/* Header */}
           <SheetHeader className="pt-6 pb-3 text-left">
-            <SheetTitle className="text-base sm:text-lg">Edit Pet Profile</SheetTitle>
+            <SheetTitle className="text-base sm:text-lg">แก้ไขข้อมูลสัตว์เลี้ยง</SheetTitle>
             <SheetDescription className="text-xs">
-              Update pet profile, biological details, and clinical alerts.
+              อัปเดตประวัติสัตว์เลี้ยง ข้อมูลทางกายภาพ และข้อควรระวังทางการแพทย์
             </SheetDescription>
           </SheetHeader>
 

@@ -16,7 +16,10 @@ export function AppUserProfile({
   return (
     <div className="flex flex-1 items-center gap-2">
       <Avatar>
-        <AvatarImage src={imageSrc} alt={`Avatar image for ${prefix} ${firstName} ${lastName}`} />
+        <AvatarImage
+          src={imageSrc}
+          alt={`รูปโปรไฟล์ของ ${prefix} ${firstName} ${lastName}`}
+        />
         <AvatarFallback>
           {firstName.charAt(0)}
           {lastName.charAt(0)}

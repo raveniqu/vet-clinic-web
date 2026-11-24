@@ -1,6 +1,12 @@
 import { Settings2, ShieldCheck } from "lucide-react";
 import { useOwnerPreferencesPdpaForm } from "#/client/features/reception/owners/hooks/use-owner-preferences-pdpa-form";
 import {
+  PREFERRED_CHANNEL_SELECT_ITEMS,
+  PREFERRED_LANGUAGE_SELECT_ITEMS,
+  PREFERRED_TIME_SELECT_ITEMS,
+  REFERRAL_SOURCE_SELECT_ITEMS,
+} from "#/client/features/reception/owners/models/owner-form";
+import {
   AppFieldDescription,
   AppFieldLabel,
   AppFieldLegend,
@@ -40,12 +46,16 @@ export function OwnerStepPreferencesPdpa() {
       <AppFieldSet>
         <AppFieldLegend>
           <Settings2 />
-          <span>Customer Preferences</span>
+          <span>ความต้องการและช่องทางสื่อสาร</span>
         </AppFieldLegend>
         <FieldContent className="gap-x-4 gap-y-6">
           <Field>
-            <AppFieldLabel htmlFor="owner-referral">How did you hear about us?</AppFieldLabel>
-            <Select value={values.referralSource} onValueChange={handleReferralSourceChange}>
+            <AppFieldLabel htmlFor="owner-referral">รู้จักคลินิกจากช่องทางใด?</AppFieldLabel>
+            <Select
+              value={values.referralSource}
+              items={REFERRAL_SOURCE_SELECT_ITEMS}
+              onValueChange={handleReferralSourceChange}
+            >
               <SelectTrigger id="owner-referral" className="w-full">
                 <SelectValue />
               </SelectTrigger>
@@ -53,18 +63,22 @@ export function OwnerStepPreferencesPdpa() {
                 alignItemWithTrigger={false}
                 className="bg-transparent backdrop-blur-md"
               >
-                <SelectItem value="Walk-in">Walk-in / Passing by</SelectItem>
-                <SelectItem value="Friend / Referral">Friend / Referral</SelectItem>
-                <SelectItem value="Facebook / Social Media">Facebook / Social Media</SelectItem>
-                <SelectItem value="Google Search / Maps">Google Search / Google Maps</SelectItem>
-                <SelectItem value="Partner Organization">Partner Clinic / Organization</SelectItem>
+                {REFERRAL_SOURCE_SELECT_ITEMS.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </Field>
           <FieldGroup className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
             <Field>
-              <AppFieldLabel htmlFor="owner-pref-channel">Preferred Channel</AppFieldLabel>
-              <Select value={values.preferredChannel} onValueChange={handlePreferredChannelChange}>
+              <AppFieldLabel htmlFor="owner-pref-channel">ช่องทางติดต่อที่สะดวก</AppFieldLabel>
+              <Select
+                value={values.preferredChannel}
+                items={PREFERRED_CHANNEL_SELECT_ITEMS}
+                onValueChange={handlePreferredChannelChange}
+              >
                 <SelectTrigger id="owner-pref-channel" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
@@ -72,17 +86,22 @@ export function OwnerStepPreferencesPdpa() {
                   alignItemWithTrigger={false}
                   className="bg-transparent backdrop-blur-md"
                 >
-                  <SelectItem value="LINE">LINE Official</SelectItem>
-                  <SelectItem value="PHONE">Phone Call</SelectItem>
-                  <SelectItem value="SMS">SMS Message</SelectItem>
-                  <SelectItem value="EMAIL">Email</SelectItem>
+                  {PREFERRED_CHANNEL_SELECT_ITEMS.map((item) => (
+                    <SelectItem key={item.value} value={item.value}>
+                      {item.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </Field>
 
             <Field>
-              <AppFieldLabel htmlFor="owner-pref-time">Preferred Time</AppFieldLabel>
-              <Select value={values.preferredTime} onValueChange={handlePreferredTimeChange}>
+              <AppFieldLabel htmlFor="owner-pref-time">ช่วงเวลาที่สะดวก</AppFieldLabel>
+              <Select
+                value={values.preferredTime}
+                items={PREFERRED_TIME_SELECT_ITEMS}
+                onValueChange={handlePreferredTimeChange}
+              >
                 <SelectTrigger id="owner-pref-time" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
@@ -91,17 +110,20 @@ export function OwnerStepPreferencesPdpa() {
                   alignItemWithTrigger={false}
                   align="start"
                 >
-                  <SelectItem value="09:00 - 12:00">Morning (09:00 - 12:00)</SelectItem>
-                  <SelectItem value="13:00 - 17:00">Afternoon (13:00 - 17:00)</SelectItem>
-                  <SelectItem value="17:00 - 20:00">Evening (17:00 - 20:00)</SelectItem>
+                  {PREFERRED_TIME_SELECT_ITEMS.map((item) => (
+                    <SelectItem key={item.value} value={item.value}>
+                      {item.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </Field>
 
             <Field>
-              <AppFieldLabel htmlFor="owner-pref-lang">Language</AppFieldLabel>
+              <AppFieldLabel htmlFor="owner-pref-lang">ภาษาที่ต้องการสื่อสาร</AppFieldLabel>
               <Select
                 value={values.preferredLanguage}
+                items={PREFERRED_LANGUAGE_SELECT_ITEMS}
                 onValueChange={handlePreferredLanguageChange}
               >
                 <SelectTrigger id="owner-pref-lang" className="w-full">
@@ -111,8 +133,11 @@ export function OwnerStepPreferencesPdpa() {
                   alignItemWithTrigger={false}
                   className="bg-transparent backdrop-blur-lg"
                 >
-                  <SelectItem value="EN">English</SelectItem>
-                  <SelectItem value="TH">Thai</SelectItem>
+                  {PREFERRED_LANGUAGE_SELECT_ITEMS.map((item) => (
+                    <SelectItem key={item.value} value={item.value}>
+                      {item.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </Field>
@@ -125,7 +150,8 @@ export function OwnerStepPreferencesPdpa() {
         <AppFieldLegend>
           <ShieldCheck />
           <span>
-            Personal Data Protection <span className="hidden md:inline">(PDPA Consents)</span>
+            การคุ้มครองข้อมูลส่วนบุคคล{" "}
+            <span className="hidden md:inline">(ความยินยอม PDPA)</span>
           </span>
         </AppFieldLegend>
         <FieldGroup className="gap-3">
@@ -140,9 +166,11 @@ export function OwnerStepPreferencesPdpa() {
               htmlFor="pdpa-privacy"
               className="flex cursor-not-allowed flex-col items-start gap-0"
             >
-              <AppFieldTitle>Acknowledge Privacy Notice & Medical Care Policy</AppFieldTitle>
+              <AppFieldTitle>
+                รับทราบนโยบายความเป็นส่วนตัวและนโยบายการรักษาพยาบาลสัตว์
+              </AppFieldTitle>
               <AppFieldDescription>
-                Required for opening veterinary patient record according to clinic standards.
+                จำเป็นสำหรับการเปิดประวัติเวชระเบียนสัตว์เลี้ยงตามมาตรฐานของคลินิก
               </AppFieldDescription>
             </AppFieldLabel>
             {errors.pdpaPrivacyNotice && <FieldError>{errors.pdpaPrivacyNotice}</FieldError>}
@@ -156,7 +184,7 @@ export function OwnerStepPreferencesPdpa() {
             />
             <AppFieldLabel htmlFor="pdpa-reminders">
               <AppFieldTitle>
-                Consent to receive appointment, vaccination, and lab result reminders via SMS / LINE
+                ยินยอมให้แจ้งเตือนนัดหมาย การฉีดวัคซีน และผลตรวจทางห้องปฏิบัติการผ่าน SMS / LINE
               </AppFieldTitle>
             </AppFieldLabel>
           </Field>
@@ -169,7 +197,7 @@ export function OwnerStepPreferencesPdpa() {
             />
             <AppFieldLabel htmlFor="pdpa-marketing">
               <AppFieldTitle>
-                Consent to receive clinic updates, promotional offers, and special privileges
+                ยินยอมรับข่าวสาร โปรโมชัน และสิทธิพิเศษจากคลินิก
               </AppFieldTitle>
             </AppFieldLabel>
           </Field>
@@ -182,8 +210,7 @@ export function OwnerStepPreferencesPdpa() {
             />
             <AppFieldLabel htmlFor="pdpa-media">
               <AppFieldTitle>
-                Consent to pet photography and media recordings for clinic publications and
-                communication
+                ยินยอมให้บันทึกภาพถ่ายและสื่อของสัตว์เลี้ยงเพื่อการสื่อสารและประชาสัมพันธ์ของคลินิก
               </AppFieldTitle>
             </AppFieldLabel>
           </Field>

@@ -12,7 +12,11 @@ import { Button } from "#/client/shared/shadcn/components/ui/button";
 export function AppNotification() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="outline" size="icon-sm" className="ml-auto" />}>
+      <DropdownMenuTrigger
+        render={
+          <Button variant="outline" size="icon-sm" className="ml-auto" aria-label="การแจ้งเตือน" />
+        }
+      >
         <div className="relative">
           <Bell className="size-4" />
           <span className="absolute top-0 size-1.5 rounded-full bg-destructive" />
@@ -23,9 +27,9 @@ export function AppNotification() {
         align="end"
       >
         <div className="flex items-center justify-between py-1 pl-2">
-          <p className="text-sm">Notification</p>
+          <p className="text-sm">การแจ้งเตือน</p>
           <Button size="xs" variant="link" className="text-muted-foreground">
-            Mark all as read
+            อ่านทั้งหมดแล้ว
           </Button>
         </div>
         <DropdownMenuSeparator />
@@ -34,8 +38,8 @@ export function AppNotification() {
             <Calendar />
           </span>
           <div className="flex max-w-48 flex-col gap-0">
-            <p className="truncate">Appointment Notification 1</p>
-            <small className="text-muted-foreground">12 min ago</small>
+            <p className="truncate">แจ้งเตือนนัดหมายตรวจสุขภาพ</p>
+            <small className="text-muted-foreground">12 นาทีที่แล้ว</small>
           </div>
         </DropdownMenuItem>
         <DropdownMenuItem className="rounded-xl! pl-1 hover:bg-primary/10!">
@@ -43,14 +47,14 @@ export function AppNotification() {
             <Syringe />
           </span>
           <div className="flex max-w-48 flex-col gap-0">
-            <p className="truncate">Inventory Notification 1</p>
-            <small className="text-muted-foreground">12 min ago</small>
+            <p className="truncate">แจ้งเตือนยาและเวชภัณฑ์ใกล้หมด</p>
+            <small className="text-muted-foreground">12 นาทีที่แล้ว</small>
           </div>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <div className="flex items-center justify-center py-1">
           <Link to="/reminders" className="text-xs text-primary">
-            View All Notifications
+            ดูการแจ้งเตือนทั้งหมด
           </Link>
         </div>
       </DropdownMenuContent>

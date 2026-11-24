@@ -34,7 +34,7 @@ export function PetsListView() {
       isLoading={isLoading}
       className="col-span-full"
       emptyState={<PetsTableEmpty />}
-      itemLabel="pets"
+      itemLabel="รายการ"
       pageSizeOptions={PAGE_SIZE_OPTIONS}
       renderCell={renderCell}
     />

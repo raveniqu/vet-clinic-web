@@ -20,26 +20,26 @@ const temperamentOptions: {
 }[] = [
   {
     value: "Docile",
-    title: "Docile",
-    description: "Gentle and easy to handle",
+    title: "เชื่อง / อ่อนโยน",
+    description: "นิสัยเรียบร้อย จับบังคับได้ง่าย",
     icon: Smile,
   },
   {
     value: "Nervous",
-    title: "Nervous",
-    description: "Anxious, startles easily",
+    title: "ตื่นกลัว / กังวล",
+    description: "ขี้กลัว ตกใจง่าย ควรเข้าหาอย่างนุ่มนวล",
     icon: Zap,
   },
   {
     value: "Aggressive",
-    title: "Aggressive",
-    description: "May bite or scratch if provoked",
+    title: "ดุ / ก้าวร้าว",
+    description: "อาจกัดหรือข่วนเมื่อตกใจหรือถูกกระตุ้น",
     icon: TriangleAlert,
   },
   {
     value: "Needs Muzzle",
-    title: "Needs Muzzle",
-    description: "Mandatory restraint for safety",
+    title: "ต้องใส่ตะกร้อครอบปาก",
+    description: "ต้องใช้อุปกรณ์ควบคุมเพื่อความปลอดภัยขณะตรวจ",
     icon: OctagonAlert,
   },
 ];
@@ -51,12 +51,12 @@ export function PetCautionTemperamentField() {
     <AppFieldSet>
       <AppFieldLegend>
         <ShieldAlert className="size-4 text-primary" />
-        <span>Handling & Temperament</span>
+        <span>นิสัยและข้อควรระวังในการจับบังคับ</span>
       </AppFieldLegend>
 
       <Field>
         <AppFieldLabel>
-          <span>Staff Safety & Handling Alert</span>
+          <span>ระดับการแจ้งเตือนความปลอดภัยของเจ้าหน้าที่</span>
           <span className="font-bold text-destructive">*</span>
         </AppFieldLabel>
 

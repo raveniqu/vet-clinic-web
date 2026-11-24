@@ -13,7 +13,7 @@ trigger: always_on
 ### 1. เพื่อรักษา Dependency Rule (Inward-only) ตามหลัก Clean Architecture
 
 - ✅ กำหนดให้ทิศทางการพึ่งพาไหลเข้าสู่ศูนย์กลางเสมอ: `Infrastructure → Application → Domain`
-- 🚫 ห้าม `server/domain/` นำเข้า (import) สิ่งใดจาก `server/application/`, `server/infrastructure/`, `server/composition/`, `server-functions/` หรือ library ภายนอก ยกเว้น `shared/schemas/`
+- 🚫 ห้าม `server/domain/` นำเข้า (import) สิ่งใดจาก `server/application/`, `server/infrastructure/`, `server/composition/`, `server-functions/` หรือ library ภายนอก ยกเว้น `src/shared/**/` (หรือ `#/shared/**`)
 - WHY: Domain คือแกนกลางของระบบที่ต้องบริสุทธิ์ (Pure Domain) ไม่ผูกติดกับ Framework, Database ORM หรือเทคโนโลยีภายนอก เพื่อให้ทดสอบง่ายและคงทนต่อการเปลี่ยนแปลง
 
 ### 2. เพื่อรักษา Server Boundary และไม่ให้รายละเอียดภายใน `server/` รั่วไปยัง layer อื่น

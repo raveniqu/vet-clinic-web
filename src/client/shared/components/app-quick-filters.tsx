@@ -43,7 +43,7 @@ export function AppQuickFilters<TKey extends string>({
   onQuickFiltersChange,
   clearAllFilters,
   iconMeta,
-  ariaLabel = "Quick filters",
+  ariaLabel = "ตัวกรองด่วน",
   labelVisibility = "md",
 }: AppQuickFiltersProps<TKey>) {
   const labelClassName = LABEL_VISIBILITY_CLASS[labelVisibility];
@@ -91,14 +91,14 @@ export function AppQuickFilters<TKey extends string>({
       {hasActiveFilter ? (
         <div className="ml-auto flex items-center gap-2">
           <Badge variant="secondary" className="gap-1.5">
-            <span>Filters ({activeFilterCount} active)</span>
+            <span>ตัวกรอง ({activeFilterCount} รายการ)</span>
             <span className="text-muted-foreground">
-              · {filteredCount} of {totalCount}
+              · {filteredCount} จาก {totalCount}
             </span>
           </Badge>
           <Button type="button" size="xs" variant="ghost" onClick={clearAllFilters}>
             <X data-icon="inline-start" aria-hidden="true" />
-            <span>Clear all</span>
+            <span>ล้างทั้งหมด</span>
           </Button>
         </div>
       ) : null}

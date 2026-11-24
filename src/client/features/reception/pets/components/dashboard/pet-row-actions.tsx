@@ -34,7 +34,7 @@ export function PetRowActions() {
           className="bg-background! dark:bg-secondary!"
         >
           <Eye data-icon="inline-start" aria-hidden="true" />
-          <span>View Profile</span>
+          <span>ดูประวัติ</span>
         </AppButtonLink>
         <DropdownMenu>
           <DropdownMenuTrigger
@@ -43,7 +43,7 @@ export function PetRowActions() {
                 type="button"
                 size="icon-xs"
                 variant="ghost"
-                aria-label={`More actions for ${pet.petName}`}
+                aria-label={`ตัวเลือกเพิ่มเติมสำหรับ ${pet.petName}`}
               />
             }
           >
@@ -53,11 +53,11 @@ export function PetRowActions() {
             <DropdownMenuGroup>
               <DropdownMenuItem onClick={handleEdit}>
                 <Pencil aria-hidden="true" />
-                <span>Edit Profile</span>
+                <span>แก้ไขข้อมูล</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Microscope aria-hidden="true" />
-                <span>Exam EMR</span>
+                <span>เปิดเวชระเบียน (EMR)</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>

@@ -10,7 +10,7 @@ import {
   PopoverHeader,
   PopoverTrigger,
 } from "#/client/shared/shadcn/components/ui/popover";
-import { Calendar } from "#/client/shared/shadcn/components/ui/calendar";
+import { AppCalendar } from "#/client/shared/components/app-calendar";
 import {
   InputGroup,
   InputGroupAddon,
@@ -24,6 +24,7 @@ import {
   AppFieldLegend,
   AppFieldSet,
 } from "#/client/shared/components/app-field";
+import { formatThaiShortDate } from "#/client/shared/helpers/formatters";
 import { usePetPhysicalAttributes } from "#/client/features/reception/pets/hooks/use-pet-physical-attributes";
 
 export function PetPhysicalAttributesField() {
@@ -60,7 +61,7 @@ export function PetPhysicalAttributesField() {
     <AppFieldSet>
       <AppFieldLegend>
         <Scale />
-        <span>Physical Attributes & Age</span>
+        <span>ลักษณะทางกายภาพและอายุ</span>
       </AppFieldLegend>
 
       {/* Row 1: Weight & Date of Birth */}
@@ -68,7 +69,7 @@ export function PetPhysicalAttributesField() {
         {/* Weight Field */}
         <Field data-invalid={!!weightError}>
           <AppFieldLabel htmlFor="pet-weight">
-            <span>Initial Weight</span>
+            <span>น้ำหนักเริ่มต้น</span>
             <span className="font-bold text-destructive">*</span>
           </AppFieldLabel>
           <InputGroup>
@@ -81,19 +82,19 @@ export function PetPhysicalAttributesField() {
               step="0.01"
               min="0.01"
               max="300"
-              placeholder="e.g., 4.5"
+              placeholder="เช่น 4.5"
               value={weight}
               onChange={handleWeightChange}
               className="py-0.5 placeholder:text-xs"
             />
             <InputGroupAddon align="inline-end">
-              <InputGroupText className="text-xs">kg</InputGroupText>
+              <InputGroupText className="text-xs">กก.</InputGroupText>
             </InputGroupAddon>
           </InputGroup>
           {weightError ? (
             <AppFieldError>{weightError}</AppFieldError>
           ) : (
-            <AppFieldDescription>Required for clinical dosage & assessment</AppFieldDescription>
+            <AppFieldDescription>จำเป็นสำหรับการคำนวณขนาดยาและประเมินสุขภาพ</AppFieldDescription>
           )}
         </Field>
 
@@ -101,7 +102,7 @@ export function PetPhysicalAttributesField() {
         <Field data-invalid={!!dateOfBirthError} className="gap-2">
           <div className="flex items-center justify-between">
             <AppFieldLabel htmlFor="dob-field">
-              <span>Date of Birth / Age</span>
+              <span>วันเกิด / อายุ</span>
               <span className="font-bold text-destructive">*</span>
             </AppFieldLabel>
 
@@ -121,24 +122,24 @@ export function PetPhysicalAttributesField() {
                 }
               >
                 <ClockFading className="size-3" />
-                <span>Approx.</span>
+                <span>ประมาณอายุ</span>
               </PopoverTrigger>
               <PopoverContent align="end" side="top" className="w-68 p-3">
                 <PopoverHeader className="flex flex-row items-center justify-between pb-1">
                   <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
                     <Clock className="size-3.5 text-primary" />
-                    <span>Estimate Birth Date</span>
+                    <span>คำนวณวันเกิดโดยประมาณ</span>
                   </div>
-                  <Badge variant="secondary" className="px-1.5 py-0 font-mono text-[10px]">
-                    {tempEstimatedDob}
+                  <Badge variant="secondary" className="px-1.5 py-0 text-[10px]">
+                    {formatThaiShortDate(tempEstimatedDob)}
                   </Badge>
                 </PopoverHeader>
                 <p className="pb-2 text-[11px] text-muted-foreground">
-                  Enter pet&apos;s approximate age to calculate birth date.
+                  ระบุอายุโดยประมาณของสัตว์เลี้ยงเพื่อคำนวณวันเกิดอัตโนมัติ
                 </p>
                 <div className="grid grid-cols-2 gap-2.5 pb-3">
                   <div className="flex flex-col gap-1">
-                    <span className="text-xs font-medium text-muted-foreground">Years</span>
+                    <span className="text-xs font-medium text-muted-foreground">ปี</span>
                     <Input
                       id="estimated-years"
                       type="number"
@@ -151,7 +152,7 @@ export function PetPhysicalAttributesField() {
                     />
                   </div>
                   <div className="flex flex-col gap-1">
-                    <span className="text-xs font-medium text-muted-foreground">Months</span>
+                    <span className="text-xs font-medium text-muted-foreground">เดือน</span>
                     <Input
                       id="estimated-months"
                       type="number"
@@ -173,7 +174,7 @@ export function PetPhysicalAttributesField() {
                       onClick={handleClearApproxAge}
                       className="text-xs text-destructive hover:bg-destructive/10"
                     >
-                      Clear
+                      ล้างค่า
                     </Button>
                   ) : (
                     <div />
@@ -186,7 +187,7 @@ export function PetPhysicalAttributesField() {
                       onClick={() => handleOpenApproxChange(false)}
                       className="text-xs"
                     >
-                      Cancel
+                      ยกเลิก
                     </Button>
                     <Button
                       type="button"
@@ -195,7 +196,7 @@ export function PetPhysicalAttributesField() {
                       onClick={handleApplyApproxAge}
                       className="text-xs"
                     >
-                      Apply
+                      นำไปใช้
                     </Button>
                   </div>
                 </div>
@@ -222,29 +223,23 @@ export function PetPhysicalAttributesField() {
                 <div className="flex w-full items-center justify-between">
                   <div className="flex items-center gap-2">
                     <CalendarIcon className="size-4 text-muted-foreground" />
-                    <span className="text-foreground">
-                      {new Date(dateOfBirth).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </span>
+                    <span className="text-foreground">{formatThaiShortDate(dateOfBirth)}</span>
                   </div>
                   {birthDateIsEstimated && (
                     <Badge variant="secondary" className="px-1.5 py-0 text-xs font-normal">
-                      ~{estimatedYears}y {estimatedMonths}m
+                      ~{estimatedYears} ปี {estimatedMonths} เดือน
                     </Badge>
                   )}
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
                   <CalendarIcon className="size-4 text-muted-foreground" />
-                  <span>Select exact birth date</span>
+                  <span>เลือกวันเกิด</span>
                 </div>
               )}
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
+              <AppCalendar
                 mode="single"
                 captionLayout="dropdown"
                 selected={dateOfBirth ? new Date(dateOfBirth) : undefined}
@@ -261,14 +256,14 @@ export function PetPhysicalAttributesField() {
 
       {/* Row 2: Color & Markings (Full Width) */}
       <Field data-invalid={!!colorError}>
-        <AppFieldLabel htmlFor="pet-color">Color & Markings</AppFieldLabel>
+        <AppFieldLabel htmlFor="pet-color">สีขนและตำหนิ</AppFieldLabel>
         <Input
           id="pet-color"
           value={color}
           onChange={handleColorChange}
-          placeholder="e.g., White-Cream, Black-Tan, Brown Tabby"
+          placeholder="เช่น ขาว-ครีม, ดำ-น้ำตาล, ลายสลิดสีน้ำตาล"
         />
-        <AppFieldDescription>Distinctive coat colors or physical marks</AppFieldDescription>
+        <AppFieldDescription>ระบุสีขนเด่นหรือลักษณะตำหนิเฉพาะตัว</AppFieldDescription>
       </Field>
     </AppFieldSet>
   );

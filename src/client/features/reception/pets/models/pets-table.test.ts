@@ -161,8 +161,13 @@ describe("Pets table pure helpers", () => {
     );
   });
 
-  it("computes dashboard pet metrics accurately", () => {
-    assert.deepEqual(computePetsMetrics(samplePets), {
+  it("computes dashboard pet metrics accurately with Thai speciesName via speciesId", () => {
+    const thaiPets = samplePets.map((pet) => ({
+      ...pet,
+      speciesName: pet.speciesId === 1 ? "สุนัข" : "แมว",
+    }));
+
+    assert.deepEqual(computePetsMetrics(thaiPets), {
       totalPets: 3,
       totalDogs: 2,
       totalCats: 1,

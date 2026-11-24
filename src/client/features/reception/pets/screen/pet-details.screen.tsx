@@ -14,6 +14,7 @@ import { PetDetailEditButton } from "../components/dashboard/pet-detail-edit-but
 import { PetDetailEditForm } from "../components/form/update/pet-detail-edit-form";
 import { PetDetailProvider } from "../contexts/pet-detail.context";
 import { usePetDetails } from "../hooks/use-pet-details";
+import { PET_SEX_LABEL_MAP, REPRODUCTIVE_STATUS_LABEL_MAP } from "../models/pets-table";
 
 export function PetDetailsScreen() {
   const { pet, isMobile } = usePetDetails();
@@ -29,7 +30,7 @@ export function PetDetailsScreen() {
             className="w-fit border-0 shadow-md/10 inset-shadow-sm/5"
           >
             <Undo2 aria-hidden="true" />
-            <span>Back to pets</span>
+            <span>กลับไปหน้ารายชื่อสัตว์เลี้ยง</span>
           </AppButtonLink>
         ) : null}
         <AppDashboardHeader>
@@ -42,12 +43,14 @@ export function PetDetailsScreen() {
               <Dot />
               <span>{pet.breedName}</span>
               <Dot />
-              <span>{pet.sex}</span>
+              <span>{PET_SEX_LABEL_MAP[pet.sex]}</span>
             </p>
             <div className="flex items-center gap-2 p-px sm:gap-3 md:gap-4">
-              <SuccessBadge className="md:p-2.5 md:text-sm">{pet.weight}kg.</SuccessBadge>
+              <SuccessBadge className="md:p-2.5 md:text-sm">{pet.weight} กก.</SuccessBadge>
               <GhostBadge className="md:p-2.5 md:text-sm">{formatPetAge(pet)}</GhostBadge>
-              <InfoBadge className="md:p-2.5 md:text-sm">{pet.reproductiveStatus}</InfoBadge>
+              <InfoBadge className="md:p-2.5 md:text-sm">
+                {REPRODUCTIVE_STATUS_LABEL_MAP[pet.reproductiveStatus]}
+              </InfoBadge>
             </div>
           </AppDashboardDescription>
           <AppDashboardActions>

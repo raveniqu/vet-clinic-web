@@ -20,18 +20,20 @@ export function PetsTableEmpty() {
           <PawPrint aria-hidden="true" />
         </EmptyMedia>
         <EmptyTitle>
-          {isEmptyDataset ? "No pets registered yet" : "No pets match your filters"}
+          {isEmptyDataset
+            ? "ยังไม่มีข้อมูลสัตว์เลี้ยงในระบบ"
+            : "ไม่พบข้อมูลสัตว์เลี้ยงที่ตรงกับตัวกรอง"}
         </EmptyTitle>
         <EmptyDescription>
           {isEmptyDataset
-            ? "Register a new pet from the button above to get started."
-            : "Try adjusting your search term, species, or quick filters."}
+            ? "เริ่มต้นด้วยการลงทะเบียนสัตว์เลี้ยงใหม่จากปุ่มด้านบน"
+            : "ลองปรับคำค้นหา ชนิดสัตว์ หรือตัวกรองด่วนใหม่อีกครั้ง"}
         </EmptyDescription>
       </EmptyHeader>
       {hasActiveFilter ? (
         <EmptyContent>
           <Button size="sm" variant="outline" onClick={clearFilters}>
-            Clear all filters
+            ล้างตัวกรองทั้งหมด
           </Button>
         </EmptyContent>
       ) : null}

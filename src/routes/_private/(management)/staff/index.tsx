@@ -5,5 +5,5 @@ export const Route = createFileRoute("/_private/(management)/staff/")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/_private/(management)/staff/"!</div>;
+  return <div>จัดการบุคลากร</div>;
 }

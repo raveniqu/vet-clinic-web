@@ -15,9 +15,9 @@ export function useUpdateOwnerMutation() {
       successToast: (data) => {
         const owner = data as OwnerDto;
         const fullName = `${owner.prefix} ${owner.firstName} ${owner.lastName}`.trim();
-        return `Owner profile updated successfully (${fullName} - ${owner.customerCode})`;
+        return `อัปเดตข้อมูลเจ้าของสัตว์เลี้ยงเรียบร้อยแล้ว (${fullName} - ${owner.customerCode})`;
       },
-      errorToast: "Failed to update owner profile. Please check the details and try again.",
+      errorToast: "ไม่สามารถอัปเดตข้อมูลเจ้าของสัตว์เลี้ยงได้ กรุณาตรวจสอบข้อมูลและลองใหม่อีกครั้ง",
     },
     onSuccess: async (data) => {
       queryClient.setQueryData(ownerKeys.detail(data.id), data);

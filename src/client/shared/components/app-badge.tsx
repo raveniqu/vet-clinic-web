@@ -87,19 +87,19 @@ export function getStatusBadge(status: BadgeStatusType) {
     case "success":
       return (
         <SuccessBadge>
-          <span className="text-xs">Success</span>
+          <span className="text-xs">สำเร็จ</span>
         </SuccessBadge>
       );
     case "pending":
       return (
         <WarningBadge>
-          <span className="text-xs">Pending</span>
+          <span className="text-xs">รอดำเนินการ</span>
         </WarningBadge>
       );
     case "failed":
       return (
         <NegativeBadge>
-          <span className="text-xs">Failed</span>
+          <span className="text-xs">ไม่สำเร็จ</span>
         </NegativeBadge>
       );
     default:

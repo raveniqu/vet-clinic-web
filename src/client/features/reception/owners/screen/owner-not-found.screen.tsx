@@ -7,7 +7,7 @@ export function OwnerNotFoundScreen() {
   return (
     <AppDashboardRoot>
       <AppDashboardContent>
-        <p className="col-span-full">Owner with ID "{ownerId}" not found</p>
+        <p className="col-span-full">ไม่พบข้อมูลเจ้าของสัตว์เลี้ยงรหัส "{ownerId}"</p>
       </AppDashboardContent>
     </AppDashboardRoot>
   );

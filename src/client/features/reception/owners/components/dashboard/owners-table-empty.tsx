@@ -22,18 +22,20 @@ export function OwnersTableEmpty() {
           <UsersRound aria-hidden="true" />
         </EmptyMedia>
         <EmptyTitle>
-          {isEmptyDataset ? "No owners registered yet" : "No owners match your filters"}
+          {isEmptyDataset
+            ? "ยังไม่มีข้อมูลเจ้าของสัตว์เลี้ยงในระบบ"
+            : "ไม่พบข้อมูลเจ้าของสัตว์เลี้ยงที่ตรงกับตัวกรอง"}
         </EmptyTitle>
         <EmptyDescription>
           {isEmptyDataset
-            ? "Register a new pet owner from the button above to get started."
-            : "Try adjusting your search term or quick filters."}
+            ? "เริ่มต้นด้วยการลงทะเบียนเจ้าของสัตว์เลี้ยงใหม่จากปุ่มด้านบน"
+            : "ลองปรับคำค้นหาหรือตัวกรองด่วนใหม่อีกครั้ง"}
         </EmptyDescription>
       </EmptyHeader>
       {hasActiveFilter ? (
         <EmptyContent>
           <Button type="button" size="sm" variant="outline" onClick={resetFilters}>
-            Clear all filters
+            ล้างตัวกรองทั้งหมด
           </Button>
         </EmptyContent>
       ) : null}

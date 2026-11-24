@@ -1,3 +1,3 @@
 export function SurgeryScreen() {
-  return <div>SurgeryScreen</div>;
+  return <div>ศัลยกรรม</div>;
 }

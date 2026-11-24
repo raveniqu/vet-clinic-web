@@ -1,109 +1,109 @@
 import type { PetOwnershipRecord, PetRecord } from "../types";
 
 export const initialPetSeeds: PetRecord[] = [
-  // 1-5: Emily Watson (Customer 1)
+  // 1-3: วิภาดา ศรีสุวรรณ (Customer 1)
   {
     id: "40000000-0000-4000-8000-000000000001",
     petCode: "PET-2026-0001",
-    petName: "Milo",
+    petName: "ไมโล",
     speciesId: 1, // Dog
-    breedId: 103, // Golden Retriever
+    breedId: 103, // โกลเด้น รีทรีฟเวอร์
     photo:
       "https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=300&q=80",
     sex: "Male",
     reproductiveStatus: "Neutered",
     birthDateIsEstimated: false,
     dateOfBirth: "2021-06-12",
-    color: "Golden Cream",
+    color: "ครีมทอง",
     weight: "31.5",
     microchipNumber: "900182001123456",
     temperament: "Docile",
-    allergies: "Chicken protein",
-    medicalNotes: "Annual rabies vaccine up to date. Mild hip dysplasia monitor.",
+    allergies: "โปรตีนจากไก่",
+    medicalNotes: "ได้รับวัคซีนพิษสุนัขบ้าประจำปีครบแล้ว ติดตามภาวะข้อสะโพกเสื่อมระดับเล็กน้อย",
     status: "ACTIVE",
     createdAt: "2026-01-15T10:00:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000002",
     petCode: "PET-2026-0002",
-    petName: "Luna",
+    petName: "ลูน่า",
     speciesId: 2, // Cat
-    breedId: 203, // British Shorthair
+    breedId: 203, // บริติช ชอร์ตแฮร์
     photo:
       "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=300&q=80",
     sex: "Female",
     reproductiveStatus: "Neutered",
     birthDateIsEstimated: false,
     dateOfBirth: "2022-09-04",
-    color: "Classic Blue Grey",
+    color: "เทาอมฟ้า",
     weight: "4.2",
     microchipNumber: "900182001123457",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Indoor only. Regular dental scaling recommended.",
+    medicalNotes: "เลี้ยงระบบปิด แนะนำขูดหินปูนและตรวจช่องปากเป็นประจำ",
     status: "ACTIVE",
     createdAt: "2026-01-15T10:15:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000003",
     petCode: "PET-2026-0003",
-    petName: "Mochi",
+    petName: "โมจิ",
     speciesId: 3, // Rabbit
-    breedId: 303, // Holland Lop
+    breedId: 303, // ฮอลแลนด์ ลอป
     sex: "Female",
     reproductiveStatus: "Intact",
     birthDateIsEstimated: true,
     dateOfBirth: "2023-11-10",
     estimatedYears: 2,
     estimatedMonths: 4,
-    color: "Broken Orange",
+    color: "ส้มลายด่าง",
     weight: "1.8",
     microchipNumber: "",
     temperament: "Nervous",
     allergies: "",
-    medicalNotes: "Sensitive gut, requires high-fiber Timothy hay diet.",
+    medicalNotes: "ระบบทางเดินอาหารบอบบาง ควรได้รับหญ้าทิโมธีที่มีกากใยสูงเป็นหลัก",
     status: "ACTIVE",
     createdAt: "2026-01-15T10:30:00.000Z",
   },
 
-  // 4-6: David Sterling (Customer 2)
+  // 4-5: ปกรณ์ วัฒนากูล (Customer 2)
   {
     id: "40000000-0000-4000-8000-000000000004",
     petCode: "PET-2026-0004",
-    petName: "Thor",
+    petName: "ธอร์",
     speciesId: 1, // Dog
-    breedId: 107, // Siberian Husky
+    breedId: 107, // ไซบีเรียน ฮัสกี้
     photo:
       "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=300&q=80",
     sex: "Male",
     reproductiveStatus: "Neutered",
     birthDateIsEstimated: false,
     dateOfBirth: "2020-03-25",
-    color: "Black & White (Bi-eye)",
+    color: "ขาว-ดำ (ตาสองสี)",
     weight: "26.4",
     microchipNumber: "900182001123458",
     temperament: "Nervous",
-    allergies: "Beef jerky treats",
-    medicalNotes: "Vocal and nervous during nail trimming. Needs gentle handling.",
+    allergies: "ขนมเนื้อวัวอบแห้ง",
+    medicalNotes: "ตื่นกลัวและส่งเสียงร้องระหว่างตัดเล็บ ควรจับบังคับอย่างนุ่มนวล",
     status: "ACTIVE",
     createdAt: "2026-01-18T14:30:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000005",
     petCode: "PET-2026-0005",
-    petName: "Oreo",
+    petName: "โอริโอ้",
     speciesId: 2, // Cat
-    breedId: 206, // American Shorthair
+    breedId: 206, // อเมริกัน ชอร์ตแฮร์
     sex: "Male",
     reproductiveStatus: "Neutered",
     birthDateIsEstimated: false,
     dateOfBirth: "2022-04-18",
-    color: "Silver Tabby",
+    color: "ลายสลิดสีเงิน",
     weight: "5.1",
     microchipNumber: "900182001123459",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Vaccinated FPV/FHV/FCV.",
+    medicalNotes: "ได้รับวัคซีนรวมแมว (FPV/FHV/FCV) ครบตามกำหนด",
     status: "ACTIVE",
     createdAt: "2026-01-18T14:45:00.000Z",
   },
@@ -112,9 +112,9 @@ export const initialPetSeeds: PetRecord[] = [
   {
     id: "40000000-0000-4000-8000-000000000006",
     petCode: "PET-2026-0006",
-    petName: "ส้มส้ม (Som-Som)",
+    petName: "ส้มส้ม",
     speciesId: 2, // Cat
-    breedId: 201, // Mixed Domestic Shorthair
+    breedId: 201, // พันธุ์ผสม / แมวไทยขนสั้น
     photo:
       "https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=300&q=80",
     sex: "Female",
@@ -123,94 +123,94 @@ export const initialPetSeeds: PetRecord[] = [
     dateOfBirth: "2021-08-15",
     estimatedYears: 4,
     estimatedMonths: 6,
-    color: "Ginger Orange Tabby",
+    color: "ส้มลายสลิด",
     weight: "4.6",
     microchipNumber: "900182001123460",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Rescued cat. Very affectionate.",
+    medicalNotes: "แมวรับอุปการะ นิสัยเชื่องและเข้ากับคนง่าย",
     status: "ACTIVE",
     createdAt: "2026-01-20T11:20:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000007",
     petCode: "PET-2026-0007",
-    petName: "เฉาก๊วย (Chao-Kuay)",
+    petName: "เฉาก๊วย",
     speciesId: 2, // Cat
-    breedId: 207, // Siamese / วิเชียรมาศ
+    breedId: 207, // วิเชียรมาศ
     sex: "Male",
     reproductiveStatus: "Neutered",
     birthDateIsEstimated: false,
     dateOfBirth: "2023-02-14",
-    color: "Seal Point",
+    color: "แต้มสีน้ำตาลเข้ม (ซีลพอยต์)",
     weight: "3.9",
     microchipNumber: "900182001123461",
     temperament: "Docile",
-    allergies: "Fish meal",
-    medicalNotes: "Mild allergic dermatitis history.",
+    allergies: "ปลาป่น",
+    medicalNotes: "มีประวัติผิวหนังอักเสบจากภูมิแพ้ระดับเล็กน้อย",
     status: "ACTIVE",
     createdAt: "2026-01-20T11:40:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000008",
     petCode: "PET-2026-0008",
-    petName: "บราวนี่ (Brownie)",
+    petName: "บราวนี่",
     speciesId: 4, // Hamster
-    breedId: 402, // Syrian Hamster
+    breedId: 402, // ซีเรียนแฮมสเตอร์
     sex: "Female",
     reproductiveStatus: "Intact",
     birthDateIsEstimated: true,
     dateOfBirth: "2024-05-01",
     estimatedYears: 1,
     estimatedMonths: 2,
-    color: "Golden Brown",
+    color: "น้ำตาลทอง",
     weight: "0.14",
     microchipNumber: "",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Check teeth alignment routinely.",
+    medicalNotes: "ตรวจการสบฟันและความยาวฟันหน้าเป็นประจำ",
     status: "ACTIVE",
     createdAt: "2026-01-20T12:00:00.000Z",
   },
 
-  // 9-11: ธนกฤต เจริญสุข (Customer 4)
+  // 9-10: ธนกฤต เจริญสุข (Customer 4)
   {
     id: "40000000-0000-4000-8000-000000000009",
     petCode: "PET-2026-0009",
-    petName: "รักกี้ (Lucky)",
+    petName: "รักกี้",
     speciesId: 1, // Dog
-    breedId: 108, // Welsh Corgi
+    breedId: 108, // เวลช์ คอร์กี้
     photo:
       "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=300&q=80",
     sex: "Male",
     reproductiveStatus: "Neutered",
     birthDateIsEstimated: false,
     dateOfBirth: "2022-10-10",
-    color: "Red & White",
+    color: "น้ำตาลแดง-ขาว",
     weight: "12.8",
     microchipNumber: "900182001123462",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Weight management required to prevent spinal stress.",
+    medicalNotes: "ควบคุมน้ำหนักอย่างต่อเนื่องเพื่อลดแรงกดต่อกระดูกสันหลัง",
     status: "ACTIVE",
     createdAt: "2026-01-25T17:00:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000010",
     petCode: "PET-2026-0010",
-    petName: "โอเลี้ยง (O-Liang)",
+    petName: "โอเลี้ยง",
     speciesId: 1, // Dog
-    breedId: 110, // Thai Ridgeback
+    breedId: 110, // ไทยหลังอาน
     sex: "Male",
     reproductiveStatus: "Intact",
     birthDateIsEstimated: false,
     dateOfBirth: "2020-11-20",
-    color: "Solid Black",
+    color: "ดำล้วน",
     weight: "24.0",
     microchipNumber: "900182001123463",
     temperament: "Needs Muzzle",
     allergies: "",
-    medicalNotes: "Protective instincts. Always use muzzle during examination.",
+    medicalNotes: "มีสัญชาตญาณหวงพื้นที่ ต้องสวมตะกร้อครอบปากทุกครั้งขณะตรวจ",
     status: "ACTIVE",
     createdAt: "2026-01-25T17:20:00.000Z",
   },
@@ -219,122 +219,122 @@ export const initialPetSeeds: PetRecord[] = [
   {
     id: "40000000-0000-4000-8000-000000000011",
     petCode: "PET-2026-0011",
-    petName: "ชูก้า (Sugar)",
+    petName: "ชูก้า",
     speciesId: 1, // Dog
-    breedId: 104, // Pomeranian
+    breedId: 104, // ปอมเมอเรเนียน
     sex: "Female",
     reproductiveStatus: "Neutered",
     birthDateIsEstimated: false,
     dateOfBirth: "2023-01-08",
-    color: "Pure White",
+    color: "ขาวล้วน",
     weight: "2.6",
     microchipNumber: "900182001123464",
     temperament: "Nervous",
-    allergies: "Amoxicillin / Penicillin",
-    medicalNotes: "Allergic to Penicillin class antibiotics. Grade 1 patellar luxation left hind.",
+    allergies: "ยาอะม็อกซีซิลลิน / เพนิซิลลิน",
+    medicalNotes: "แพ้ยาปฏิชีวนะกลุ่มเพนิซิลลิน มีภาวะลูกสะบ้าเคลื่อนระดับ 1 ขาหลังซ้าย",
     status: "ACTIVE",
     createdAt: "2026-02-01T10:40:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000012",
     petCode: "PET-2026-0012",
-    petName: "พุดดิ้ง (Pudding)",
+    petName: "พุดดิ้ง",
     speciesId: 2, // Cat
-    breedId: 205, // Scottish Fold
+    breedId: 205, // สก็อตติช โฟลด์
     sex: "Female",
     reproductiveStatus: "Neutered",
     birthDateIsEstimated: false,
     dateOfBirth: "2022-07-19",
-    color: "Lilac Cream",
+    color: "ไลแลคครีม",
     weight: "3.7",
     microchipNumber: "900182001123465",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Monitor joint cartilage and mobility quarterly.",
+    medicalNotes: "ตรวจติดตามกระดูกอ่อนข้อต่อและการเคลื่อนไหวทุกไตรมาส",
     status: "ACTIVE",
     createdAt: "2026-02-01T11:00:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000013",
     petCode: "PET-2026-0013",
-    petName: "กีวี่ (Kiwi)",
+    petName: "กีวี่",
     speciesId: 5, // Bird
-    breedId: 501, // Cockatiel
+    breedId: 501, // ค็อกคาเทล
     sex: "Male",
     reproductiveStatus: "Intact",
     birthDateIsEstimated: true,
     dateOfBirth: "2023-08-01",
     estimatedYears: 2,
     estimatedMonths: 6,
-    color: "Grey Pied Yellow Head",
+    color: "เทาลายด่าง หัวเหลือง",
     weight: "0.09",
     microchipNumber: "",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Beak and claw trimmed in Jan 2026.",
+    medicalNotes: "แต่งจะงอยปากและเล็บล่าสุดเมื่อ ม.ค. 2569",
     status: "ACTIVE",
     createdAt: "2026-02-01T11:20:00.000Z",
   },
 
-  // 14-16: Alexander Novak (Customer 6)
+  // 14-16: นัฐพล วงศ์ไพศาล (Customer 6)
   {
     id: "40000000-0000-4000-8000-000000000014",
     petCode: "PET-2026-0014",
-    petName: "Simba",
+    petName: "ซิมบ้า",
     speciesId: 2, // Cat
-    breedId: 208, // Maine Coon
+    breedId: 208, // เมนคูน
     photo:
       "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=crop&w=300&q=80",
     sex: "Male",
     reproductiveStatus: "Neutered",
     birthDateIsEstimated: false,
     dateOfBirth: "2021-12-05",
-    color: "Brown Classic Tabby",
+    color: "น้ำตาลลายคลาสสิก",
     weight: "8.9",
     microchipNumber: "900182001123466",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Large framed cat. Cardiac ultrasound clear in 2025.",
+    medicalNotes: "แมวโครงสร้างขนาดใหญ่ ผลตรวจอัลตราซาวนด์หัวใจปี 2568 ปกติ",
     status: "ACTIVE",
     createdAt: "2026-02-05T13:30:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000015",
     petCode: "PET-2026-0015",
-    petName: "Cleo",
+    petName: "คลีโอ",
     speciesId: 2, // Cat
-    breedId: 209, // Sphynx
+    breedId: 209, // สฟิงซ์
     sex: "Female",
     reproductiveStatus: "Neutered",
     birthDateIsEstimated: false,
     dateOfBirth: "2023-04-11",
-    color: "Pink / Black Points",
+    color: "ชมพู แต้มดำ",
     weight: "3.4",
     microchipNumber: "900182001123467",
     temperament: "Docile",
-    allergies: "Fragrant shampoos",
-    medicalNotes: "Skin hygiene protocol: hypoallergenic wash only.",
+    allergies: "แชมพูที่มีน้ำหอม",
+    medicalNotes: "ดูแลความสะอาดผิวหนังด้วยผลิตภัณฑ์สูตรอ่อนโยนปราศจากน้ำหอมเท่านั้น",
     status: "ACTIVE",
     createdAt: "2026-02-05T13:50:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000016",
     petCode: "PET-2026-0016",
-    petName: "Nagini",
+    petName: "นาคินี",
     speciesId: 6, // Snake
-    breedId: 601, // Corn Snake
+    breedId: 601, // งูคอร์นสเน็ก
     sex: "Unknown",
     reproductiveStatus: "Unknown",
     birthDateIsEstimated: true,
     dateOfBirth: "2022-01-01",
     estimatedYears: 4,
     estimatedMonths: 1,
-    color: "Albino Red Orange",
+    color: "เผือกแดงส้ม",
     weight: "0.55",
     microchipNumber: "",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Ecdysis shed completed smoothly last month.",
+    medicalNotes: "ลอกคราบสมบูรณ์ดีเมื่อเดือนที่ผ่านมา",
     status: "ACTIVE",
     createdAt: "2026-02-05T14:10:00.000Z",
   },
@@ -343,82 +343,82 @@ export const initialPetSeeds: PetRecord[] = [
   {
     id: "40000000-0000-4000-8000-000000000017",
     petCode: "PET-2026-0017",
-    petName: "เต้าหู้ (Tofu)",
+    petName: "เต้าหู้",
     speciesId: 1, // Dog
-    breedId: 105, // French Bulldog
+    breedId: 105, // เฟรนช์ บูลด็อก
     photo:
       "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=300&q=80",
     sex: "Male",
     reproductiveStatus: "Neutered",
     birthDateIsEstimated: false,
     dateOfBirth: "2022-05-14",
-    color: "Fawn with Black Mask",
+    color: "น้ำตาลอ่อน หน้ากากดำ",
     weight: "11.2",
     microchipNumber: "900182001123468",
     temperament: "Docile",
-    allergies: "Dust mites, pollen",
-    medicalNotes: "Brachycephalic obstructive airway syndrome (BOAS) Stage 1. Keep in cool area.",
+    allergies: "ไรฝุ่นและเกสรดอกไม้",
+    medicalNotes: "ภาวะทางเดินหายใจอุดกั้นในสุนัขหน้าสั้น (BOAS) ระยะที่ 1 ควรพักในห้องปรับอากาศ",
     status: "ACTIVE",
     createdAt: "2026-02-10T15:45:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000018",
     petCode: "PET-2026-0018",
-    petName: "เฉาก๊วย (Chao-Kuay Dog)",
+    petName: "เฉาก๊วยน้อย",
     speciesId: 1, // Dog
-    breedId: 106, // Poodle
+    breedId: 106, // พุดเดิ้ล
     sex: "Female",
     reproductiveStatus: "Neutered",
     birthDateIsEstimated: false,
     dateOfBirth: "2023-09-09",
-    color: "Silver Grey",
+    color: "เทาเงิน",
     weight: "3.8",
     microchipNumber: "900182001123469",
     temperament: "Nervous",
     allergies: "",
-    medicalNotes: "Regular ear cleaning required for prevention of otitis externa.",
+    medicalNotes: "ควรเช็ดทำความสะอาดช่องหูเป็นประจำเพื่อป้องกันหูชั้นนอกอักเสบ",
     status: "ACTIVE",
     createdAt: "2026-02-10T16:00:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000019",
     petCode: "PET-2026-0019",
-    petName: "ปีโป้ (Pipo)",
+    petName: "ปีโป้",
     speciesId: 3, // Rabbit
-    breedId: 304, // Netherland Dwarf
+    breedId: 304, // เนเธอร์แลนด์ ดวอร์ฟ
     sex: "Male",
     reproductiveStatus: "Intact",
     birthDateIsEstimated: true,
     dateOfBirth: "2024-02-20",
     estimatedYears: 1,
     estimatedMonths: 11,
-    color: "Chinchilla Grey",
+    color: "เทาชินชิลล่า",
     weight: "1.1",
     microchipNumber: "",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Active and healthy.",
+    medicalNotes: "ร่าเริง สุขภาพโดยรวมแข็งแรง",
     status: "ACTIVE",
     createdAt: "2026-02-10T16:20:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000020",
     petCode: "PET-2026-0020",
-    petName: "ชาเย็น (Cha-Yen)",
+    petName: "ชาเย็น",
     speciesId: 4, // Hamster
-    breedId: 401, // Winter White
+    breedId: 401, // วินเทอร์ไวท์
     sex: "Female",
     reproductiveStatus: "Intact",
     birthDateIsEstimated: true,
     dateOfBirth: "2025-01-15",
     estimatedYears: 1,
     estimatedMonths: 0,
-    color: "Pearl White",
+    color: "ขาวมุก",
     weight: "0.05",
     microchipNumber: "",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Healthy young hamster.",
+    medicalNotes: "แฮมสเตอร์อายุน้อย สุขภาพแข็งแรงปกติ",
     status: "ACTIVE",
     createdAt: "2026-02-10T16:40:00.000Z",
   },
@@ -427,61 +427,61 @@ export const initialPetSeeds: PetRecord[] = [
   {
     id: "40000000-0000-4000-8000-000000000021",
     petCode: "PET-2026-0021",
-    petName: "เจ้าสัว (Chao-Sua)",
+    petName: "เจ้าสัว",
     speciesId: 1, // Dog
-    breedId: 112, // Labrador Retriever
+    breedId: 112, // ลาบราดอร์ รีทรีฟเวอร์
     photo:
       "https://images.unsplash.com/photo-1579613832125-5d34a13ffe0a?auto=format&fit=crop&w=300&q=80",
     sex: "Male",
     reproductiveStatus: "Neutered",
     birthDateIsEstimated: false,
     dateOfBirth: "2019-11-11",
-    color: "Chocolate Brown",
+    color: "น้ำตาลช็อกโกแลต",
     weight: "34.2",
     microchipNumber: "900182001123470",
     temperament: "Docile",
-    allergies: "Beef protein",
-    medicalNotes: "Senior canine health profile scheduled. Arthritis supplement daily.",
+    allergies: "โปรตีนจากเนื้อวัว",
+    medicalNotes: "นัดตรวจสุขภาพสุนัขสูงวัยตามโปรแกรม ทานอาหารเสริมบำรุงข้อต่อทุกวัน",
     status: "ACTIVE",
     createdAt: "2026-02-12T09:30:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000022",
     petCode: "PET-2026-0022",
-    petName: "เสือใหญ่ (Suea-Yai)",
+    petName: "เสือใหญ่",
     speciesId: 2, // Cat
-    breedId: 204, // Persian
+    breedId: 204, // เปอร์เซีย
     sex: "Male",
     reproductiveStatus: "Neutered",
     birthDateIsEstimated: false,
     dateOfBirth: "2021-03-03",
-    color: "Red Tabby Longhair",
+    color: "ส้มลายสลิด ขนยาว",
     weight: "4.8",
     microchipNumber: "900182001123471",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Hairball preventative paste prescribed weekly.",
+    medicalNotes: "ให้เจลป้องกันก้อนขนเป็นประจำทุกสัปดาห์",
     status: "ACTIVE",
     createdAt: "2026-02-12T09:50:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000023",
     petCode: "PET-2026-0023",
-    petName: "ซูโม่ (Sumo)",
+    petName: "ซูโม่",
     speciesId: 7, // Turtle
-    breedId: 702, // Sulcata Tortoise
+    breedId: 702, // เต่าซูคาต้า
     sex: "Male",
     reproductiveStatus: "Intact",
     birthDateIsEstimated: true,
     dateOfBirth: "2020-06-01",
     estimatedYears: 5,
     estimatedMonths: 8,
-    color: "Golden Brown Shell",
+    color: "กระดองสีน้ำตาลทอง",
     weight: "9.5",
     microchipNumber: "900182001123472",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Needs UV-B sunlight and high calcium greens.",
+    medicalNotes: "ต้องได้รับแสง UV-B สม่ำเสมอและเสริมผักใบเขียวแคลเซียมสูง",
     status: "ACTIVE",
     createdAt: "2026-02-12T10:10:00.000Z",
   },
@@ -490,59 +490,59 @@ export const initialPetSeeds: PetRecord[] = [
   {
     id: "40000000-0000-4000-8000-000000000024",
     petCode: "PET-2026-0024",
-    petName: "เบลล่า (Bella)",
+    petName: "เบลล่า",
     speciesId: 1, // Dog
-    breedId: 109, // Beagle
+    breedId: 109, // บีเกิ้ล
     photo:
       "https://images.unsplash.com/photo-1505628346881-b72b27e84530?auto=format&fit=crop&w=300&q=80",
     sex: "Female",
     reproductiveStatus: "Neutered",
     birthDateIsEstimated: false,
     dateOfBirth: "2023-05-18",
-    color: "Tricolor (Black, White, Tan)",
+    color: "สามสี (ดำ-ขาว-น้ำตาล)",
     weight: "10.4",
     microchipNumber: "900182001123473",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Active scent hound. Vaccinated core 5-in-1.",
+    medicalNotes: "ร่าเริงและชอบออกกำลังกาย ได้รับวัคซีนรวม 5 โรคครบแล้ว",
     status: "ACTIVE",
     createdAt: "2026-02-15T12:00:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000025",
     petCode: "PET-2026-0025",
-    petName: "สีหมอก (Si-Mok)",
+    petName: "สีหมอก",
     speciesId: 2, // Cat
-    breedId: 210, // Korat / โคราช
+    breedId: 210, // โคราช (สีสวาด)
     sex: "Male",
     reproductiveStatus: "Neutered",
     birthDateIsEstimated: false,
     dateOfBirth: "2022-12-12",
-    color: "Silver Blue",
+    color: "สีสวาด (เทาเงิน)",
     weight: "4.1",
     microchipNumber: "900182001123474",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Pure Thai Korat cat. Excellent health condition.",
+    medicalNotes: "แมวโคราชพันธุ์แท้ สุขภาพแข็งแรงสมบูรณ์",
     status: "ACTIVE",
     createdAt: "2026-02-15T12:20:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000026",
     petCode: "PET-2026-0026",
-    petName: "มะนาว (Manao)",
+    petName: "มะนาว",
     speciesId: 5, // Bird
-    breedId: 503, // Sun Conure
+    breedId: 503, // ซันคอนัวร์
     sex: "Female",
     reproductiveStatus: "Intact",
     birthDateIsEstimated: false,
     dateOfBirth: "2023-03-22",
-    color: "Yellow, Orange, Green",
+    color: "เหลือง-ส้ม-เขียว",
     weight: "0.12",
     microchipNumber: "",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Wing feather check normal. Microchip leg ring present.",
+    medicalNotes: "ตรวจขนปีกปกติ สวมห่วงขาระบุตัวตนเรียบร้อย",
     status: "ACTIVE",
     createdAt: "2026-02-15T12:40:00.000Z",
   },
@@ -551,82 +551,82 @@ export const initialPetSeeds: PetRecord[] = [
   {
     id: "40000000-0000-4000-8000-000000000027",
     petCode: "PET-2026-0027",
-    petName: "ฮีโร่ (Hero)",
+    petName: "ฮีโร่",
     speciesId: 1, // Dog
-    breedId: 111, // Shih Tzu
+    breedId: 111, // ชิสุ
     sex: "Male",
     reproductiveStatus: "Neutered",
     birthDateIsEstimated: false,
     dateOfBirth: "2021-09-01",
-    color: "White & Gold",
+    color: "ขาว-ทอง",
     weight: "6.2",
     microchipNumber: "900182001123475",
     temperament: "Docile",
-    allergies: "Chicken meal",
-    medicalNotes: "Therapy dog certified. Eye lubrication drops prescribed.",
+    allergies: "เนื้อไก่ป่น",
+    medicalNotes: "สุนัขบำบัดที่ผ่านการรับรอง ใช้ยาหยอดน้ำตาเทียมตามคำแนะนำแพทย์",
     status: "ACTIVE",
     createdAt: "2026-02-18T14:15:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000028",
     petCode: "PET-2026-0028",
-    petName: "นำโชค (Nam-Chok)",
+    petName: "นำโชค",
     speciesId: 1, // Dog
-    breedId: 101, // Mixed Local Dog
+    breedId: 101, // พันธุ์ผสม / พันธุ์ไทย
     sex: "Male",
     reproductiveStatus: "Neutered",
     birthDateIsEstimated: true,
     dateOfBirth: "2020-04-10",
     estimatedYears: 5,
     estimatedMonths: 10,
-    color: "Tan / Brown",
+    color: "น้ำตาลแทน",
     weight: "16.5",
     microchipNumber: "900182001123476",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Rescued shelter mascot. Blood test negative for tick-borne diseases.",
+    medicalNotes: "สุนัขอุปการะประจำศูนย์ ผลตรวจเลือดไม่พบพยาธิเม็ดเลือด",
     status: "ACTIVE",
     createdAt: "2026-02-18T14:30:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000029",
     petCode: "PET-2026-0029",
-    petName: "กังฟู (Kung-Fu)",
+    petName: "กังฟู",
     speciesId: 6, // Snake
-    breedId: 602, // Ball Python
+    breedId: 602, // งูบอลไพธอน
     sex: "Male",
     reproductiveStatus: "Intact",
     birthDateIsEstimated: true,
     dateOfBirth: "2023-06-01",
     estimatedYears: 2,
     estimatedMonths: 8,
-    color: "Pastel Banana Morph",
+    color: "พาสเทลบานาน่า",
     weight: "1.2",
     microchipNumber: "",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Exotic animal educational program reptile.",
+    medicalNotes: "สัตว์เลื้อยคลานในโครงการให้ความรู้สัตว์เลี้ยงพิเศษ",
     status: "ACTIVE",
     createdAt: "2026-02-18T14:45:00.000Z",
   },
   {
     id: "40000000-0000-4000-8000-000000000030",
     petCode: "PET-2026-0030",
-    petName: "เต่าเต่า (Tao-Tao)",
+    petName: "เต่าเต่า",
     speciesId: 7, // Turtle
-    breedId: 701, // Red-eared Slider
+    breedId: 701, // เต่าญี่ปุ่น (แก้มแดง)
     sex: "Female",
     reproductiveStatus: "Intact",
     birthDateIsEstimated: true,
     dateOfBirth: "2021-01-01",
     estimatedYears: 5,
     estimatedMonths: 1,
-    color: "Olive Green with Red Stripe",
+    color: "เขียวมะกอก แก้มแดง",
     weight: "1.7",
     microchipNumber: "",
     temperament: "Docile",
     allergies: "",
-    medicalNotes: "Water quality and shell hardness verified normal.",
+    medicalNotes: "ตรวจคุณภาพน้ำและความแข็งของกระดองปกติ",
     status: "ACTIVE",
     createdAt: "2026-02-18T15:00:00.000Z",
   },

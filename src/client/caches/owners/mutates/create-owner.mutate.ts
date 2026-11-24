@@ -14,9 +14,9 @@ export function useCreateOwnerMutation() {
       successToast: (data) => {
         const owner = data as OwnerDto;
         const fullName = `${owner.prefix} ${owner.firstName} ${owner.lastName}`.trim();
-        return `New owner registered successfully (${fullName} - ${owner.customerCode})`;
+        return `ลงทะเบียนเจ้าของสัตว์เลี้ยงเรียบร้อยแล้ว (${fullName} - ${owner.customerCode})`;
       },
-      errorToast: "Failed to register new owner. Please check the details and try again.",
+      errorToast: "ไม่สามารถลงทะเบียนเจ้าของสัตว์เลี้ยงได้ กรุณาตรวจสอบข้อมูลและลองใหม่อีกครั้ง",
     },
     onSuccess: async (data) => {
       queryClient.setQueryData(ownerKeys.detail(data.id), data);

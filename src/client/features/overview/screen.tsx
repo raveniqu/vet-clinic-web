@@ -1,7 +1,7 @@
 export function OverviewScreen() {
   return (
     <div>
-      <h1>Overview</h1>
+      <h1>ภาพรวมคลินิก</h1>
     </div>
   );
 }

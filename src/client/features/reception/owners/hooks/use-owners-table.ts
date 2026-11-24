@@ -7,7 +7,11 @@ import {
 } from "#/client/shared/components/app-data-table";
 import type { OwnerDto } from "#/shared/schemas/owner.schema";
 import { useOwnersContext } from "../contexts/owners.context";
-import { getOwnerColumnVisibilityState, getOwnerDisplayName } from "../models/owners-table";
+import {
+  getOwnerColumnVisibilityState,
+  getOwnerDisplayName,
+  OWNER_COLUMN_LABEL_MAP,
+} from "../models/owners-table";
 import { useOwnerClipboard } from "./use-owner-clipboard";
 import { useOwnerPetRelations } from "./use-owner-pet-relations";
 import { useOwnersList } from "./use-owners-list";
@@ -18,7 +22,7 @@ const ownerColumnHelper = createAppColumnHelper<OwnerDto>();
 const ownerTableColumns = ownerColumnHelper.columns([
   ownerColumnHelper.accessor((row) => getOwnerDisplayName(row), {
     id: "owner",
-    header: "Owner",
+    header: OWNER_COLUMN_LABEL_MAP.owner,
     enableSorting: false,
     enableHiding: false,
     meta: {
@@ -27,7 +31,7 @@ const ownerTableColumns = ownerColumnHelper.columns([
   }),
   ownerColumnHelper.display({
     id: "contact",
-    header: "Contact",
+    header: OWNER_COLUMN_LABEL_MAP.contact,
     enableSorting: false,
     meta: {
       headClassName: "min-w-44",
@@ -35,12 +39,12 @@ const ownerTableColumns = ownerColumnHelper.columns([
   }),
   ownerColumnHelper.display({
     id: "pets",
-    header: "Pets",
+    header: OWNER_COLUMN_LABEL_MAP.pets,
     enableSorting: false,
   }),
   ownerColumnHelper.display({
     id: "pdpaConsent",
-    header: "PDPA Consent",
+    header: OWNER_COLUMN_LABEL_MAP.pdpaConsent,
     enableSorting: false,
     meta: {
       headClassName: "min-w-36",
@@ -48,7 +52,7 @@ const ownerTableColumns = ownerColumnHelper.columns([
   }),
   ownerColumnHelper.accessor("taxId", {
     id: "taxId",
-    header: "Tax ID",
+    header: OWNER_COLUMN_LABEL_MAP.taxId,
     enableSorting: false,
     meta: {
       headClassName: "min-w-44",
@@ -56,7 +60,7 @@ const ownerTableColumns = ownerColumnHelper.columns([
   }),
   ownerColumnHelper.display({
     id: "additionalContacts",
-    header: "Additional Contacts",
+    header: OWNER_COLUMN_LABEL_MAP.additionalContacts,
     enableSorting: false,
     meta: {
       headClassName: "min-w-48",
@@ -64,7 +68,7 @@ const ownerTableColumns = ownerColumnHelper.columns([
   }),
   ownerColumnHelper.display({
     id: "address",
-    header: "Address",
+    header: OWNER_COLUMN_LABEL_MAP.address,
     enableSorting: false,
     meta: {
       headClassName: "min-w-44",
@@ -72,7 +76,7 @@ const ownerTableColumns = ownerColumnHelper.columns([
   }),
   ownerColumnHelper.display({
     id: "preferredSchedule",
-    header: "Pref. Time & Lang",
+    header: OWNER_COLUMN_LABEL_MAP.preferredSchedule,
     enableSorting: false,
     meta: {
       headClassName: "min-w-36",
@@ -80,7 +84,7 @@ const ownerTableColumns = ownerColumnHelper.columns([
   }),
   ownerColumnHelper.accessor("referralSource", {
     id: "referralSource",
-    header: "Referral Source",
+    header: OWNER_COLUMN_LABEL_MAP.referralSource,
     enableSorting: false,
     meta: {
       headClassName: "min-w-36",
@@ -88,12 +92,12 @@ const ownerTableColumns = ownerColumnHelper.columns([
   }),
   ownerColumnHelper.accessor("createdAt", {
     id: "createdAt",
-    header: "Registered",
+    header: OWNER_COLUMN_LABEL_MAP.createdAt,
     enableSorting: false,
   }),
   ownerColumnHelper.display({
     id: "actions",
-    header: "Actions",
+    header: "การดำเนินการ",
     enableSorting: false,
     enableHiding: false,
     meta: {

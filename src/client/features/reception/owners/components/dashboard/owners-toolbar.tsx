@@ -42,10 +42,10 @@ export function OwnersToolbar() {
       <AppCardHeader>
         <AppCardTitle>
           <UserRoundSearch className="size-4 text-primary" aria-hidden="true" />
-          <span>Search Owners</span>
+          <span>ค้นหาเจ้าของสัตว์เลี้ยง</span>
         </AppCardTitle>
         <AppCardDescription>
-          Find pet's owners and filter through list of owners.
+          ค้นหาและกรองรายชื่อเจ้าของสัตว์เลี้ยงในระบบ
         </AppCardDescription>
         <AppCardAction>
           <OwnersColumnPicker />
@@ -65,7 +65,7 @@ export function OwnersToolbar() {
           onQuickFiltersChange={onQuickFiltersChange}
           clearAllFilters={clearAllFilters}
           iconMeta={QUICK_FILTER_ICON_META}
-          ariaLabel="Quick owner filters"
+          ariaLabel="ตัวกรองด่วนเจ้าของสัตว์เลี้ยง"
           labelVisibility="md"
         />
       </AppCardFooter>

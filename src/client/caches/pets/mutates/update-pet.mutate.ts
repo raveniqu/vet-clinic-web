@@ -14,9 +14,9 @@ export function useUpdatePetMutation() {
     meta: {
       successToast: (data) => {
         const pet = data as PetDto;
-        return `Pet profile updated successfully (${pet.petName} - ${pet.petCode})`;
+        return `อัปเดตข้อมูลสัตว์เลี้ยงเรียบร้อยแล้ว (${pet.petName} - ${pet.petCode})`;
       },
-      errorToast: "Failed to update pet profile. Please check the details and try again.",
+      errorToast: "ไม่สามารถอัปเดตข้อมูลสัตว์เลี้ยงได้ กรุณาตรวจสอบข้อมูลและลองใหม่อีกครั้ง",
     },
     onSuccess: async (data) => {
       queryClient.setQueryData(petKeys.detail(data.id), data);

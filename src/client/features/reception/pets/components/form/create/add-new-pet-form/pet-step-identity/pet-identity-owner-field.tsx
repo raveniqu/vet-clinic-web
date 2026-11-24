@@ -19,6 +19,7 @@ import {
   AppFieldSet,
 } from "#/client/shared/components/app-field";
 import { usePetOwnerSelection } from "#/client/features/reception/pets/hooks/use-pet-owner-selection";
+import { formatOwnerSummaryName } from "#/client/features/reception/pets/models/pet-form";
 import { useIsMobile } from "#/client/shared/shadcn/hooks/use-mobile";
 import {
   Item,
@@ -50,12 +51,12 @@ export function PetIdentityOwnerField() {
     <AppFieldSet>
       <AppFieldLegend>
         <UsersRound />
-        <span>Owner Information</span>
+        <span>ข้อมูลเจ้าของสัตว์เลี้ยง</span>
       </AppFieldLegend>
 
       <Field data-invalid={!!ownerError}>
         <AppFieldLabel htmlFor="owner-search-input">
-          <span>Select Owner</span>
+          <span>เลือกเจ้าของสัตว์เลี้ยง</span>
           <span className="font-bold text-destructive">*</span>
         </AppFieldLabel>
 
@@ -68,13 +69,13 @@ export function PetIdentityOwnerField() {
             <ItemContent className="gap-0">
               <ItemTitle>{selectedOwnerSummary.fullName}</ItemTitle>
               <ItemDescription className="text-xs">
-                Phone:{" "}
+                โทร:{" "}
                 {formatPhoneNumber(selectedOwnerSummary.phone || selectedOwner?.phonePrimary || "")}
               </ItemDescription>
             </ItemContent>
             <ItemActions>
               <Button variant="link" size="xs" onClick={handleClearOwner}>
-                Change
+                เปลี่ยน
               </Button>
             </ItemActions>
           </Item>
@@ -95,7 +96,7 @@ export function PetIdentityOwnerField() {
             >
               <ComboboxInput
                 id="owner-search-input"
-                placeholder="Search owner by name, phone, or code..."
+                placeholder="ค้นหาเจ้าของจากชื่อ, เบอร์โทร หรือรหัสลูกค้า..."
                 showClear
                 showTrigger={false}
                 className="**:placeholder:text-sm sm:w-full"
@@ -108,12 +109,11 @@ export function PetIdentityOwnerField() {
               <ComboboxContent align="start" className="bg-transparent backdrop-blur-md">
                 <ComboboxList>
                   <ComboboxEmpty className="py-6 text-center text-muted-foreground">
-                    No registered owner found.
+                    ไม่พบข้อมูลเจ้าของสัตว์เลี้ยงในระบบ
                   </ComboboxEmpty>
                   <ComboboxCollection>
                     {(owner: OwnerDto) => {
-                      const fullName =
-                        `${owner.customerType === "INDIVIDUAL" ? owner.prefix : ""} ${owner.firstName} ${owner.lastName}`.trim();
+                      const fullName = formatOwnerSummaryName(owner);
                       return (
                         <ComboboxItem key={owner.id} value={owner}>
                           <div className="flex flex-col">
@@ -140,7 +140,7 @@ export function PetIdentityOwnerField() {
               className="shrink-0 shadow-md/10 inset-shadow-sm/5 dark:ring dark:ring-border"
             >
               <UserRoundPlus />
-              <span className="sr-only md:not-sr-only">New Owner</span>
+              <span className="sr-only md:not-sr-only">เจ้าของใหม่</span>
             </Button>
           </div>
         )}

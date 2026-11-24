@@ -21,7 +21,7 @@ export function useOwnerPreferencesPdpaForm() {
 
   const handleReferralSourceChange = useCallback(
     (val: string | null) => {
-      setFieldValue("referralSource", val ?? "Walk-in");
+      setFieldValue("referralSource", val ?? "มาที่คลินิกโดยตรง");
     },
     [setFieldValue]
   );
@@ -44,7 +44,7 @@ export function useOwnerPreferencesPdpaForm() {
   const handlePreferredLanguageChange = useCallback(
     (val: string | null) => {
       const parsed = preferredLanguageEnum.safeParse(val);
-      setFieldValue("preferredLanguage", parsed.success ? parsed.data : "EN");
+      setFieldValue("preferredLanguage", parsed.success ? parsed.data : "TH");
     },
     [setFieldValue]
   );

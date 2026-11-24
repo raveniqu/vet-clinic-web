@@ -27,13 +27,13 @@ export function PetPhysicalBiologicalField() {
     <AppFieldSet>
       <AppFieldLegend>
         <Activity />
-        <span>Biological Profile</span>
+        <span>ข้อมูลทางชีวภาพ</span>
       </AppFieldLegend>
 
       {/* 1. Sex Selection */}
       <Field data-invalid={!!sexError}>
         <AppFieldLabel>
-          <span>Sex</span>
+          <span>เพศ</span>
           <span className="font-bold text-destructive">*</span>
         </AppFieldLabel>
 
@@ -57,8 +57,8 @@ export function PetPhysicalBiologicalField() {
                   <Mars className="size-4" />
                 </div>
                 <FieldContent className="gap-0.5">
-                  <AppFieldTitle>Male</AppFieldTitle>
-                  <AppFieldDescription>Boy / Sire</AppFieldDescription>
+                  <AppFieldTitle>เพศผู้</AppFieldTitle>
+                  <AppFieldDescription>ตัวผู้ / พ่อพันธุ์</AppFieldDescription>
                 </FieldContent>
               </div>
               <RadioGroupItem value="Male" id="sex-male" />
@@ -80,8 +80,8 @@ export function PetPhysicalBiologicalField() {
                   <Venus className="size-4" />
                 </div>
                 <FieldContent className="gap-0.5">
-                  <AppFieldTitle>Female</AppFieldTitle>
-                  <AppFieldDescription>Girl / Dam</AppFieldDescription>
+                  <AppFieldTitle>เพศเมีย</AppFieldTitle>
+                  <AppFieldDescription>ตัวเมีย / แม่พันธุ์</AppFieldDescription>
                 </FieldContent>
               </div>
               <RadioGroupItem value="Female" id="sex-female" />
@@ -103,8 +103,8 @@ export function PetPhysicalBiologicalField() {
                   <CircleHelp className="size-4" />
                 </div>
                 <FieldContent className="gap-0.5">
-                  <AppFieldTitle className="text-xs">Unknown</AppFieldTitle>
-                  <AppFieldDescription>Cannot determine yet or newborn</AppFieldDescription>
+                  <AppFieldTitle className="text-xs">ไม่ระบุ</AppFieldTitle>
+                  <AppFieldDescription>ยังไม่สามารถระบุเพศได้หรือเพิ่งแรกเกิด</AppFieldDescription>
                 </FieldContent>
               </div>
               <RadioGroupItem value="Unknown" id="sex-unknown" />
@@ -117,7 +117,7 @@ export function PetPhysicalBiologicalField() {
       {/* 2. Reproductive Status (Neutered / Spayed) */}
       <Field data-invalid={!!reproductiveStatusError}>
         <AppFieldLabel>
-          <span>Reproductive Status</span>
+          <span>สถานะการทำหมัน</span>
           <span className="font-bold text-destructive">*</span>
         </AppFieldLabel>
 
@@ -141,8 +141,8 @@ export function PetPhysicalBiologicalField() {
                   <Scissors className="size-4" />
                 </div>
                 <FieldContent className="gap-0.5">
-                  <AppFieldTitle>Neutered</AppFieldTitle>
-                  <AppFieldDescription>Spayed or castrated</AppFieldDescription>
+                  <AppFieldTitle>ทำหมันแล้ว</AppFieldTitle>
+                  <AppFieldDescription>ผ่านการทำหมันเรียบร้อยแล้ว</AppFieldDescription>
                 </FieldContent>
               </div>
               <RadioGroupItem value="Neutered" id="rep-neutered" />
@@ -164,8 +164,8 @@ export function PetPhysicalBiologicalField() {
                   <Sparkles className="size-4" />
                 </div>
                 <FieldContent className="gap-0.5">
-                  <AppFieldTitle>Intact</AppFieldTitle>
-                  <AppFieldDescription>Not sterilized</AppFieldDescription>
+                  <AppFieldTitle>ยังไม่ทำหมัน</AppFieldTitle>
+                  <AppFieldDescription>ยังไม่ได้ผ่านการทำหมัน</AppFieldDescription>
                 </FieldContent>
               </div>
               <RadioGroupItem value="Intact" id="rep-intact" />
@@ -187,10 +187,8 @@ export function PetPhysicalBiologicalField() {
                   <CircleHelp className="size-4" />
                 </div>
                 <FieldContent className="gap-0.5">
-                  <AppFieldTitle className="text-xs">Unknown Status</AppFieldTitle>
-                  <AppFieldDescription>
-                    Pending veterinary exam or rescue history
-                  </AppFieldDescription>
+                  <AppFieldTitle className="text-xs">ไม่ทราบสถานะ</AppFieldTitle>
+                  <AppFieldDescription>รอสัตวแพทย์ตรวจประเมินหรือไม่มีประวัติเดิม</AppFieldDescription>
                 </FieldContent>
               </div>
               <RadioGroupItem value="Unknown" id="rep-unknown" />

@@ -20,7 +20,7 @@ export function PetMicrochipCell() {
         type="button"
         size="icon-xs"
         variant="ghost"
-        aria-label={`Copy microchip number for ${pet.petName}`}
+        aria-label={`คัดลอกหมายเลขไมโครชิปของ ${pet.petName}`}
         onClick={handleCopyMicrochip}
       >
         {isMicrochipCopied ? (

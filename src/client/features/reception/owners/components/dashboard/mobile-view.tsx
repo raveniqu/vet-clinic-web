@@ -73,18 +73,20 @@ export function MobileView() {
               <UsersRound aria-hidden="true" />
             </EmptyMedia>
             <EmptyTitle>
-              {isEmptyDataset ? "No owners registered yet" : "No owners match your filters"}
+              {isEmptyDataset
+                ? "ยังไม่มีข้อมูลเจ้าของสัตว์เลี้ยงในระบบ"
+                : "ไม่พบข้อมูลเจ้าของสัตว์เลี้ยงที่ตรงกับตัวกรอง"}
             </EmptyTitle>
             <EmptyDescription>
               {isEmptyDataset
-                ? "Register a new pet owner from the button above to get started."
-                : "Try adjusting your search term or quick filters."}
+                ? "เริ่มต้นด้วยการลงทะเบียนเจ้าของสัตว์เลี้ยงใหม่จากปุ่มด้านบน"
+                : "ลองปรับคำค้นหาหรือตัวกรองด่วนใหม่อีกครั้ง"}
             </EmptyDescription>
           </EmptyHeader>
           {hasActiveFilter ? (
             <EmptyContent>
               <Button type="button" variant="outline" className="min-h-11" onClick={clearFilters}>
-                Clear all filters
+                ล้างตัวกรองทั้งหมด
               </Button>
             </EmptyContent>
           ) : null}
@@ -117,7 +119,7 @@ export function MobileView() {
                   <CardTitle className="flex flex-wrap items-center gap-1.5 text-base">
                     <span>{displayName}</span>
                     {owner.customerType === "JURISTIC" ? (
-                      <Badge variant="outline">Juristic</Badge>
+                      <Badge variant="outline">นิติบุคคล</Badge>
                     ) : null}
                   </CardTitle>
                   <CardDescription className="flex flex-wrap items-center gap-2">
@@ -125,7 +127,7 @@ export function MobileView() {
                       {owner.customerCode}
                     </Badge>
                     <Badge variant="outline" className="font-normal text-muted-foreground">
-                      Tax ID: {formatTaxId(owner.taxId)}
+                      เลขผู้เสียภาษี: {formatTaxId(owner.taxId)}
                     </Badge>
                   </CardDescription>
                 </div>
@@ -154,7 +156,7 @@ export function MobileView() {
                     size="icon"
                     variant="ghost"
                     className="min-h-11 min-w-11"
-                    aria-label={`Copy phone number for ${displayName}`}
+                    aria-label={`คัดลอกเบอร์โทรศัพท์ของ ${displayName}`}
                     onClick={() => void copyPhone(owner.id, owner.phonePrimary)}
                   >
                     {phoneCopied ? (
@@ -169,7 +171,7 @@ export function MobileView() {
               {pets.length === 0 ? (
                 <div className="flex items-center gap-1.5 px-2 py-1 text-xs text-muted-foreground">
                   <PawPrint className="size-3.5 text-muted-foreground" aria-hidden="true" />
-                  <span>No pets registered</span>
+                  <span>ยังไม่มีสัตว์เลี้ยงในระบบ</span>
                 </div>
               ) : (
                 <Popover>
@@ -179,14 +181,14 @@ export function MobileView() {
                         type="button"
                         variant="ghost"
                         className="min-h-11 w-full justify-start px-2 text-left text-xs font-normal"
-                        aria-label={`Inspect ${pets.length} registered pets for ${displayName}`}
+                        aria-label={`ดูสัตว์เลี้ยง ${pets.length} ตัวของ ${displayName}`}
                       />
                     }
                   >
                     <PawPrint className="size-3.5 shrink-0 text-primary" aria-hidden="true" />
                     <span className="truncate text-muted-foreground">
                       <span className="font-medium text-foreground">
-                        {pets.length} {pets.length === 1 ? "Pet" : "Pets"}:
+                        สัตว์เลี้ยง {pets.length} ตัว:
                       </span>{" "}
                       {pets.map((pet) => pet.petName).join(", ")}
                     </span>
@@ -194,10 +196,10 @@ export function MobileView() {
                   <PopoverContent align="start" className="w-72 gap-3">
                     <PopoverHeader>
                       <PopoverTitle className="text-sm">
-                        Registered Pets — {displayName}
+                        สัตว์เลี้ยงในระบบ — {displayName}
                       </PopoverTitle>
                       <PopoverDescription className="text-xs">
-                        {pets.length} {pets.length === 1 ? "pet" : "pets"} under care
+                        สัตว์เลี้ยงในความดูแล {pets.length} ตัว
                       </PopoverDescription>
                     </PopoverHeader>
                     <Separator />
@@ -245,7 +247,7 @@ export function MobileView() {
                   onClick={() => openEditDialog(owner)}
                 >
                   <Pencil data-icon="inline-start" aria-hidden="true" />
-                  <span>Edit</span>
+                  <span>แก้ไข</span>
                 </Button>
                 <AppButtonLink
                   to="/owners/$ownerId"
@@ -255,7 +257,7 @@ export function MobileView() {
                   variant="link"
                 >
                   <Eye data-icon="inline-start" aria-hidden="true" />
-                  <span>View Profile</span>
+                  <span>ดูประวัติ</span>
                 </AppButtonLink>
               </div>
             </CardFooter>
@@ -265,7 +267,7 @@ export function MobileView() {
 
       {hasMore ? (
         <Button type="button" variant="outline" className="min-h-11 w-full" onClick={loadMore}>
-          Load More Owners ({remainingCount} remaining of {totalCount})
+          โหลดข้อมูลเพิ่มเติม (เหลืออีก {remainingCount} จาก {totalCount} รายการ)
         </Button>
       ) : null}
     </div>

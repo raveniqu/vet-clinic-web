@@ -34,10 +34,10 @@ export function AppProfile() {
           >
             <AppUserProfile
               imageSrc=""
-              prefix="นพ."
+              prefix="น.สพ."
               firstName="สมศักดิ์"
               lastName="มักแมวมาก"
-              subText="สัตวแพทย์เวร/เจ้าหน้าที่คลีนิก"
+              subText="สัตวแพทย์เวร / เจ้าหน้าที่คลินิก"
             />
             <ChevronsUpDown className="size-3.5! stroke-muted-foreground" />
           </DropdownMenuTrigger>
@@ -49,22 +49,22 @@ export function AppProfile() {
             <DropdownMenuItem>
               <AppUserProfile
                 imageSrc=""
-                prefix="นพ."
+                prefix="น.สพ."
                 firstName="สมศักดิ์"
                 lastName="มักแมวมาก"
-                subText="สัตวแพทย์เวร/เจ้าหน้าที่คลีนิก"
+                subText="สัตวแพทย์เวร / เจ้าหน้าที่คลินิก"
               />
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <AppThemeSwitcher />
             <DropdownMenuItem>
               <Ticket />
-              <span>Help & Support</span>
+              <span>ช่วยเหลือและสนับสนุน</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem variant="destructive">
               <LogOut />
-              <span>Log Out</span>
+              <span>ออกจากระบบ</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

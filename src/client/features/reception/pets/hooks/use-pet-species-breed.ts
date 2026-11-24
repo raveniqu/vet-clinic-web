@@ -77,7 +77,7 @@ export function usePetSpeciesBreed() {
   // Selected breed label
   const selectedBreed = breedsForSpecies.find((b) => b.id === values.breedId);
   const currentBreedLabel =
-    selectedBreed?.breedName || values.customBreedName || "Select or search breed";
+    selectedBreed?.breedName || values.customBreedName || "เลือกหรือค้นหาสายพันธุ์";
 
   const handleSelectSpecies = useCallback(
     (speciesId: number) => {

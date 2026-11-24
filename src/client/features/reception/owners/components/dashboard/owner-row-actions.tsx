@@ -35,7 +35,7 @@ export function OwnerRowActions() {
           variant="secondary"
         >
           <Eye data-icon="inline-start" aria-hidden="true" />
-          <span>View Profile</span>
+          <span>ดูประวัติ</span>
         </AppButtonLink>
         <DropdownMenu>
           <DropdownMenuTrigger
@@ -44,7 +44,7 @@ export function OwnerRowActions() {
                 type="button"
                 size="icon-xs"
                 variant="ghost"
-                aria-label={`More actions for ${displayName}`}
+                aria-label={`ตัวเลือกเพิ่มเติมสำหรับ ${displayName}`}
               />
             }
           >
@@ -54,18 +54,18 @@ export function OwnerRowActions() {
             <DropdownMenuGroup>
               <DropdownMenuItem onClick={handleEditProfile}>
                 <Pencil aria-hidden="true" />
-                <span>Edit Profile</span>
+                <span>แก้ไขข้อมูล</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleCopyPhone}>
                 <Copy aria-hidden="true" />
-                <span>{phoneCopied ? "Phone Copied" : "Copy Phone"}</span>
+                <span>{phoneCopied ? "คัดลอกเบอร์โทรแล้ว" : "คัดลอกเบอร์โทร"}</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem className="text-amber-600 dark:text-amber-400">
                 <Archive aria-hidden="true" />
-                <span>Archive</span>
+                <span>จัดเก็บถาวร</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>

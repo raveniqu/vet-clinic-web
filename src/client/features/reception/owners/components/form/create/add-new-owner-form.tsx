@@ -34,16 +34,16 @@ export function AddNewOwnerForm() {
         }
       >
         <UserRoundPlusIcon className="size-4" />
-        <span className="sr-only md:not-sr-only md:text-xs lg:text-sm">Add New Owner</span>
+        <span className="sr-only md:not-sr-only md:text-xs lg:text-sm">เพิ่มเจ้าของใหม่</span>
       </SheetTrigger>
 
       <SheetContent className="flex h-full w-full! gap-0 bg-secondary sm:max-w-md! md:max-w-xl! lg:max-w-2xl!">
         <form className="contents" noValidate onSubmit={handleFormSubmit}>
           {/* Header */}
           <SheetHeader className="pt-6 pb-3 text-left">
-            <SheetTitle className="text-base sm:text-lg">Register New Owner</SheetTitle>
+            <SheetTitle className="text-base sm:text-lg">ลงทะเบียนเจ้าของสัตว์เลี้ยงใหม่</SheetTitle>
             <SheetDescription className="text-xs">
-              Manage owner profile, contact channels, and PDPA consent preferences.
+              กรอกข้อมูลส่วนตัว ช่องทางติดต่อ ที่อยู่ และความยินยอม PDPA ของเจ้าของสัตว์เลี้ยง
             </SheetDescription>
           </SheetHeader>
 

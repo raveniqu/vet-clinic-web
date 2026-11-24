@@ -1,9 +1,11 @@
 import type { ColumnVisibilityState } from "@tanstack/react-table";
 import { formatPhoneNumber, formatRegisteredDate } from "#/client/shared/helpers/formatters";
 import type {
+  CustomerType,
   OwnerDto,
   OwnerQuickFilterKey,
   PreferredChannel,
+  PreferredLanguage,
 } from "#/shared/schemas/owner.schema";
 
 export type OwnerColumnKey =
@@ -26,17 +28,21 @@ export interface OwnerColumnDefinition {
 }
 
 export const OWNER_TABLE_COLUMNS: readonly OwnerColumnDefinition[] = [
-  { key: "owner", label: "Owner", locked: true, defaultVisible: true },
-  { key: "contact", label: "Contact", defaultVisible: true },
-  { key: "pets", label: "Pets", defaultVisible: true },
-  { key: "pdpaConsent", label: "PDPA Consent", defaultVisible: true },
-  { key: "taxId", label: "Tax ID", defaultVisible: false },
-  { key: "additionalContacts", label: "Additional Contacts", defaultVisible: false },
-  { key: "address", label: "Address", defaultVisible: false },
-  { key: "preferredSchedule", label: "Pref. Time & Lang", defaultVisible: false },
-  { key: "referralSource", label: "Referral Source", defaultVisible: false },
-  { key: "createdAt", label: "Registered", defaultVisible: false },
+  { key: "owner", label: "เจ้าของสัตว์เลี้ยง", locked: true, defaultVisible: true },
+  { key: "contact", label: "ช่องทางติดต่อ", defaultVisible: true },
+  { key: "pets", label: "สัตว์เลี้ยง", defaultVisible: true },
+  { key: "pdpaConsent", label: "ความยินยอม PDPA", defaultVisible: true },
+  { key: "taxId", label: "เลขผู้เสียภาษี", defaultVisible: false },
+  { key: "additionalContacts", label: "ช่องทางติดต่อเพิ่มเติม", defaultVisible: false },
+  { key: "address", label: "ที่อยู่", defaultVisible: false },
+  { key: "preferredSchedule", label: "ช่วงเวลาและภาษา", defaultVisible: false },
+  { key: "referralSource", label: "ช่องทางที่รู้จักคลินิก", defaultVisible: false },
+  { key: "createdAt", label: "วันที่ลงทะเบียน", defaultVisible: false },
 ] as const;
+
+export const OWNER_COLUMN_LABEL_MAP: Record<OwnerColumnKey, string> = Object.fromEntries(
+  OWNER_TABLE_COLUMNS.map((col) => [col.key, col.label])
+) as Record<OwnerColumnKey, string>;
 
 export const DEFAULT_VISIBLE_OWNER_COLUMNS: readonly OwnerColumnKey[] = OWNER_TABLE_COLUMNS.filter(
   (col) => col.defaultVisible
@@ -64,7 +70,7 @@ export const OWNER_QUICK_FILTERS: readonly OwnerQuickFilterDefinition[] = [
   },
   {
     key: "juristic",
-    label: "Juristic",
+    label: "นิติบุคคล",
     predicate: (owner) => owner.customerType === "JURISTIC",
   },
 ] as const;
@@ -81,11 +87,21 @@ export const OWNER_MOBILE_BATCH_SIZE = 5;
 
 const VALID_COLUMN_KEY_SET = new Set<string>(OWNER_TABLE_COLUMNS.map((col) => col.key));
 
+export const CUSTOMER_TYPE_LABEL_MAP: Record<CustomerType, string> = {
+  INDIVIDUAL: "บุคคลธรรมดา",
+  JURISTIC: "นิติบุคคล",
+};
+
+export const LANGUAGE_LABEL_MAP: Record<PreferredLanguage, string> = {
+  TH: "ไทย",
+  EN: "อังกฤษ",
+};
+
 const CHANNEL_LABEL_MAP: Record<PreferredChannel, string> = {
   LINE: "LINE",
-  PHONE: "Phone",
+  PHONE: "โทรศัพท์",
   SMS: "SMS",
-  EMAIL: "Email",
+  EMAIL: "อีเมล",
 };
 
 export interface PdpaConsentItem {
@@ -143,7 +159,7 @@ export function getOwnerInitials(owner: OwnerDto): string {
   }
 
   const compact = Array.from(owner.firstName.replace(/\s+/g, ""));
-  return compact.slice(0, 2).join("").toUpperCase() || "OW";
+  return compact.slice(0, 2).join("").toUpperCase() || "จข";
 }
 
 export function formatPreferredChannelDetail(owner: OwnerDto): string {
@@ -159,15 +175,15 @@ export function formatPreferredChannelDetail(owner: OwnerDto): string {
     return `${label} · ${formatPhoneNumber(owner.phonePrimary)}`;
   }
 
-  return `Preferred: ${label}`;
+  return `ช่องทางหลัก: ${label}`;
 }
 
 export function getPdpaConsentSummary(owner: OwnerDto): PdpaConsentSummary {
   const items: readonly PdpaConsentItem[] = [
-    { key: "privacyNotice", label: "Privacy Notice", granted: owner.pdpaPrivacyNotice },
-    { key: "reminders", label: "Appointment Reminders", granted: owner.pdpaReminders },
-    { key: "marketing", label: "Marketing Updates", granted: owner.pdpaMarketing },
-    { key: "media", label: "Media & Photos", granted: owner.pdpaMedia },
+    { key: "privacyNotice", label: "นโยบายความเป็นส่วนตัว", granted: owner.pdpaPrivacyNotice },
+    { key: "reminders", label: "การแจ้งเตือนนัดหมาย", granted: owner.pdpaReminders },
+    { key: "marketing", label: "ข่าวสารและโปรโมชัน", granted: owner.pdpaMarketing },
+    { key: "media", label: "ภาพถ่ายและสื่อประชาสัมพันธ์", granted: owner.pdpaMedia },
   ];
 
   const grantedCount = items.filter((item) => item.granted).length;
@@ -178,7 +194,9 @@ export function getPdpaConsentSummary(owner: OwnerDto): PdpaConsentSummary {
     grantedCount,
     totalCount,
     isFullConsent,
-    badgeLabel: isFullConsent ? "Full Consent" : `Partial (${grantedCount}/${totalCount})`,
+    badgeLabel: isFullConsent
+      ? "ยินยอมครบทุกข้อ"
+      : `ยินยอมบางส่วน (${grantedCount}/${totalCount})`,
     items,
   };
 }

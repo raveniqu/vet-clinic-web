@@ -1,5 +1,6 @@
 import { ClipboardList, MapPin } from "lucide-react";
 import { useOwnerDetails } from "#/client/features/reception/owners/hooks/use-owner-details";
+import { CUSTOMER_TYPE_LABEL_MAP } from "#/client/features/reception/owners/models/owners-table";
 import {
   AppCard,
   AppCardContent,
@@ -24,7 +25,7 @@ export function OwnerGeneralInfo() {
         <AppCardHeader>
           <AppCardTitle>
             <MapPin className="size-4 text-primary" />
-            <span>Billing Address</span>
+            <span>ที่อยู่สำหรับออกใบเสร็จ</span>
           </AppCardTitle>
         </AppCardHeader>
         <AppCardContent>
@@ -35,45 +36,45 @@ export function OwnerGeneralInfo() {
         <AppCardHeader>
           <AppCardTitle>
             <ClipboardList className="size-4 text-primary" />
-            <span>Owner Details</span>
+            <span>ข้อมูลเจ้าของสัตว์เลี้ยง</span>
           </AppCardTitle>
         </AppCardHeader>
         <AppCardContent>
           <ItemGroup className="grid grid-cols-2 gap-y-4!">
             <Item size="xs" className="p-0">
               <ItemContent>
-                <ItemDescription className="text-xs">Customer Code</ItemDescription>
+                <ItemDescription className="text-xs">รหัสลูกค้า</ItemDescription>
                 <ItemTitle>{owner.customerCode}</ItemTitle>
               </ItemContent>
             </Item>
             <Item size="xs" className="p-0">
               <ItemContent>
-                <ItemDescription className="text-xs">Customer Type</ItemDescription>
-                <ItemTitle>{owner.customerType}</ItemTitle>
+                <ItemDescription className="text-xs">ประเภทลูกค้า</ItemDescription>
+                <ItemTitle>{CUSTOMER_TYPE_LABEL_MAP[owner.customerType]}</ItemTitle>
               </ItemContent>
             </Item>
             <Item size="xs" className="p-0">
               <ItemContent>
-                <ItemDescription className="text-xs">Tax ID</ItemDescription>
+                <ItemDescription className="text-xs">เลขประจำตัวผู้เสียภาษี</ItemDescription>
                 <ItemTitle>{formatTaxId(owner.taxId)}</ItemTitle>
               </ItemContent>
             </Item>
             <Item size="xs" className="p-0">
               <ItemContent>
-                <ItemDescription className="text-xs">Registered Date</ItemDescription>
+                <ItemDescription className="text-xs">วันที่ลงทะเบียน</ItemDescription>
                 <ItemTitle>{formattedRegisteredDate}</ItemTitle>
               </ItemContent>
             </Item>
             <Item size="xs" className="p-0">
               <ItemContent>
-                <ItemDescription className="text-xs">Referral Source</ItemDescription>
+                <ItemDescription className="text-xs">ช่องทางที่รู้จักคลินิก</ItemDescription>
                 <ItemTitle>{owner.referralSource}</ItemTitle>
               </ItemContent>
             </Item>
             <Item size="xs" className="p-0">
               <ItemContent>
-                <ItemDescription className="text-xs">Line ID</ItemDescription>
-                <ItemTitle>{owner.lineId}</ItemTitle>
+                <ItemDescription className="text-xs">LINE ID</ItemDescription>
+                <ItemTitle>{owner.lineId || "—"}</ItemTitle>
               </ItemContent>
             </Item>
           </ItemGroup>

@@ -1,3 +1,3 @@
 export function AppointmentsScreen() {
-  return <div>Hello "/_private/appointment/"!</div>;
+  return <div>นัดหมาย</div>;
 }

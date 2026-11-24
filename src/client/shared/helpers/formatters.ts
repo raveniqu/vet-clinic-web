@@ -62,8 +62,8 @@ export interface PetAgeInput {
 }
 
 /**
- * Format pet age consistently across views.
- * Examples: "5Y 5M", "5Y", "4M", "< 1M", "~2Y 4M"
+ * Format pet age consistently across views in Thai.
+ * Examples: "5 ปี 5 เดือน", "5 ปี", "4 เดือน", "< 1 เดือน", "~2 ปี 4 เดือน"
  */
 export function formatPetAge(pet: PetAgeInput): string {
   const isEstimated = Boolean(pet.birthDateIsEstimated);
@@ -72,8 +72,8 @@ export function formatPetAge(pet: PetAgeInput): string {
   let months = pet.estimatedMonths ?? 0;
 
   if (!isEstimated && pet.dateOfBirth) {
-    const dob = new Date(pet.dateOfBirth);
-    if (!Number.isNaN(dob.getTime())) {
+    const dob = parseDateInput(pet.dateOfBirth);
+    if (dob) {
       const now = new Date();
       years = now.getFullYear() - dob.getFullYear();
       months = now.getMonth() - dob.getMonth();
@@ -97,29 +97,73 @@ export function formatPetAge(pet: PetAgeInput): string {
   const prefix = isEstimated ? "~" : "";
 
   if (years > 0 && months > 0) {
-    return `${prefix}${years}Y ${months}M`;
+    return `${prefix}${years} ปี ${months} เดือน`;
   }
   if (years > 0 && months === 0) {
-    return `${prefix}${years}Y`;
+    return `${prefix}${years} ปี`;
   }
   if (years === 0 && months > 0) {
-    return `${prefix}${months}M`;
+    return `${prefix}${months} เดือน`;
   }
-  return `${prefix}< 1M`;
+  return `${prefix}< 1 เดือน`;
 }
 
-const REGISTERED_DATE_FORMATTER = new Intl.DateTimeFormat("en-GB", {
-  day: "2-digit",
+const THAI_SHORT_DATE_FORMATTER = new Intl.DateTimeFormat("th-TH", {
+  day: "numeric",
   month: "short",
   year: "numeric",
 });
 
+const THAI_LONG_DATE_FORMATTER = new Intl.DateTimeFormat("th-TH", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
+function parseDateInput(value: Date | string): Date | null {
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime()) ? null : value;
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+
+  const dateOnlyMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(trimmed);
+  if (dateOnlyMatch) {
+    const year = Number(dateOnlyMatch[1]);
+    const month = Number(dateOnlyMatch[2]);
+    const day = Number(dateOnlyMatch[3]);
+    const parsed = new Date(year, month - 1, day);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  }
+
+  const parsed = new Date(trimmed);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
 /**
- * Format an ISO date string into "DD Mon YYYY" (en-GB) using a cached Intl.DateTimeFormat instance.
+ * Format a Date or ISO date string into Thai short Buddhist Era date (e.g. "10 ม.ค. 2569").
+ */
+export function formatThaiShortDate(value: Date | string, invalidFallback = "—"): string {
+  if (!value) return "—";
+  const parsed = parseDateInput(value);
+  if (!parsed) return invalidFallback;
+  return THAI_SHORT_DATE_FORMATTER.format(parsed);
+}
+
+/**
+ * Format a Date or ISO date string into Thai long Buddhist Era date (e.g. "10 มกราคม 2569").
+ */
+export function formatThaiLongDate(value: Date | string, invalidFallback = "—"): string {
+  if (!value) return "—";
+  const parsed = parseDateInput(value);
+  if (!parsed) return invalidFallback;
+  return THAI_LONG_DATE_FORMATTER.format(parsed);
+}
+
+/**
+ * Format an ISO date string into Thai short Buddhist Era date (e.g. "10 ม.ค. 2569").
  */
 export function formatRegisteredDate(isoDate: string, invalidFallback = "—"): string {
-  if (!isoDate) return "—";
-  const parsed = new Date(isoDate);
-  if (Number.isNaN(parsed.getTime())) return invalidFallback;
-  return REGISTERED_DATE_FORMATTER.format(parsed);
+  return formatThaiShortDate(isoDate, invalidFallback);
 }

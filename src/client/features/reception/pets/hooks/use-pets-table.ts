@@ -10,6 +10,7 @@ import {
 import { useClipboardCopy } from "#/client/shared/hooks/use-clipboard-copy";
 import type { PetDto } from "#/shared/schemas/pet.schema";
 import { usePetsContext } from "../contexts/pets.context";
+import { PET_COLUMN_LABEL_MAP } from "../models/pets-table";
 import { usePetsList } from "./use-pets-list";
 import { usePetsSearch } from "./use-pets-search";
 
@@ -18,7 +19,7 @@ const columnHelper = createAppColumnHelper<PetDto>();
 export const petTableColumns = columnHelper.columns([
   columnHelper.accessor("petName", {
     id: "pet",
-    header: "Pet",
+    header: PET_COLUMN_LABEL_MAP.pet,
     enableSorting: false,
     meta: {
       headClassName: "min-w-52",
@@ -26,7 +27,7 @@ export const petTableColumns = columnHelper.columns([
   }),
   columnHelper.accessor("speciesName", {
     id: "speciesBreed",
-    header: "Species / Breed",
+    header: PET_COLUMN_LABEL_MAP.speciesBreed,
     enableSorting: false,
     meta: {
       headClassName: "min-w-44",
@@ -34,7 +35,7 @@ export const petTableColumns = columnHelper.columns([
   }),
   columnHelper.accessor("dateOfBirth", {
     id: "age",
-    header: "Age",
+    header: PET_COLUMN_LABEL_MAP.age,
     enableSorting: false,
     meta: {
       cellClassName: "text-foreground",
@@ -42,7 +43,7 @@ export const petTableColumns = columnHelper.columns([
   }),
   columnHelper.accessor("weight", {
     id: "weight",
-    header: "Weight",
+    header: PET_COLUMN_LABEL_MAP.weight,
     enableSorting: false,
     meta: {
       headClassName: "text-right",
@@ -51,7 +52,7 @@ export const petTableColumns = columnHelper.columns([
   }),
   columnHelper.accessor("allergies", {
     id: "allergies",
-    header: "Allergies",
+    header: PET_COLUMN_LABEL_MAP.allergies,
     enableSorting: false,
     meta: {
       headClassName: "min-w-44",
@@ -59,7 +60,7 @@ export const petTableColumns = columnHelper.columns([
   }),
   columnHelper.accessor("ownerName", {
     id: "owner",
-    header: "Owner",
+    header: PET_COLUMN_LABEL_MAP.owner,
     enableSorting: false,
     meta: {
       headClassName: "min-w-40",
@@ -67,17 +68,17 @@ export const petTableColumns = columnHelper.columns([
   }),
   columnHelper.accessor("sex", {
     id: "sexReproductive",
-    header: "Sex / Neutered",
+    header: PET_COLUMN_LABEL_MAP.sexReproductive,
     enableSorting: false,
   }),
   columnHelper.accessor("temperament", {
     id: "temperament",
-    header: "Temperament",
+    header: PET_COLUMN_LABEL_MAP.temperament,
     enableSorting: false,
   }),
   columnHelper.accessor("microchipNumber", {
     id: "microchip",
-    header: "Microchip",
+    header: PET_COLUMN_LABEL_MAP.microchip,
     enableSorting: false,
     meta: {
       headClassName: "min-w-44",
@@ -85,12 +86,12 @@ export const petTableColumns = columnHelper.columns([
   }),
   columnHelper.accessor("color", {
     id: "color",
-    header: "Color",
+    header: PET_COLUMN_LABEL_MAP.color,
     enableSorting: false,
   }),
   columnHelper.accessor("medicalNotes", {
     id: "medicalNotes",
-    header: "Medical Notes",
+    header: PET_COLUMN_LABEL_MAP.medicalNotes,
     enableSorting: false,
     meta: {
       headClassName: "min-w-48",
@@ -98,12 +99,12 @@ export const petTableColumns = columnHelper.columns([
   }),
   columnHelper.accessor("status", {
     id: "status",
-    header: "Status",
+    header: PET_COLUMN_LABEL_MAP.status,
     enableSorting: false,
   }),
   columnHelper.accessor("createdAt", {
     id: "createdAt",
-    header: "Registered",
+    header: PET_COLUMN_LABEL_MAP.createdAt,
     enableSorting: false,
     meta: {
       cellClassName: "text-xs text-muted-foreground",
@@ -111,7 +112,7 @@ export const petTableColumns = columnHelper.columns([
   }),
   columnHelper.display({
     id: "actions",
-    header: "Actions",
+    header: "การดำเนินการ",
     enableSorting: false,
     meta: {
       headClassName: "sticky right-0 z-10 w-0 p-0 pointer-coarse:w-auto pointer-coarse:px-3",

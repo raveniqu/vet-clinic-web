@@ -9,9 +9,9 @@ export function usePetSelection() {
 
   const selectItems = useMemo(
     () => [
-      { label: "All Species", value: 0 },
+      { label: "ทุกชนิดสัตว์", value: 0 },
       ...speciesList.map((species) => ({
-        label: species.name,
+        label: species.nameTh || species.name,
         value: species.id,
       })),
     ],

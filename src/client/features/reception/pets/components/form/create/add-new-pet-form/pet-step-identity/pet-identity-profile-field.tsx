@@ -42,12 +42,12 @@ export function PetIdentityProfileField() {
     <AppFieldSet>
       <AppFieldLegend>
         <PawPrint className="size-4 text-primary" />
-        <span>Profile</span>
+        <span>โปรไฟล์สัตว์เลี้ยง</span>
       </AppFieldLegend>
       <FieldContent className="gap-y-6">
         {/* Pet Photo Uploader */}
         <Field>
-          <AppFieldLabel htmlFor="pet-photo-upload">Pet Photo (Optional)</AppFieldLabel>
+          <AppFieldLabel htmlFor="pet-photo-upload">รูปภาพสัตว์เลี้ยง (ไม่บังคับ)</AppFieldLabel>
           <Input
             ref={fileInputRef}
             id="pet-photo-upload"
@@ -63,7 +63,7 @@ export function PetIdentityProfileField() {
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             onPaste={handlePaste}
-            aria-label="Pet photo upload dropzone and clipboard paste area"
+            aria-label="พื้นที่อัปโหลดหรือวางรูปภาพสัตว์เลี้ยงจากคลิปบอร์ด"
             className={cn(
               "flex items-center gap-4 rounded-2xl bg-card transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:flex-row",
               { "bg-primary/5": isDragging }
@@ -75,7 +75,7 @@ export function PetIdentityProfileField() {
                 onClick={handleClickUpload}
               >
                 {photo ? (
-                  <AvatarImage src={photo} alt="Pet Profile" className="object-cover" />
+                  <AvatarImage src={photo} alt="รูปโปรไฟล์สัตว์เลี้ยง" className="object-cover" />
                 ) : null}
                 <AvatarFallback className="bg-muted text-muted-foreground">
                   <ImagePlus className="size-8" />
@@ -88,7 +88,7 @@ export function PetIdentityProfileField() {
                     variant="destructive"
                     size="icon-sm"
                     onClick={handleRemovePhoto}
-                    aria-label="Remove Photo"
+                    aria-label="ลบรูปภาพ"
                   >
                     <Trash2 />
                   </Button>
@@ -104,14 +104,14 @@ export function PetIdentityProfileField() {
                 className="hidden w-fit md:inline-flex"
               >
                 <QrCode className="text-primary" />
-                <span>Scan with Phone</span>
+                <span>สแกนถ่ายภาพด้วยมือถือ</span>
               </Button>
               <AppFieldDescription className="flex flex-col items-center gap-1 md:items-start">
-                <span>Support JPG, PNG or WebP up to 5MB.</span>
+                <span>รองรับไฟล์ JPG, PNG หรือ WebP ขนาดไม่เกิน 5MB</span>
                 <span className="hidden md:block">
-                  You can also paste directly with{" "}
-                  <kbd className="rounded-sm bg-secondary px-1 py-0.5 text-[10px]">Ctrl+V</kbd> from
-                  LINE PC or clipboard.
+                  หรือกดวางภาพโดยตรงด้วย{" "}
+                  <kbd className="rounded-sm bg-secondary px-1 py-0.5 text-[10px]">Ctrl+V</kbd> จาก
+                  LINE PC หรือคลิปบอร์ด
                 </span>
               </AppFieldDescription>
               {uploadError && <AppFieldError>{uploadError}</AppFieldError>}
@@ -122,14 +122,14 @@ export function PetIdentityProfileField() {
         {/* Pet Name */}
         <Field data-invalid={!!petNameError}>
           <AppFieldLabel htmlFor="pet-name">
-            <span>Pet Name</span>
+            <span>ชื่อสัตว์เลี้ยง</span>
             <span className="font-bold text-destructive">*</span>
           </AppFieldLabel>
           <Input
             id="pet-name"
             value={petName}
             onChange={handlePetNameChange}
-            placeholder="e.g., Lucky, Mochi, Milo"
+            placeholder="เช่น ลัคกี้, โมจิ, ไมโล"
             className="placeholder:text-sm"
             aria-invalid={!!petNameError}
           />

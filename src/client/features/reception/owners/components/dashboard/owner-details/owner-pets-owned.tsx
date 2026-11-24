@@ -27,7 +27,7 @@ export function OwnerPetsOwned() {
       <AppCardHeader>
         <AppCardTitle>
           <PawPrint className="size-4 text-primary" />
-          <span>Owned Pets</span>
+          <span>สัตว์เลี้ยงในความดูแล</span>
         </AppCardTitle>
       </AppCardHeader>
       <AppCardContent>
@@ -49,7 +49,7 @@ export function OwnerPetsOwned() {
                   <Dot />
                   {pet.breedName}
                   <Dot />
-                  <span className="font-semibold text-primary">{pet.weight} kg.</span>
+                  <span className="font-semibold text-primary">{pet.weight} กก.</span>
                 </ItemDescription>
               </ItemContent>
               <ItemActions>
@@ -59,10 +59,10 @@ export function OwnerPetsOwned() {
                   to="/pets/$petId"
                   params={{ petId: String(pet.id) }}
                 >
-                  See Pet Details
+                  ดูข้อมูลสัตว์เลี้ยง
                 </AppButtonLink>
                 <Button size="xs" onClick={handleOpenEmr}>
-                  Open EMR
+                  เปิดเวชระเบียน (EMR)
                 </Button>
               </ItemActions>
             </Item>

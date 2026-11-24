@@ -1,3 +1,3 @@
 export function ProcurementScreen() {
-  return <div>ProcurementScreen</div>;
+  return <div>จัดซื้อ</div>;
 }

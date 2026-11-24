@@ -16,7 +16,7 @@ export function PetAllergiesPopover() {
   const { pet } = usePetRowActions();
 
   if (!hasNonEmptyText(pet.allergies)) {
-    return <span className="text-xs text-muted-foreground">None</span>;
+    return <span className="text-xs text-muted-foreground">ไม่มี</span>;
   }
 
   return (
@@ -28,7 +28,7 @@ export function PetAllergiesPopover() {
             variant="ghost"
             size="xs"
             className="h-auto max-w-48 p-0"
-            aria-label={`Read full allergy record for ${pet.petName}`}
+            aria-label={`ดูประวัติการแพ้ของ ${pet.petName}`}
           />
         }
       >
@@ -39,7 +39,7 @@ export function PetAllergiesPopover() {
       </PopoverTrigger>
       <PopoverContent align="start" className="w-72">
         <PopoverHeader>
-          <PopoverTitle className="text-sm">Allergy Record — {pet.petName}</PopoverTitle>
+          <PopoverTitle className="text-sm">ประวัติแพ้ยา / อาหาร — {pet.petName}</PopoverTitle>
           <PopoverDescription className="text-xs text-foreground">
             {pet.allergies}
           </PopoverDescription>

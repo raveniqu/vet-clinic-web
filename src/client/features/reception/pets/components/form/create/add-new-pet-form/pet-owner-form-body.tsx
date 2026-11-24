@@ -28,9 +28,9 @@ export function PetOwnerFormBody() {
       <DialogContent className="flex max-h-[90vh] w-full! max-w-2xl! flex-col gap-0 overflow-hidden bg-secondary p-0">
         <form className="contents" noValidate onSubmit={handleFormSubmit}>
           <DialogHeader className="px-6 pt-6 pb-3 text-left">
-            <DialogTitle className="text-base sm:text-lg">Register New Owner</DialogTitle>
+            <DialogTitle className="text-base sm:text-lg">ลงทะเบียนเจ้าของสัตว์เลี้ยงใหม่</DialogTitle>
             <DialogDescription className="text-xs">
-              Manage owner profile, contact channels, and PDPA consent preferences.
+              กรอกข้อมูลส่วนตัว ช่องทางติดต่อ ที่อยู่ และความยินยอม PDPA ของเจ้าของสัตว์เลี้ยง
             </DialogDescription>
           </DialogHeader>
 

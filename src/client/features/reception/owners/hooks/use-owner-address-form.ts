@@ -53,15 +53,15 @@ export function useOwnerAddressForm() {
   const [districtSearchInput, setDistrictSearchInput] = useState("");
   const [subdistrictSearchInput, setSubdistrictSearchInput] = useState("");
 
-  // 1. Filtered Province Options based on user search input
+  // 1. Filtered Province Options based on user search input (Thai display, bilingual search)
   const provinceOptions = useMemo(() => {
     const trimmed = provinceSearchInput.trim().toLowerCase();
     if (!trimmed) {
-      return allProvinces.map((p) => p.nameEn);
+      return allProvinces.map((p) => p.nameTh);
     }
     return allProvinces
-      .filter((p) => p.nameEn.toLowerCase().includes(trimmed) || p.nameTh.includes(trimmed))
-      .map((p) => p.nameEn);
+      .filter((p) => p.nameTh.includes(trimmed) || p.nameEn.toLowerCase().includes(trimmed))
+      .map((p) => p.nameTh);
   }, [provinceSearchInput]);
 
   // 2. Cached nationwide districts from module-level GeoThai index (O(1) reference)
@@ -76,15 +76,15 @@ export function useOwnerAddressForm() {
         id: d.code,
         nameEn: d.nameEn,
         nameTh: d.nameTh,
-        provinceNameEn: values.province,
-        provinceNameTh: "",
-        displayText: d.nameEn,
+        provinceNameEn: "",
+        provinceNameTh: values.province,
+        displayText: d.nameTh || d.nameEn,
       }));
 
       if (!trimmed) return scoped;
 
       return scoped.filter(
-        (d) => d.nameEn.toLowerCase().includes(trimmed) || d.nameTh.includes(trimmed)
+        (d) => d.nameTh.includes(trimmed) || d.nameEn.toLowerCase().includes(trimmed)
       );
     }
 
@@ -95,8 +95,9 @@ export function useOwnerAddressForm() {
     return allDistricts
       .filter(
         (d) =>
-          d.nameEn.toLowerCase().includes(trimmed) ||
           d.nameTh.includes(trimmed) ||
+          d.nameEn.toLowerCase().includes(trimmed) ||
+          d.provinceNameTh.includes(trimmed) ||
           d.provinceNameEn.toLowerCase().includes(trimmed)
       )
       .slice(0, 30);
@@ -117,18 +118,18 @@ export function useOwnerAddressForm() {
         id: `${s.code}-${s.postalCode}`,
         nameEn: s.nameEn,
         nameTh: s.nameTh,
-        districtNameEn: values.district,
-        districtNameTh: "",
-        provinceNameEn: values.province,
-        provinceNameTh: "",
+        districtNameEn: "",
+        districtNameTh: values.district,
+        provinceNameEn: "",
+        provinceNameTh: values.province,
         postalCode: s.postalCode,
-        displayText: s.nameEn,
+        displayText: s.nameTh || s.nameEn,
       }));
 
       if (!trimmed) return scoped;
 
       return scoped.filter(
-        (s) => s.nameEn.toLowerCase().includes(trimmed) || s.nameTh.includes(trimmed)
+        (s) => s.nameTh.includes(trimmed) || s.nameEn.toLowerCase().includes(trimmed)
       );
     }
 
@@ -143,11 +144,11 @@ export function useOwnerAddressForm() {
         if (!fullAddr) continue;
 
         const subNameEn = fullAddr.subdistrict.name_en || fullAddr.subdistrict.name_th;
-        const subNameTh = fullAddr.subdistrict.name_th;
+        const subNameTh = fullAddr.subdistrict.name_th || fullAddr.subdistrict.name_en;
         const distNameEn = fullAddr.district.name_en || fullAddr.district.name_th;
-        const distNameTh = fullAddr.district.name_th;
+        const distNameTh = fullAddr.district.name_th || fullAddr.district.name_en;
         const provNameEn = fullAddr.province.name_en || fullAddr.province.name_th;
-        const provNameTh = fullAddr.province.name_th;
+        const provNameTh = fullAddr.province.name_th || fullAddr.province.name_en;
         const postal = fullAddr.subdistrict.postal_codes[0] ?? "";
 
         items.push({
@@ -159,7 +160,7 @@ export function useOwnerAddressForm() {
           provinceNameEn: provNameEn,
           provinceNameTh: provNameTh,
           postalCode: postal,
-          displayText: `${subNameEn} (${distNameEn}, ${provNameEn})`,
+          displayText: `${subNameTh} (${distNameTh}, ${provNameTh})`,
         });
       }
     }
@@ -172,12 +173,14 @@ export function useOwnerAddressForm() {
     if (!values.district) return null;
     const targetLower = values.district.toLowerCase();
     return (
-      districtItems.find((item) => item.nameEn.toLowerCase() === targetLower) ?? {
+      districtItems.find(
+        (item) => item.nameTh === values.district || item.nameEn.toLowerCase() === targetLower
+      ) ?? {
         id: values.district,
         nameEn: values.district,
-        nameTh: "",
+        nameTh: values.district,
         provinceNameEn: values.province,
-        provinceNameTh: "",
+        provinceNameTh: values.province,
         displayText: values.district,
       }
     );
@@ -187,14 +190,16 @@ export function useOwnerAddressForm() {
     if (!values.subdistrict) return null;
     const targetLower = values.subdistrict.toLowerCase();
     return (
-      subdistrictItems.find((item) => item.nameEn.toLowerCase() === targetLower) ?? {
+      subdistrictItems.find(
+        (item) => item.nameTh === values.subdistrict || item.nameEn.toLowerCase() === targetLower
+      ) ?? {
         id: values.subdistrict,
         nameEn: values.subdistrict,
-        nameTh: "",
+        nameTh: values.subdistrict,
         districtNameEn: values.district,
-        districtNameTh: "",
+        districtNameTh: values.district,
         provinceNameEn: values.province,
-        provinceNameTh: "",
+        provinceNameTh: values.province,
         postalCode: values.postalCode,
         displayText: values.subdistrict,
       }
@@ -249,11 +254,10 @@ export function useOwnerAddressForm() {
         return;
       }
 
+      const nextProvince = item.provinceNameTh || item.provinceNameEn;
       setMultipleFields({
-        district: item.nameEn,
-        ...(item.provinceNameEn && item.provinceNameEn !== values.province
-          ? { province: item.provinceNameEn }
-          : {}),
+        district: item.nameTh || item.nameEn,
+        ...(nextProvince && nextProvince !== values.province ? { province: nextProvince } : {}),
         subdistrict: "",
         postalCode: "",
       });
@@ -273,10 +277,12 @@ export function useOwnerAddressForm() {
         return;
       }
 
+      const nextDistrict = item.districtNameTh || item.districtNameEn;
+      const nextProvince = item.provinceNameTh || item.provinceNameEn;
       setMultipleFields({
-        subdistrict: item.nameEn,
-        ...(item.districtNameEn ? { district: item.districtNameEn } : {}),
-        ...(item.provinceNameEn ? { province: item.provinceNameEn } : {}),
+        subdistrict: item.nameTh || item.nameEn,
+        ...(nextDistrict ? { district: nextDistrict } : {}),
+        ...(nextProvince ? { province: nextProvince } : {}),
         ...(item.postalCode ? { postalCode: item.postalCode } : {}),
       });
     },
@@ -293,14 +299,14 @@ export function useOwnerAddressForm() {
         if (matches.length > 0) {
           const sampleAddr = address(matches[0].code);
           if (sampleAddr) {
-            const provName = sampleAddr.province.name_en || sampleAddr.province.name_th;
-            const distName = sampleAddr.district.name_en || sampleAddr.district.name_th;
+            const provName = sampleAddr.province.name_th || sampleAddr.province.name_en;
+            const distName = sampleAddr.district.name_th || sampleAddr.district.name_en;
 
             const uniqueDistricts = new Set<string>();
             for (const m of matches) {
               const a = address(m.code);
               if (a) {
-                uniqueDistricts.add(a.district.name_en || a.district.name_th);
+                uniqueDistricts.add(a.district.name_th || a.district.name_en);
               }
             }
 

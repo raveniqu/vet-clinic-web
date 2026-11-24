@@ -16,11 +16,11 @@ export function PetsViewTabs() {
       <TabsList className="h-8! bg-background shadow-md/10 inset-shadow-sm/5 dark:bg-transparent dark:ring-1 dark:ring-border">
         <TabsTrigger value="list" className="border-0 data-active:bg-secondary">
           <TableProperties aria-hidden="true" />
-          <span>List View</span>
+          <span>มุมมองรายการ</span>
         </TabsTrigger>
         <TabsTrigger value="grid" className="border-0 data-active:bg-secondary">
           <Grid2X2 aria-hidden="true" />
-          <span>Grid View</span>
+          <span>มุมมองการ์ด</span>
         </TabsTrigger>
       </TabsList>
     </Tabs>

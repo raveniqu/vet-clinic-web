@@ -21,56 +21,56 @@ import {
 } from "#/client/shared/shadcn/components/ui/item";
 import { InfoBadge, SuccessBadge } from "#/client/shared/components/app-badge";
 
-// Mock Recent Clinic Visits / Encounters
+// ข้อมูลจำลองประวัติการเข้ารับบริการล่าสุด
 const recentVisits = [
   {
     id: 1,
-    ownerName: "Emily Watson",
-    petName: "Mochi",
-    species: "Dog",
-    service: "General Checkup & Allergy Consultation",
-    time: "Today, 14:30",
-    status: "Completed",
+    ownerName: "วิภาดา ศรีสุวรรณ",
+    petName: "โมจิ",
+    species: "กระต่าย",
+    service: "ตรวจสุขภาพทั่วไปและปรึกษาอาการแพ้",
+    time: "วันนี้, 14:30",
+    status: "เสร็จสิ้น",
     variant: "success" as const,
   },
   {
     id: 2,
-    ownerName: "David Sterling",
-    petName: "Chao-Khun",
-    species: "Cat",
-    service: "Ear Cytology & Deep Cleaning",
-    time: "Today, 11:15",
-    status: "Completed",
+    ownerName: "ปกรณ์ วัฒนากูล",
+    petName: "โอริโอ้",
+    species: "แมว",
+    service: "ตรวจเซลล์ช่องหูและล้างช่องหู",
+    time: "วันนี้, 11:15",
+    status: "เสร็จสิ้น",
     variant: "success" as const,
   },
   {
     id: 3,
-    ownerName: "Sophia Martinez",
-    petName: "Coco",
-    species: "Dog",
-    service: "Respiratory & Airway Evaluation",
-    time: "Yesterday, 16:00",
-    status: "Follow-up Set",
+    ownerName: "ชญานิศ ปัญญารัตน์",
+    petName: "เต้าหู้",
+    species: "สุนัข",
+    service: "ประเมินระบบทางเดินหายใจ",
+    time: "เมื่อวาน, 16:00",
+    status: "นัดติดตามอาการ",
     variant: "info" as const,
   },
   {
     id: 4,
-    ownerName: "Alexander Wright",
-    petName: "Thor",
-    species: "Dog",
-    service: "Vaccination & Heartworm Screening",
-    time: "Yesterday, 10:30",
-    status: "Completed",
+    ownerName: "ปกรณ์ วัฒนากูล",
+    petName: "ธอร์",
+    species: "สุนัข",
+    service: "ฉีดวัคซีนและตรวจคัดกรองพยาธิหนอนหัวใจ",
+    time: "เมื่อวาน, 10:30",
+    status: "เสร็จสิ้น",
     variant: "success" as const,
   },
   {
     id: 5,
-    ownerName: "Olivia Parker",
-    petName: "Luna",
-    species: "Cat",
-    service: "Dental Scaling & Oral Hygiene",
-    time: "2 days ago, 15:45",
-    status: "Completed",
+    ownerName: "วิภาดา ศรีสุวรรณ",
+    petName: "ลูน่า",
+    species: "แมว",
+    service: "ขูดหินปูนและดูแลสุขภาพช่องปาก",
+    time: "2 วันที่แล้ว, 15:45",
+    status: "เสร็จสิ้น",
     variant: "success" as const,
   },
 ];
@@ -81,11 +81,11 @@ export function RecentVisits() {
       <AppCardHeader>
         <div className="flex items-center gap-2">
           <History className="size-4 text-primary" />
-          <AppCardTitle>Recent Visits</AppCardTitle>
+          <AppCardTitle>การเข้ารับบริการล่าสุด</AppCardTitle>
         </div>
-        <AppCardDescription>Latest clinic visits & consultations</AppCardDescription>
+        <AppCardDescription>รายการตรวจและเข้ารับบริการล่าสุดของคลินิก</AppCardDescription>
         <AppCardAction>
-          <Button size="icon-sm" variant="ghost" title="View all visits">
+          <Button size="icon-sm" variant="ghost" title="ดูประวัติการเข้ารับบริการทั้งหมด">
             <ExternalLink className="size-3.5" />
           </Button>
         </AppCardAction>
@@ -103,7 +103,7 @@ export function RecentVisits() {
                   size="icon-xs"
                   variant="ghost"
                   className="text-muted-foreground"
-                  title="View encounter details"
+                  title="ดูรายละเอียดการตรวจ"
                 >
                   <ExternalLink className="size-3" />
                 </Button>

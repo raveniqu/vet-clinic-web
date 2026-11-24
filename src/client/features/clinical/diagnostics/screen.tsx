@@ -1,3 +1,3 @@
 export function DiagnosticsScreen() {
-  return <div>DiagnosticsScreen</div>;
+  return <div>ตรวจแล็บและภาพถ่ายรังสี</div>;
 }

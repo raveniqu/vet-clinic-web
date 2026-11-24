@@ -66,28 +66,35 @@ describe("Owner form pure helpers", () => {
   it("resets lastName and adjusts prefix when toggling customerType", () => {
     const individual = {
       ...INITIAL_OWNER_FORM_VALUES,
-      prefix: "Ms.",
-      lastName: "Watson",
+      prefix: "นางสาว",
+      lastName: "ศรีสุวรรณ",
     };
 
     const switchedToJuristic = applyOwnerFieldSideEffects(individual, "customerType", "JURISTIC");
     assert.equal(switchedToJuristic.customerType, "JURISTIC");
-    assert.equal(switchedToJuristic.prefix, "Company");
+    assert.equal(switchedToJuristic.prefix, "บริษัท");
     assert.equal(switchedToJuristic.lastName, "");
 
     const foundationStays = applyOwnerFieldSideEffects(
-      { ...individual, prefix: "Foundation" },
+      { ...individual, prefix: "มูลนิธิ" },
       "customerType",
       "JURISTIC"
     );
-    assert.equal(foundationStays.prefix, "Foundation");
+    assert.equal(foundationStays.prefix, "มูลนิธิ");
+
+    const partnershipStays = applyOwnerFieldSideEffects(
+      { ...individual, prefix: "ห้างหุ้นส่วน" },
+      "customerType",
+      "JURISTIC"
+    );
+    assert.equal(partnershipStays.prefix, "ห้างหุ้นส่วน");
 
     const backToIndividual = applyOwnerFieldSideEffects(
       switchedToJuristic,
       "customerType",
       "INDIVIDUAL"
     );
-    assert.equal(backToIndividual.prefix, "Mr.");
+    assert.equal(backToIndividual.prefix, "คุณ");
   });
 
   it("maps OwnerDto to CreateOwnerInput and extracts StandardSchemaV1 / string errors cleanly", () => {

@@ -50,7 +50,7 @@ export function OwnerDetailsScreen() {
           className="w-fit border-0 shadow-md/10 inset-shadow-sm/5"
         >
           <Undo2 />
-          <span>Back to owners</span>
+          <span>กลับไปหน้ารายชื่อเจ้าของ</span>
         </AppButtonLink>
       ) : null}
       <AppDashboardHeader>
@@ -67,11 +67,11 @@ export function OwnerDetailsScreen() {
         <AppDashboardActions>
           <Button size={isMobile ? "icon-sm" : "sm"} variant="outline">
             <Edit />
-            <span className="sr-only md:not-sr-only">Edit Owner</span>
+            <span className="sr-only md:not-sr-only">แก้ไขข้อมูลเจ้าของ</span>
           </Button>
           <Button size={isMobile ? "icon-sm" : "sm"}>
             <Plus />
-            <span className="sr-only md:not-sr-only">Add New Pet</span>
+            <span className="sr-only md:not-sr-only">เพิ่มสัตว์เลี้ยงใหม่</span>
           </Button>
         </AppDashboardActions>
       </AppDashboardHeader>
@@ -83,19 +83,19 @@ export function OwnerDetailsScreen() {
           >
             <TabsTrigger value="general-info">
               <CircleUserRound />
-              <span>General</span>
+              <span>ข้อมูลทั่วไป</span>
             </TabsTrigger>
             <TabsTrigger value="pets-owned">
               <PawPrint />
-              <span>Pets</span>
+              <span>สัตว์เลี้ยง</span>
             </TabsTrigger>
             <TabsTrigger value="appointments">
               <Calendar />
-              <span>Appointments</span>
+              <span>นัดหมาย</span>
             </TabsTrigger>
             <TabsTrigger value="billing-records">
               <Receipt />
-              <span>Billings</span>
+              <span>การชำระเงิน</span>
             </TabsTrigger>
           </TabsList>
           <TabsContent value="general-info">
@@ -121,7 +121,7 @@ export function OwnerDetailsScreen() {
             className="border-0 shadow-md/10 inset-shadow-sm/5"
           >
             <Undo2 />
-            <span>Back to owners</span>
+            <span>กลับไปหน้ารายชื่อเจ้าของ</span>
           </AppButtonLink>
         </AppDashboardFooter>
       ) : null}

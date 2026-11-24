@@ -21,12 +21,12 @@ export function usePetProfile() {
     (file: File) => {
       setUploadError(null);
       if (!file.type.startsWith("image/")) {
-        setUploadError("Please select a valid image file (JPG, PNG, WebP)");
+        setUploadError("กรุณาเลือกไฟล์รูปภาพที่รองรับ (JPG, PNG หรือ WebP)");
         return;
       }
 
       if (file.size > 5 * 1024 * 1024) {
-        setUploadError("Image size exceeds 5MB limit");
+        setUploadError("ขนาดไฟล์รูปภาพต้องไม่เกิน 5MB");
         return;
       }
 

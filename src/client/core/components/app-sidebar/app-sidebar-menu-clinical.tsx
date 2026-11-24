@@ -10,21 +10,21 @@ import type { AppSidebarMenusProps } from "./app-sidebar-menus";
 const clinicalMenus: AppSidebarMenusProps[] = [
   {
     id: "consultations",
-    title: "Exam / EMR",
+    title: "ห้องตรวจ / เวชระเบียน (EMR)",
     href: "/consultations",
     icon: Microscope,
     items: [],
   },
   {
     id: "diagnostics",
-    title: "Lab & Imaging",
+    title: "ตรวจแล็บและภาพถ่ายรังสี",
     href: "/diagnostics",
     icon: FlaskConical,
     items: [],
   },
   {
     id: "surgery",
-    title: "Surgery",
+    title: "ศัลยกรรม",
     href: "/surgery",
     icon: Slice,
     items: [],
@@ -34,7 +34,7 @@ const clinicalMenus: AppSidebarMenusProps[] = [
 export function AppSidebarMenuClinical() {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Clinical</SidebarGroupLabel>
+      <SidebarGroupLabel>งานคลินิก</SidebarGroupLabel>
       <SidebarGroupContent>
         <AppSidebarMenus menus={clinicalMenus} />
       </SidebarGroupContent>

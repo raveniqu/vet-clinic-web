@@ -25,9 +25,9 @@ export function OwnersScreen() {
     <OwnersProvider>
       <AppDashboardRoot className="mx-auto max-w-7xl">
         <AppDashboardHeader>
-          <AppDashboardTitle>Owner Information</AppDashboardTitle>
+          <AppDashboardTitle>ข้อมูลเจ้าของสัตว์เลี้ยง</AppDashboardTitle>
           <AppDashboardDescription>
-            Manage pet owner profiles, recent visits, and PDPA compliance status.
+            จัดการประวัติเจ้าของสัตว์เลี้ยง ประวัติการเข้ารับบริการล่าสุด และสถานะความยินยอม PDPA
           </AppDashboardDescription>
           <AppDashboardActions>
             <AddNewOwnerFormProvider>

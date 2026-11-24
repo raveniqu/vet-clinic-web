@@ -1,3 +1,3 @@
 export function ConsultationScreen() {
-  return <div>Consultation Screen</div>;
+  return <div>ห้องตรวจและเวชระเบียน (EMR)</div>;
 }

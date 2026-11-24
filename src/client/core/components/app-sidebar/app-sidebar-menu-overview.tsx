@@ -6,23 +6,23 @@ import type { AppSidebarMenusProps } from "./app-sidebar-menus";
 export const overviewMenus: AppSidebarMenusProps[] = [
   {
     id: "overview",
-    title: "Quick Access",
+    title: "ทางลัด",
     href: "",
     icon: LayoutDashboard,
     items: [
       {
         id: "home",
-        title: "Home",
+        title: "หน้าหลัก",
         href: "/",
       },
       {
         id: "add-new-owner",
-        title: "Add new owners",
+        title: "ลงทะเบียนเจ้าของใหม่",
         href: "/owners?openAddNewForm=true",
       },
       {
         id: "add-new-pet",
-        title: "Add new pets",
+        title: "ลงทะเบียนสัตว์เลี้ยงใหม่",
         href: "/pets?openAddNewForm=true",
       },
     ],

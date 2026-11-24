@@ -35,14 +35,14 @@ export function OwnersColumnPicker() {
         }
       >
         <Columns3 data-icon="inline-start" aria-hidden="true" />
-        <span>Columns</span>
+        <span>คอลัมน์</span>
         <Badge variant="secondary" className="">
           {visibleColumnsCount}
         </Badge>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuGroup>
-          <DropdownMenuLabel>Visible columns</DropdownMenuLabel>
+          <DropdownMenuLabel>คอลัมน์ที่แสดง</DropdownMenuLabel>
           {columns.map((column) => (
             <DropdownMenuCheckboxItem
               key={column.key}
@@ -64,7 +64,7 @@ export function OwnersColumnPicker() {
         <DropdownMenuGroup>
           <DropdownMenuItem disabled={isDefaultColumns} closeOnClick={false} onClick={resetColumns}>
             <RotateCcw aria-hidden="true" />
-            <span>Reset to default</span>
+            <span>คืนค่าเริ่มต้น</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

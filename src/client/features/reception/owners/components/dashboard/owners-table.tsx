@@ -24,6 +24,7 @@ import {
   getOwnerDisplayName,
   getOwnerInitials,
   hasNonEmptyText,
+  LANGUAGE_LABEL_MAP,
 } from "#/client/features/reception/owners/models/owners-table";
 import { OwnerPdpaPopover } from "./owner-pdpa-popover";
 import { OwnerRowActions } from "./owner-row-actions";
@@ -45,7 +46,7 @@ export function OwnersTable() {
     <AppDataTable
       table={table}
       isLoading={isPending}
-      itemLabel="owners"
+      itemLabel="รายการ"
       emptyState={<OwnersTableEmpty />}
       renderCell={(cell) => {
         const owner = cell.row.original;
@@ -67,7 +68,7 @@ export function OwnersTable() {
                 <div className="flex items-center gap-1.5">
                   <span className="truncate font-medium text-foreground">{displayName}</span>
                   {owner.customerType === "JURISTIC" ? (
-                    <Badge variant="outline">Juristic</Badge>
+                    <Badge variant="outline">นิติบุคคล</Badge>
                   ) : null}
                 </div>
                 <span className="font-mono text-xs text-muted-foreground">
@@ -90,7 +91,7 @@ export function OwnersTable() {
                   type="button"
                   size="icon-xs"
                   variant="ghost"
-                  aria-label={`Copy phone number for ${displayName}`}
+                  aria-label={`คัดลอกเบอร์โทรศัพท์ของ ${displayName}`}
                   onClick={() => void copyPhone(owner.id, owner.phonePrimary)}
                 >
                   {phoneCopied ? (
@@ -110,7 +111,7 @@ export function OwnersTable() {
         if (cell.column.id === "pets") {
           const pets = petsByOwnerId.get(owner.id) ?? [];
           if (pets.length === 0) {
-            return <span className="text-xs text-muted-foreground">No pets</span>;
+            return <span className="text-xs text-muted-foreground">ไม่มีสัตว์เลี้ยง</span>;
           }
 
           return (
@@ -122,22 +123,20 @@ export function OwnersTable() {
                     variant="ghost"
                     size="xs"
                     className="h-auto rounded-full p-0 hover:bg-transparent"
-                    aria-label={`Inspect ${pets.length} registered pets for ${displayName}`}
+                    aria-label={`ดูสัตว์เลี้ยง ${pets.length} ตัวของ ${displayName}`}
                   />
                 }
               >
                 <Badge variant="secondary">
                   <PawPrint data-icon="inline-start" className="text-primary" aria-hidden="true" />
-                  <span>
-                    {pets.length} {pets.length === 1 ? "Pet" : "Pets"}
-                  </span>
+                  <span>{pets.length} ตัว</span>
                 </Badge>
               </PopoverTrigger>
               <PopoverContent align="start" className="w-72 gap-3">
                 <PopoverHeader>
-                  <PopoverTitle className="text-sm">Registered Pets — {displayName}</PopoverTitle>
+                  <PopoverTitle className="text-sm">สัตว์เลี้ยงในระบบ — {displayName}</PopoverTitle>
                   <PopoverDescription className="text-xs">
-                    {pets.length} {pets.length === 1 ? "pet" : "pets"} under care
+                    สัตว์เลี้ยงในความดูแล {pets.length} ตัว
                   </PopoverDescription>
                 </PopoverHeader>
                 <Separator />
@@ -184,7 +183,7 @@ export function OwnersTable() {
                 type="button"
                 size="icon-xs"
                 variant="ghost"
-                aria-label={`Copy Tax ID for ${displayName}`}
+                aria-label={`คัดลอกเลขประจำตัวผู้เสียภาษีของ ${displayName}`}
                 onClick={() => void copyTaxId(owner.id, owner.taxId)}
               >
                 {taxIdCopied ? (
@@ -207,7 +206,7 @@ export function OwnersTable() {
             <div className="flex max-w-48 flex-col gap-0.5 text-xs">
               {hasNonEmptyText(owner.phoneSecondary) ? (
                 <span className="truncate font-mono text-foreground">
-                  2nd: {formatPhoneNumber(owner.phoneSecondary)}
+                  สำรอง: {formatPhoneNumber(owner.phoneSecondary)}
                 </span>
               ) : null}
               {hasNonEmptyText(owner.lineId) ? (
@@ -233,7 +232,7 @@ export function OwnersTable() {
                     variant="ghost"
                     size="xs"
                     className="h-auto max-w-44 justify-start px-1.5 py-0.5 text-left font-normal"
-                    aria-label={`Read full address for ${displayName}`}
+                    aria-label={`ดูที่อยู่เต็มของ ${displayName}`}
                   />
                 }
               >
@@ -242,9 +241,7 @@ export function OwnersTable() {
               </PopoverTrigger>
               <PopoverContent align="start" className="w-80">
                 <PopoverHeader>
-                  <PopoverTitle className="text-sm">
-                    Registered Address — {displayName}
-                  </PopoverTitle>
+                  <PopoverTitle className="text-sm">ที่อยู่ในระบบ — {displayName}</PopoverTitle>
                   <PopoverDescription className="text-xs whitespace-pre-wrap text-foreground">
                     {formatFullAddress(owner)}
                   </PopoverDescription>
@@ -259,7 +256,7 @@ export function OwnersTable() {
         if (cell.column.id === "preferredSchedule") {
           return (
             <span className="text-xs text-foreground">
-              {owner.preferredTime} · {owner.preferredLanguage}
+              {owner.preferredTime} · {LANGUAGE_LABEL_MAP[owner.preferredLanguage]}
             </span>
           );
         }

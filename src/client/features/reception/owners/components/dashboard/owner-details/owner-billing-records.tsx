@@ -12,11 +12,13 @@ export function OwnerBillingRecords() {
       <AppCardHeader>
         <AppCardTitle>
           <Receipt className="size-4 text-primary" />
-          <span>Billings & Invoices</span>
+          <span>ประวัติการชำระเงินและใบเสร็จ</span>
         </AppCardTitle>
       </AppCardHeader>
       <AppCardContent>
-        <p className="text-lg">Waiting for Domain 7</p>
+        <p className="text-sm text-muted-foreground">
+          ยังไม่มีข้อมูลใบเสร็จและการชำระเงิน (โมดูลการเงินอยู่ระหว่างการพัฒนา)
+        </p>
       </AppCardContent>
     </AppCard>
   );

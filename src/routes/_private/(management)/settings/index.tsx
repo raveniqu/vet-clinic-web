@@ -5,5 +5,5 @@ export const Route = createFileRoute("/_private/(management)/settings/")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/_private/(management)/settings/"!</div>;
+  return <div>ตั้งค่าระบบ</div>;
 }

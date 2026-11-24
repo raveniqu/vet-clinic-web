@@ -20,11 +20,11 @@ export function PetPhotoQrModal() {
         <DialogHeader className="text-center sm:text-left">
           <div className="flex items-center gap-2">
             <Smartphone className="size-5 text-primary" />
-            <DialogTitle>Take Photo with Phone</DialogTitle>
+            <DialogTitle>ถ่ายภาพด้วยโทรศัพท์มือถือ</DialogTitle>
           </div>
           <DialogDescription>
-            Scan this QR code with your mobile camera to take a photo of the pet. The photo will
-            appear on this screen automatically.
+            สแกนคิวอาร์โค้ดนี้ด้วยกล้องมือถือเพื่อถ่ายภาพสัตว์เลี้ยง
+            ภาพที่ถ่ายจะปรากฏบนหน้าจอนี้โดยอัตโนมัติ
           </DialogDescription>
         </DialogHeader>
 
@@ -38,7 +38,7 @@ export function PetPhotoQrModal() {
               fill="currentColor"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <title>QR Code Illustration</title>
+              <title>ภาพประกอบคิวอาร์โค้ด</title>
               {/* Corner 1 */}
               <rect
                 x="5"
@@ -99,7 +99,7 @@ export function PetPhotoQrModal() {
             </div>
           </div>
           <div className="text-center text-xs text-muted-foreground">
-            Session Code:{" "}
+            รหัสเซสชัน:{" "}
             <span className="font-mono font-medium text-foreground">PET-SESSION-8842</span>
           </div>
         </div>
@@ -112,7 +112,7 @@ export function PetPhotoQrModal() {
             className="w-full sm:w-auto"
           >
             <Sparkles className="mr-2 size-4 text-primary" />
-            Simulate Mobile Upload (Demo)
+            จำลองการอัปโหลดจากมือถือ (ตัวอย่าง)
           </Button>
           <Button
             type="button"
@@ -120,7 +120,7 @@ export function PetPhotoQrModal() {
             onClick={closeQrModal}
             className="w-full sm:w-auto"
           >
-            Cancel
+            ยกเลิก
           </Button>
         </DialogFooter>
       </DialogContent>

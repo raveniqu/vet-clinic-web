@@ -23,10 +23,10 @@ export type TemperamentAlert = z.infer<typeof temperamentAlertEnum>;
 
 // Step 1: Owner Link & Pet Identity
 export const step1PetIdentitySchema = z.object({
-  ownerId: z.uuid("Please select an owner for this pet"),
-  petName: z.string().trim().min(1, "Pet name is required"),
-  speciesId: z.number().int().positive("Please select a species"),
-  breedId: z.number().int().positive("Please select a breed"),
+  ownerId: z.uuid("กรุณาเลือกเจ้าของสัตว์เลี้ยง"),
+  petName: z.string().trim().min(1, "กรุณาระบุชื่อสัตว์เลี้ยง"),
+  speciesId: z.number().int().positive("กรุณาเลือกชนิดสัตว์"),
+  breedId: z.number().int().positive("กรุณาเลือกสายพันธุ์"),
   customBreedName: z.string().optional().default(""),
   photo: z.string().optional().default(""),
 });
@@ -37,20 +37,20 @@ export const step2PetPhysicalSchema = z.object({
   sex: petSexEnum.default("Unknown"),
   reproductiveStatus: reproductiveStatusEnum.default("Unknown"),
   birthDateIsEstimated: z.boolean().default(false),
-  dateOfBirth: z.string().trim().min(1, "Date of birth is required"),
+  dateOfBirth: z.string().trim().min(1, "กรุณาระบุวันเกิดของสัตว์เลี้ยง"),
   estimatedYears: z.number().int().min(0).max(50).optional().default(0),
   estimatedMonths: z.number().int().min(0).max(11).optional().default(0),
   color: z.string().optional().default(""),
   weight: z
     .string()
     .trim()
-    .min(1, "Initial weight is required")
+    .min(1, "กรุณาระบุน้ำหนักเริ่มต้น")
     .refine(
       (val) => {
         const num = parseFloat(val);
         return !Number.isNaN(num) && num > 0 && num < 500;
       },
-      { message: "Weight must be a valid positive number in kg" }
+      { message: "น้ำหนักต้องเป็นตัวเลขมากกว่า 0 (หน่วยกิโลกรัม)" }
     ),
 });
 export type Step2PetPhysicalInput = z.infer<typeof step2PetPhysicalSchema>;
@@ -67,7 +67,7 @@ export const step3PetCautionSchema = z.object({
         // ISO 11784/11785 standard microchips are typically 15 digits
         return /^[0-9]{15}$/.test(val.trim());
       },
-      { message: "Microchip number must be a 15-digit number (ISO standard)" }
+      { message: "หมายเลขไมโครชิปต้องเป็นตัวเลข 15 หลัก (มาตรฐาน ISO)" }
     ),
   temperament: temperamentAlertEnum.default("Docile"),
   allergies: z.string().optional().default(""),

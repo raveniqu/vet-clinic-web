@@ -1,3 +1,3 @@
 export function DispenseScreen() {
-  return <div>Hello "/_private/dispensing/"!</div>;
+  return <div>จ่ายยา</div>;
 }

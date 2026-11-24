@@ -16,8 +16,8 @@ export function PetSearchInput() {
         value={searchTerm}
         onChange={handleSearchChange}
         className="w-full placeholder:text-sm md:w-fit"
-        placeholder="Search by name, breed, color, or species"
-        aria-label="Search pets"
+        placeholder="ค้นหาจากชื่อ, สายพันธุ์, สีขน หรือชนิดสัตว์"
+        aria-label="ค้นหาสัตว์เลี้ยง"
       />
       <InputGroupAddon>
         <Search aria-hidden="true" />
@@ -28,7 +28,7 @@ export function PetSearchInput() {
             type="button"
             size="icon-xs"
             variant="ghost"
-            aria-label="Clear search"
+            aria-label="ล้างคำค้นหา"
             onClick={clearSearch}
           >
             <X aria-hidden="true" />

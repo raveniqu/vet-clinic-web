@@ -45,7 +45,7 @@ export const allProvinces: GeoProvince[] = provinces()
     nameEn: p.name_en,
     nameTh: p.name_th,
   }))
-  .sort((a, b) => a.nameEn.localeCompare(b.nameEn));
+  .sort((a, b) => a.nameTh.localeCompare(b.nameTh, "th"));
 
 const provinceByLookupKey = new Map<string, GeoProvince>();
 for (const prov of allProvinces) {
@@ -68,7 +68,7 @@ function getDistrictsByProvinceCode(provinceCode: string): GeoDistrict[] {
       nameTh: d.name_th,
       provinceCode: d.province_code,
     }))
-    .sort((a, b) => a.nameEn.localeCompare(b.nameEn));
+    .sort((a, b) => a.nameTh.localeCompare(b.nameTh, "th"));
 
   districtsByProvinceCodeCache.set(provinceCode, computed);
   return computed;
@@ -95,7 +95,7 @@ export function getAllDistrictsWithProvince(): GeoDistrictWithProvince[] {
         id: d.code,
         provinceNameEn: p.nameEn,
         provinceNameTh: p.nameTh,
-        displayText: `${d.nameEn} (${p.nameEn})`,
+        displayText: `${d.nameTh} (${p.nameTh})`,
       });
     }
   }
@@ -128,7 +128,7 @@ export function getSubdistrictsForDistrict(
       provinceCode: s.province_code,
       postalCode: s.postal_codes[0] ?? "",
     }))
-    .sort((a, b) => a.nameEn.localeCompare(b.nameEn));
+    .sort((a, b) => a.nameTh.localeCompare(b.nameTh, "th"));
 
   subdistrictsByDistrictCodeCache.set(dist.code, computed);
   return computed;
@@ -150,9 +150,9 @@ export function useGeoThai() {
         const addr = address(s.code);
         if (!addr) continue;
 
-        const subName = addr.subdistrict.name_en || addr.subdistrict.name_th;
-        const distName = addr.district.name_en || addr.district.name_th;
-        const provName = addr.province.name_en || addr.province.name_th;
+        const subName = addr.subdistrict.name_th || addr.subdistrict.name_en;
+        const distName = addr.district.name_th || addr.district.name_en;
+        const provName = addr.province.name_th || addr.province.name_en;
         const postal = addr.subdistrict.postal_codes[0] ?? trimmed;
 
         results.push({
@@ -169,16 +169,16 @@ export function useGeoThai() {
       return results;
     }
 
-    // Case 2: Text search (subdistrict, district, province in English or Thai)
+    // Case 2: Text search (subdistrict, district, province in Thai or English)
     const searchResults = search(trimmed, { limit });
     for (const res of searchResults) {
       if (res.level === "subdistrict") {
         const addr = address(res.area.code);
         if (!addr) continue;
 
-        const subName = addr.subdistrict.name_en || addr.subdistrict.name_th;
-        const distName = addr.district.name_en || addr.district.name_th;
-        const provName = addr.province.name_en || addr.province.name_th;
+        const subName = addr.subdistrict.name_th || addr.subdistrict.name_en;
+        const distName = addr.district.name_th || addr.district.name_en;
+        const provName = addr.province.name_th || addr.province.name_en;
         const postal = addr.subdistrict.postal_codes[0] ?? "";
 
         results.push({
@@ -193,9 +193,9 @@ export function useGeoThai() {
         const distCode = res.area.code;
         const sampleAddr = address(`${distCode}01`);
         if (sampleAddr) {
-          const subName = sampleAddr.subdistrict.name_en || sampleAddr.subdistrict.name_th;
-          const distName = sampleAddr.district.name_en || sampleAddr.district.name_th;
-          const provName = sampleAddr.province.name_en || sampleAddr.province.name_th;
+          const subName = sampleAddr.subdistrict.name_th || sampleAddr.subdistrict.name_en;
+          const distName = sampleAddr.district.name_th || sampleAddr.district.name_en;
+          const provName = sampleAddr.province.name_th || sampleAddr.province.name_en;
           const postal = sampleAddr.subdistrict.postal_codes[0] ?? "";
 
           results.push({

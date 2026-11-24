@@ -82,13 +82,13 @@ export function PetIdentitySpeciesBreedField() {
     <AppFieldSet>
       <AppFieldLegend>
         <Dna />
-        <span>Species</span>
+        <span>ชนิดสัตว์และสายพันธุ์</span>
       </AppFieldLegend>
       <FieldContent className="gap-y-6">
         {/* Species Selection */}
         <Field data-invalid={!!speciesError}>
           <AppFieldLabel>
-            <span>Species</span>
+            <span>ชนิดสัตว์</span>
             <span className="font-bold text-destructive">*</span>
           </AppFieldLabel>
 
@@ -115,8 +115,8 @@ export function PetIdentitySpeciesBreedField() {
                         <Dog className="size-4" />
                       </div>
                       <FieldContent className="gap-0.5">
-                        <AppFieldTitle>Dog</AppFieldTitle>
-                        <AppFieldDescription>Canine / Puppy</AppFieldDescription>
+                        <AppFieldTitle>สุนัข</AppFieldTitle>
+                        <AppFieldDescription>สุนัข / ลูกสุนัข</AppFieldDescription>
                       </FieldContent>
                     </div>
                     <RadioGroupItem value="1" id="species-dog" />
@@ -138,8 +138,8 @@ export function PetIdentitySpeciesBreedField() {
                         <Cat className="size-4" />
                       </div>
                       <FieldContent className="gap-0.5">
-                        <AppFieldTitle>Cat</AppFieldTitle>
-                        <AppFieldDescription>Feline / Kitten</AppFieldDescription>
+                        <AppFieldTitle>แมว</AppFieldTitle>
+                        <AppFieldDescription>แมว / ลูกแมว</AppFieldDescription>
                       </FieldContent>
                     </div>
                     <RadioGroupItem value="2" id="species-cat" />
@@ -157,7 +157,7 @@ export function PetIdentitySpeciesBreedField() {
                   className="h-8 gap-1.5 px-2.5 text-xs text-muted-foreground hover:text-foreground"
                 >
                   <Plus className="size-3.5" />
-                  <span>Exotic & Others</span>
+                  <span>สัตว์เลี้ยงพิเศษและอื่นๆ</span>
                 </Button>
               </div>
             </FieldContent>
@@ -176,7 +176,9 @@ export function PetIdentitySpeciesBreedField() {
                     <AppSpeciesIcon code={selectedSpecies?.code} />
                   </span>
                   <span className="flex flex-col items-start gap-0">
-                    <AppFieldTitle className="truncate">{selectedSpecies?.name}</AppFieldTitle>
+                    <AppFieldTitle className="truncate">
+                      {selectedSpecies?.nameTh || selectedSpecies?.name}
+                    </AppFieldTitle>
                   </span>
                   <ChevronsUpDown className="ml-auto size-4 shrink-0 opacity-50" />
                 </DropdownMenuTrigger>
@@ -184,7 +186,7 @@ export function PetIdentitySpeciesBreedField() {
                   <DropdownMenuGroup>
                     <InputGroup>
                       <InputGroupInput
-                        placeholder="Search exotic species (e.g., Rabbit, Hamster, Bird, Snake)..."
+                        placeholder="ค้นหาสัตว์เลี้ยงพิเศษ (เช่น กระต่าย, แฮมสเตอร์, นก, งู)..."
                         value={exoticSearchQuery}
                         onChange={handleExoticSearchChange}
                         onKeyDown={handleExoticSearchKeyDown}
@@ -202,13 +204,13 @@ export function PetIdentitySpeciesBreedField() {
                       <div className="max-h-48 overflow-y-auto">
                         {filteredExoticSpecies.length === 0 ? (
                           <div className="py-4 text-center text-xs text-muted-foreground">
-                            No species found matching &quot;{exoticSearchQuery}&quot;
+                            ไม่พบชนิดสัตว์ที่ตรงกับ &quot;{exoticSearchQuery}&quot;
                           </div>
                         ) : (
                           filteredExoticSpecies.map((s) => (
                             <DropdownMenuRadioItem key={s.id} value={s.id} closeOnClick>
                               <AppSpeciesIcon code={s.code} />
-                              <span>{s.name}</span>
+                              <span>{s.nameTh || s.name}</span>
                             </DropdownMenuRadioItem>
                           ))
                         )}
@@ -226,17 +228,17 @@ export function PetIdentitySpeciesBreedField() {
                         onClick={handleStartAddNewSpecies}
                       >
                         <Plus className="size-4 shrink-0" />
-                        <span>Add New Species</span>
+                        <span>เพิ่มชนิดสัตว์ใหม่</span>
                       </Button>
                     ) : (
                       <Field className="gap-2 p-1">
                         <AppFieldLabel htmlFor="register-new-species" className="pl-2 text-xs!">
-                          Register New Species
+                          ลงทะเบียนชนิดสัตว์ใหม่
                         </AppFieldLabel>
                         <div className="flex items-center gap-1.5">
                           <Input
                             id="register-new-species"
-                            placeholder="Species Name (e.g., Hedgehog, Ferret)"
+                            placeholder="ชื่อชนิดสัตว์ (เช่น เม่นแคระ, เฟอร์เรต)"
                             value={newSpeciesName}
                             onChange={handleNewSpeciesNameChange}
                             onKeyDown={handleNewSpeciesNameKeyDown}
@@ -249,7 +251,7 @@ export function PetIdentitySpeciesBreedField() {
                             onClick={handleCreateCustomSpecies}
                             className="h-7 px-2.5 text-xs"
                           >
-                            Save & Select
+                            บันทึกและเลือก
                           </Button>
                           <Button
                             type="button"
@@ -258,7 +260,7 @@ export function PetIdentitySpeciesBreedField() {
                             onClick={handleCancelNewSpeciesInline}
                             className="h-7 px-2 text-xs"
                           >
-                            Cancel
+                            ยกเลิก
                           </Button>
                         </div>
                       </Field>
@@ -273,11 +275,11 @@ export function PetIdentitySpeciesBreedField() {
                   variant="ghost"
                   size="sm"
                   onClick={handleLeaveExoticMode}
-                  title="Back to Dog / Cat"
+                  title="กลับไปเลือกสุนัข / แมว"
                   className="h-8 gap-1.5 px-2.5 text-xs text-muted-foreground hover:text-foreground"
                 >
                   <ArrowLeft className="size-3.5" />
-                  <span>Back to Dog / Cat</span>
+                  <span>กลับไปเลือกสุนัข / แมว</span>
                 </Button>
               </div>
             </FieldContent>
@@ -289,7 +291,7 @@ export function PetIdentitySpeciesBreedField() {
         {/* Breed Selector */}
         <Field data-invalid={!!breedError}>
           <AppFieldLabel htmlFor="breed-select-trigger">
-            <span>Breed</span>
+            <span>สายพันธุ์</span>
             <span className="font-bold text-destructive">*</span>
           </AppFieldLabel>
           <DropdownMenu open={isBreedPopoverOpen} onOpenChange={setIsBreedPopoverOpen}>
@@ -314,7 +316,7 @@ export function PetIdentitySpeciesBreedField() {
               <DropdownMenuGroup>
                 <InputGroup>
                   <InputGroupInput
-                    placeholder="Search or enter new breed..."
+                    placeholder="ค้นหาหรือพิมพ์สายพันธุ์ใหม่..."
                     value={breedSearchQuery}
                     onChange={handleBreedSearchChange}
                     onKeyDown={handleBreedSearchKeyDown}
@@ -332,7 +334,7 @@ export function PetIdentitySpeciesBreedField() {
                 >
                   {filteredBreeds.length === 0 ? (
                     <div className="py-4 text-center text-xs text-muted-foreground">
-                      No breeds found matching &quot;{breedSearchQuery}&quot;
+                      ไม่พบสายพันธุ์ที่ตรงกับ &quot;{breedSearchQuery}&quot;
                     </div>
                   ) : (
                     filteredBreeds.map((breed) => (
@@ -355,7 +357,7 @@ export function PetIdentitySpeciesBreedField() {
                     >
                       <Plus />
                       <span className="truncate">
-                        Add &quot;{breedSearchQuery.trim()}&quot; as new breed
+                        เพิ่ม &quot;{breedSearchQuery.trim()}&quot; เป็นสายพันธุ์ใหม่
                       </span>
                     </Button>
                   ) : !isAddingCustomBreedInline ? (
@@ -368,18 +370,18 @@ export function PetIdentitySpeciesBreedField() {
                       variant="link"
                     >
                       <Plus />
-                      <span>Add Custom Breed</span>
+                      <span>เพิ่มสายพันธุ์กำหนดเอง</span>
                     </Button>
                   ) : (
                     /* Inline input for custom breed name */
                     <Field className="gap-2 p-1">
                       <AppFieldLabel htmlFor="new-breed-input" className="pl-2 text-xs!">
-                        Add new breed for {selectedSpecies?.name}
+                        เพิ่มสายพันธุ์ใหม่สำหรับ {selectedSpecies?.nameTh || selectedSpecies?.name}
                       </AppFieldLabel>
                       <div className="flex items-center gap-1.5">
                         <Input
                           id="new-breed-input"
-                          placeholder="Enter new breed name..."
+                          placeholder="ระบุชื่อสายพันธุ์ใหม่..."
                           value={newCustomBreedInput}
                           onChange={handleNewCustomBreedInputChange}
                           onKeyDown={handleCustomBreedInputKeyDown}
@@ -393,7 +395,7 @@ export function PetIdentitySpeciesBreedField() {
                           onClick={() => handleCreateCustomBreed(newCustomBreedInput)}
                           className="h-7 px-2.5 text-xs"
                         >
-                          Add
+                          เพิ่ม
                         </Button>
                         <Button
                           type="button"
@@ -402,7 +404,7 @@ export function PetIdentitySpeciesBreedField() {
                           onClick={handleCancelCustomBreedInline}
                           className="h-7 px-2 text-xs"
                         >
-                          Cancel
+                          ยกเลิก
                         </Button>
                       </div>
                     </Field>

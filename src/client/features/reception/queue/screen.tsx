@@ -1,3 +1,3 @@
 export function QueueScreen() {
-  return <div>Hello "/_private/queue/"!</div>;
+  return <div>คิวตรวจ</div>;
 }

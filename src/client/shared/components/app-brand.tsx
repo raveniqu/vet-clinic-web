@@ -49,7 +49,7 @@ export function AppBrandLogo({
       data-slot="app-brand-logo"
       src={imageSrc}
       className={cn("aspect-square", sizeMapClasses[size], className)}
-      alt={props.alt ? props.alt : "logo"}
+      alt={props.alt ? props.alt : "โลโก้คลินิก"}
       {...props}
     />
   );

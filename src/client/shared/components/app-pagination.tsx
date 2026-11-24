@@ -178,12 +178,13 @@ export function AppPagination({
   const pageNumbers = getPageNumbers(currentPage, totalPages);
 
   return (
-    <Pagination className={cn("mx-0 w-auto", className)}>
+    <Pagination aria-label="การแบ่งหน้า" className={cn("mx-0 w-auto", className)}>
       <PaginationContent>
         <PaginationItem>
           <AppPaginationPreviousLink
             to="."
             text=""
+            aria-label="ไปยังหน้าก่อนหน้า"
             size="icon-sm"
             className={cn("items-center p-0!", !canGoPrevious && "pointer-events-none opacity-50")}
             aria-disabled={!canGoPrevious}
@@ -232,6 +233,7 @@ export function AppPagination({
           <AppPaginationNextLink
             to="."
             text=""
+            aria-label="ไปยังหน้าถัดไป"
             size="icon-sm"
             className={cn("items-center p-0!", !canGoNext && "pointer-events-none opacity-50")}
             aria-disabled={!canGoNext}

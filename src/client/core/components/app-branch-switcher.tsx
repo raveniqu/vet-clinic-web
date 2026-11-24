@@ -48,7 +48,7 @@ export function AppBranchSwitcher() {
             className={`${isMobile ? "" : "w-fit max-w-64"} bg-transparent backdrop-blur-md`}
           >
             <DropdownMenuGroup>
-              <DropdownMenuLabel>Branches</DropdownMenuLabel>
+              <DropdownMenuLabel>สาขา</DropdownMenuLabel>
               {selectItems.map((item) => (
                 <DropdownMenuItem
                   key={item.value}
@@ -66,7 +66,7 @@ export function AppBranchSwitcher() {
                 <div className="flex size-6 items-center justify-center rounded-md bg-transparent">
                   <Plus className="size-4" />
                 </div>
-                <div className="font-medium text-muted-foreground">Add branch</div>
+                <div className="font-medium text-muted-foreground">เพิ่มสาขา</div>
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
@@ -75,7 +75,7 @@ export function AppBranchSwitcher() {
         <AppBrand>
           <AppBrandLink to="/">
             <AppBrandLogo />
-            <AppBrandIdentity>Vet Clinic</AppBrandIdentity>
+            <AppBrandIdentity>คลินิกสัตวแพทย์</AppBrandIdentity>
           </AppBrandLink>
         </AppBrand>
       )}

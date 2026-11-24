@@ -3,6 +3,7 @@ import { formatRegisteredDate } from "#/client/shared/helpers/formatters";
 import type {
   PetDto,
   PetQuickFilterKey,
+  PetSex,
   ReproductiveStatus,
   TemperamentAlert,
 } from "#/shared/schemas/pet.schema";
@@ -30,20 +31,53 @@ export interface PetColumnDefinition {
 }
 
 export const PET_TABLE_COLUMNS: readonly PetColumnDefinition[] = [
-  { key: "pet", label: "Pet", locked: true, defaultVisible: true },
-  { key: "speciesBreed", label: "Species / Breed", defaultVisible: true },
-  { key: "age", label: "Age", defaultVisible: true },
-  { key: "weight", label: "Weight", defaultVisible: true },
-  { key: "allergies", label: "Allergies", defaultVisible: true },
-  { key: "owner", label: "Owner", defaultVisible: true },
-  { key: "sexReproductive", label: "Sex / Neutered", defaultVisible: false },
-  { key: "temperament", label: "Temperament", defaultVisible: false },
-  { key: "microchip", label: "Microchip", defaultVisible: false },
-  { key: "color", label: "Color", defaultVisible: false },
-  { key: "medicalNotes", label: "Medical Notes", defaultVisible: false },
-  { key: "status", label: "Status", defaultVisible: false },
-  { key: "createdAt", label: "Registered", defaultVisible: false },
+  { key: "pet", label: "สัตว์เลี้ยง", locked: true, defaultVisible: true },
+  { key: "speciesBreed", label: "ชนิด / สายพันธุ์", defaultVisible: true },
+  { key: "age", label: "อายุ", defaultVisible: true },
+  { key: "weight", label: "น้ำหนัก", defaultVisible: true },
+  { key: "allergies", label: "ประวัติแพ้ยา / อาหาร", defaultVisible: true },
+  { key: "owner", label: "เจ้าของสัตว์เลี้ยง", defaultVisible: true },
+  { key: "sexReproductive", label: "เพศ / การทำหมัน", defaultVisible: false },
+  { key: "temperament", label: "นิสัย / ข้อควรระวัง", defaultVisible: false },
+  { key: "microchip", label: "ไมโครชิป", defaultVisible: false },
+  { key: "color", label: "สีขน / ตำหนิ", defaultVisible: false },
+  { key: "medicalNotes", label: "บันทึกทางการแพทย์", defaultVisible: false },
+  { key: "status", label: "สถานะ", defaultVisible: false },
+  { key: "createdAt", label: "วันที่ลงทะเบียน", defaultVisible: false },
 ] as const;
+
+export const PET_COLUMN_LABEL_MAP: Record<PetColumnKey, string> = Object.fromEntries(
+  PET_TABLE_COLUMNS.map((col) => [col.key, col.label])
+) as Record<PetColumnKey, string>;
+
+export const PET_SEX_LABEL_MAP: Record<PetSex, string> = {
+  Male: "เพศผู้",
+  Female: "เพศเมีย",
+  Unknown: "ไม่ระบุ",
+};
+
+export const REPRODUCTIVE_STATUS_LABEL_MAP: Record<ReproductiveStatus, string> = {
+  Neutered: "ทำหมันแล้ว",
+  Intact: "ยังไม่ทำหมัน",
+  Unknown: "ไม่ระบุ",
+};
+
+export const TEMPERAMENT_LABEL_MAP: Record<TemperamentAlert, string> = {
+  Docile: "เชื่อง",
+  Nervous: "ตื่นกลัว",
+  Aggressive: "ดุ / ก้าวร้าว",
+  "Needs Muzzle": "ต้องใส่ตะกร้อ",
+};
+
+const PET_STATUS_LABEL_MAP: Record<string, string> = {
+  ACTIVE: "ปกติ",
+  INACTIVE: "ไม่ใช้งาน",
+  DECEASED: "เสียชีวิต",
+};
+
+export function getPetStatusLabel(status: string): string {
+  return PET_STATUS_LABEL_MAP[status] ?? status;
+}
 
 export const DEFAULT_VISIBLE_PET_COLUMNS: readonly PetColumnKey[] = PET_TABLE_COLUMNS.filter(
   (col) => col.defaultVisible
@@ -64,22 +98,22 @@ export interface PetQuickFilterDefinition {
 export const PET_QUICK_FILTERS: readonly PetQuickFilterDefinition[] = [
   {
     key: "hasAllergies",
-    label: "Has Allergies",
+    label: "มีประวัติแพ้",
     predicate: (pet) => Boolean(pet.allergies && pet.allergies.trim() !== ""),
   },
   {
     key: "alertTemperament",
-    label: "Alert Temperament",
+    label: "ต้องระวังนิสัย",
     predicate: (pet) => pet.temperament !== "Docile",
   },
   {
     key: "intact",
-    label: "Intact",
+    label: "ยังไม่ทำหมัน",
     predicate: (pet) => pet.reproductiveStatus === "Intact",
   },
   {
     key: "missingMicrochip",
-    label: "Missing Microchip",
+    label: "ยังไม่มีไมโครชิป",
     predicate: (pet) => !pet.microchipNumber || pet.microchipNumber.trim() === "",
   },
 ] as const;
@@ -116,7 +150,7 @@ export function normalizeVisiblePetColumns(raw: unknown): PetColumnKey[] {
 
 export function getPetInitials(name: string): string {
   const trimmed = name.trim();
-  if (!trimmed) return "PT";
+  if (!trimmed) return "สล";
   return trimmed.slice(0, 2).toUpperCase();
 }
 
@@ -197,9 +231,9 @@ export function computePetsMetrics(pets: readonly PetDto[]): PetsMetrics {
   let totalAllergies = 0;
 
   for (const pet of pets) {
-    if (pet.speciesName === "Dog") {
+    if (pet.speciesId === 1) {
       totalDogs += 1;
-    } else if (pet.speciesName === "Cat") {
+    } else if (pet.speciesId === 2) {
       totalCats += 1;
     }
 

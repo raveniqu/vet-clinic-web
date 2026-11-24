@@ -1,3 +1,3 @@
 export function CashierScreen() {
-  return <div>CashierScreen</div>;
+  return <div>การเงิน / แคชเชียร์</div>;
 }

@@ -12,20 +12,20 @@ import { usePetFormShell } from "#/client/features/reception/pets/hooks/use-pet-
 const steps = [
   {
     step: 1,
-    label: "Identity & Owner",
-    description: "Owner, name & breed",
+    label: "ข้อมูลสัตว์เลี้ยงและเจ้าของ",
+    description: "เจ้าของ ชื่อ และสายพันธุ์",
     icon: Dog,
   },
   {
     step: 2,
-    label: "Physical & Bio",
-    description: "Sex, age & weight",
+    label: "ลักษณะทางกายภาพ",
+    description: "เพศ อายุ และน้ำหนัก",
     icon: Activity,
   },
   {
     step: 3,
-    label: "Caution & Alerts",
-    description: "Microchip & medical",
+    label: "ข้อควรระวังและสุขภาพ",
+    description: "ไมโครชิปและประวัติแพทย์",
     icon: ShieldAlert,
   },
 ] as const;
@@ -34,7 +34,7 @@ export function PetStepIndicator() {
   const { currentStep, goToStep, isEdit } = usePetFormShell();
 
   return (
-    <Breadcrumb aria-label="Pet registration steps" className="w-full">
+    <Breadcrumb aria-label="ขั้นตอนการลงทะเบียนสัตว์เลี้ยง" className="w-full">
       <BreadcrumbList className="flex flex-col items-start gap-1 md:flex-row md:items-center md:justify-evenly md:gap-2">
         {steps.map((s, index) => {
           const isDone = currentStep > s.step;

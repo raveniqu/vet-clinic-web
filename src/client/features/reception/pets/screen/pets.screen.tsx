@@ -21,7 +21,7 @@ export function PetsScreen() {
     <PetsProvider>
       <AppDashboardRoot className="mx-auto max-w-7xl">
         <AppDashboardHeader>
-          <AppDashboardTitle>Pet Information</AppDashboardTitle>
+          <AppDashboardTitle>ข้อมูลสัตว์เลี้ยง</AppDashboardTitle>
           <AppDashboardActions>
             <AddNewPetFormProvider>
               <AddNewPetForm />

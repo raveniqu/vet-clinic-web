@@ -18,7 +18,7 @@ export function OwnerFormActions() {
             disabled={isSubmitting}
           >
             <ArrowLeftIcon className="mr-1.5 size-4" />
-            <span>Back</span>
+            <span>ย้อนกลับ</span>
           </Button>
         ) : (
           <Button
@@ -28,7 +28,7 @@ export function OwnerFormActions() {
             onClick={() => setIsOpen(false)}
             disabled={isSubmitting}
           >
-            <span>Cancel</span>
+            <span>ยกเลิก</span>
           </Button>
         )}
       </div>
@@ -45,7 +45,7 @@ export function OwnerFormActions() {
                 onClick={nextStep}
                 disabled={isSubmitting}
               >
-                <span>Next</span>
+                <span>ถัดไป</span>
                 <ArrowRightIcon className="ml-1.5 size-4" />
               </Button>
             )}
@@ -53,19 +53,19 @@ export function OwnerFormActions() {
               {isSubmitting ? (
                 <>
                   <Loader2Icon className="mr-1.5 size-4 animate-spin" />
-                  <span>Saving...</span>
+                  <span>กำลังบันทึก...</span>
                 </>
               ) : (
                 <>
                   <CheckIcon className="mr-1.5 size-4" />
-                  <span>Save Changes</span>
+                  <span>บันทึกการเปลี่ยนแปลง</span>
                 </>
               )}
             </Button>
           </>
         ) : currentStep < 3 ? (
           <Button type="button" size="sm" onClick={nextStep} disabled={isSubmitting}>
-            <span>Next Step</span>
+            <span>ขั้นตอนถัดไป</span>
             <ArrowRightIcon className="ml-1.5 size-4" />
           </Button>
         ) : (
@@ -73,12 +73,12 @@ export function OwnerFormActions() {
             {isSubmitting ? (
               <>
                 <Loader2Icon className="mr-1.5 size-4 animate-spin" />
-                <span>Registering Owner...</span>
+                <span>กำลังลงทะเบียน...</span>
               </>
             ) : (
               <>
                 <CheckIcon className="mr-1.5 size-4" />
-                <span>Register Owner</span>
+                <span>ลงทะเบียนเจ้าของสัตว์เลี้ยง</span>
               </>
             )}
           </Button>

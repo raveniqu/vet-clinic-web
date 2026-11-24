@@ -19,20 +19,20 @@ import { useOwnerFormShell } from "#/client/features/reception/owners/hooks/use-
 const steps = [
   {
     step: 1,
-    label: "Identity & Contacts",
-    description: "Basic info & phone",
+    label: "ข้อมูลส่วนตัวและติดต่อ",
+    description: "ชื่อ-สกุล และเบอร์โทร",
     icon: UserRoundIcon,
   },
   {
     step: 2,
-    label: "Address Details",
-    description: "Location & billing",
+    label: "ที่อยู่",
+    description: "ที่อยู่ปัจจุบันและใบเสร็จ",
     icon: MapPinIcon,
   },
   {
     step: 3,
-    label: "Preferences & PDPA",
-    description: "Consent & channels",
+    label: "ความต้องการและ PDPA",
+    description: "ช่องทางติดต่อและความยินยอม",
     icon: ShieldCheckIcon,
   },
 ] as const;
@@ -41,7 +41,7 @@ export function OwnerStepIndicator() {
   const { currentStep, goToStep, isEdit } = useOwnerFormShell();
 
   return (
-    <Breadcrumb aria-label="Registration steps" className="w-full">
+    <Breadcrumb aria-label="ขั้นตอนการลงทะเบียน" className="w-full">
       <BreadcrumbList className="flex flex-col items-start gap-1 md:flex-row md:items-center md:justify-evenly md:gap-2">
         {steps.map((s, index) => {
           const isDone = currentStep > s.step;

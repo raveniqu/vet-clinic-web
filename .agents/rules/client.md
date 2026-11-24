@@ -99,11 +99,11 @@ trigger: always_on
 - เป็นเหี้ยอะไรกับ Border บอกแล้วไม่ใช่หรอว่าอย่าใส่ขอบเอง
 - WHY: เพื่อรักษาความสม่ำเสมอของ Design System ทั้งระบบ visual boundary ต้องถูกควบคุมผ่าน Semantic Tokens (`--border`, `--ring`, `--input`) และรัศมีความโค้ง (`--radius`) ของ Primitive Component เพื่อป้องกันความคลาดเคลื่อนของสี รัศมี และการแสดงผลที่ผิดเพี้ยนเมื่อสลับ Theme (Light/Dark Mode)
 
-### 16. ระบบ Authentication เป็นแบบ Modal-only ไม่มีหน้าแยกสำหรับ sign-in หรือ sign-up
+### 16. แยก Logic ของ Authentication ออกจาก Presentation โดยรองรับทั้ง Dedicated Routes และ Modal Auth
 
-- ✅ เมื่อ Feature หรือ Screen ต้องการ Authentication ให้แสดง Polite Auth Gate Component ร่วมกับ Modal Trigger (เช่น `openSignIn()`) เมื่อผู้ใช้ยังไม่ได้ล็อกอิน
-- 🚫 ห้ามสร้าง Route Guard หรือโยน `redirect({ to: "/sign-in" })` หรือ `/sign-up` ข้ามหน้า เพราะระบบไม่มีหน้านี้อยู่จริง
-- WHY: สถาปัตยกรรม Auth ของระบบใช้ Clerk Authentication แบบ Modal Dialog ทั้งหมด การไม่เปลี่ยนหน้า URL ช่วยรักษาบริบทและ State ล่าสุดของผู้ใช้บนหน้าจอไว้ได้อย่างสมบูรณ์
+- ✅ รองรับทั้งรูปแบบ Dedicated Auth Routes (เช่น `/sign-in`, `/sign-up` ภายใต้ `_public` คู่กับ Route Guard `beforeLoad` ใน `_auth`) และรูปแบบ Modal-based Auth / Polite Auth Gate ตามที่โปรเจกต์กำหนด
+- 🚫 ห้ามจัดการ Logic การ Sign-in / Sign-up หรือตรวจสอบ Session โดยตรงภายใน Screen และ Component ให้แยก Logic ผ่าน Route `beforeLoad`, Feature Hooks และ TanStack Query Caches เท่านั้น
+- WHY: เพื่อให้สถาปัตยกรรม Auth ยืดหยุ่นต่อทั้งผู้ให้บริการอย่าง Better Auth หรือ Clerk และรองรับ UX ทั้งแบบเปลี่ยนหน้าและแบบ Modal โดยยังคงรักษาความเป็น Pure Presentation (Zero Props) ของ UI Components อย่างเคร่งครัด
 
 ### 17. ห้ามสร้าง Custom CSS Classes หรือ Custom Design ใน `client/styles/*` โดยพลการ
 
@@ -122,6 +122,5 @@ trigger: always_on
 - ✅ กำหนดให้ 1 ไฟล์ `.tsx` สร้างได้เพียง 1 Component เท่านั้น เพื่อรักษา Single Responsibility และความง่ายในการค้นหา/ดูแลรักษาโค้ด
 - ✅ อนุญาตให้มีหลาย Component ในไฟล์เดียวกันได้เฉพาะกลุ่ม Primitive กลางใน `src/client/shared/components/*` และ `src/client/shared/shadcn/**` เพื่อรองรับ Composition / Presentation Pattern (เช่น `AppShellRoot`, `AppShellHeader`)
 - 🚫 ห้ามสร้าง Component ซ้อนกัน 2 อันขึ้นไปในไฟล์เดียวกันใน `features/**`, `screens/` หรือ `core/**` และห้ามประกาศ Component ภายใน Function Body ของ Component อื่น (Nested Component) โดยเด็ดขาด
-- 🚫 ในกรณีของ Modal, Dialog, Sheet หรือ Form Wrapper: **ห้าม** ประกาศ Provider/Wrapper Component และ Body/Content Component รวมกันในไฟล์เดียว (เช่น ห้ามวาง `EditPetSheetContent` ไว้ในไฟล์เดียวกับ `EditPetForm`) **ต้องแยกไฟล์อย่างเคร่งครัด** เช่น `edit-pet-form.tsx` (ทำหน้าที่ประกอบ Provider) และ `edit-pet-form-body.tsx` (ทำหน้าที่เป็น Sheet Content)
 - WHY: เพื่อป้องกันการสร้าง Sub-components ย่อยเพื่อแอบส่ง Props ขัดกับ Zero Props Architecture, ตัดปัญหา React unmount/remount จาก Nested Function Closure และทำให้ Feature Components แต่ละตัวถูกผูกกับ Hook ประจำตัวได้อย่างเป็นอิสระและโปร่งใส
 

@@ -10,6 +10,12 @@ import {
 import { cn } from "cn";
 import { useOwnerIdentityContactForm } from "#/client/features/reception/owners/hooks/use-owner-identity-contact-form";
 import {
+  GENDER_SELECT_ITEMS,
+  INDIVIDUAL_PREFIX_SELECT_ITEMS,
+  JURISTIC_PREFIX_SELECT_ITEMS,
+} from "#/client/features/reception/owners/models/owner-form";
+import { AppCalendar } from "#/client/shared/components/app-calendar";
+import {
   AppFieldDescription,
   AppFieldError,
   AppFieldLabel,
@@ -20,7 +26,6 @@ import {
 import { formatPhoneNumber, formatTaxId } from "#/client/shared/helpers/formatters";
 import { Alert, AlertDescription, AlertTitle } from "#/client/shared/shadcn/components/ui/alert";
 import { Button } from "#/client/shared/shadcn/components/ui/button";
-import { Calendar } from "#/client/shared/shadcn/components/ui/calendar";
 import { Field, FieldContent, FieldGroup } from "#/client/shared/shadcn/components/ui/field";
 import { Input } from "#/client/shared/shadcn/components/ui/input";
 import {
@@ -63,13 +68,15 @@ export function OwnerStepIdentityContact() {
     handleEmailChange,
   } = useOwnerIdentityContactForm();
 
+  const prefixItems = isJuristic ? JURISTIC_PREFIX_SELECT_ITEMS : INDIVIDUAL_PREFIX_SELECT_ITEMS;
+
   return (
     <div className="flex flex-col gap-8">
       {/* 1. Customer Type Selector (Radio Card Group) */}
       <AppFieldSet>
         <AppFieldLegend>
           <UsersRoundCollaboration />
-          <span>Customer Type</span>
+          <span>ประเภทลูกค้า</span>
         </AppFieldLegend>
         <RadioGroup
           value={values.customerType}
@@ -91,8 +98,8 @@ export function OwnerStepIdentityContact() {
                   <UserRound className="size-4" />
                 </div>
                 <FieldContent className="gap-0.5">
-                  <AppFieldTitle>Individual</AppFieldTitle>
-                  <AppFieldDescription>Natural Person</AppFieldDescription>
+                  <AppFieldTitle>บุคคลธรรมดา</AppFieldTitle>
+                  <AppFieldDescription>ลูกค้าทั่วไป</AppFieldDescription>
                 </FieldContent>
               </div>
               <RadioGroupItem value="INDIVIDUAL" id="type-individual" />
@@ -114,8 +121,8 @@ export function OwnerStepIdentityContact() {
                   <Building2 className="size-4" />
                 </div>
                 <FieldContent className="gap-0.5">
-                  <AppFieldTitle>Juristic / Org</AppFieldTitle>
-                  <AppFieldDescription>Company / Foundation</AppFieldDescription>
+                  <AppFieldTitle>นิติบุคคล / องค์กร</AppFieldTitle>
+                  <AppFieldDescription>บริษัท / ห้างหุ้นส่วน / มูลนิธิ</AppFieldDescription>
                 </FieldContent>
               </div>
               <RadioGroupItem value="JURISTIC" id="type-juristic" />
@@ -128,38 +135,31 @@ export function OwnerStepIdentityContact() {
       <AppFieldSet>
         <AppFieldLegend>
           <ContactRound />
-          <span>Identity Details</span>
+          <span>ข้อมูลระบุตัวตน</span>
         </AppFieldLegend>
 
         <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-12">
-          {/* Prefix (มี key เพื่อป้องกัน Select Value Desync ระหว่าง Mr. กับ Company) */}
+          {/* คำนำหน้าชื่อ (มี key เพื่อป้องกัน Select Value Desync ระหว่างบุคคลธรรมดากับนิติบุคคล) */}
           <Field
             data-invalid={!!errors.prefix}
-            className={cn("sm:col-span-2", isJuristic && "sm:col-span-4")}
+            className={cn("sm:col-span-3", isJuristic && "sm:col-span-4")}
           >
-            <AppFieldLabel htmlFor="owner-prefix">Prefix</AppFieldLabel>
+            <AppFieldLabel htmlFor="owner-prefix">คำนำหน้า</AppFieldLabel>
             <Select
               key={isJuristic ? "prefix-juristic" : "prefix-individual"}
               value={values.prefix}
+              items={prefixItems}
               onValueChange={handlePrefixChange}
             >
               <SelectTrigger id="owner-prefix" className="w-full">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent alignItemWithTrigger={false} align="start">
-                {!isJuristic ? (
-                  <>
-                    <SelectItem value="Mr.">Mr.</SelectItem>
-                    <SelectItem value="Mrs.">Mrs.</SelectItem>
-                    <SelectItem value="Ms.">Ms.</SelectItem>
-                    <SelectItem value="Dr.">Dr.</SelectItem>
-                  </>
-                ) : (
-                  <>
-                    <SelectItem value="Company">Company</SelectItem>
-                    <SelectItem value="Foundation">Foundation</SelectItem>
-                  </>
-                )}
+                {prefixItems.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
             {errors.prefix && <AppFieldError>{errors.prefix}</AppFieldError>}
@@ -168,17 +168,17 @@ export function OwnerStepIdentityContact() {
           {/* First Name / Org Name */}
           <Field
             data-invalid={!!errors.firstName}
-            className={cn(isJuristic ? "sm:col-span-8" : "sm:col-span-5")}
+            className={cn(isJuristic ? "sm:col-span-8" : "sm:col-span-4")}
           >
             <AppFieldLabel htmlFor="owner-firstname">
-              {isJuristic ? "Organization / Legal Name" : "First Name"}
+              {isJuristic ? "ชื่อองค์กร / นิติบุคคล" : "ชื่อจริง"}
               <span className="font-bold text-destructive">*</span>
             </AppFieldLabel>
             <Input
               id="owner-firstname"
               value={values.firstName}
               onChange={handleFirstNameChange}
-              placeholder={isJuristic ? "e.g., Happy Paws Foundation" : "e.g., Vipada"}
+              placeholder={isJuristic ? "เช่น มูลนิธิรักษ์สัตว์เลี้ยง" : "เช่น วิภาดา"}
               aria-invalid={!!errors.firstName}
               className="placeholder:text-sm"
             />
@@ -189,14 +189,14 @@ export function OwnerStepIdentityContact() {
           {!isJuristic && (
             <Field data-invalid={!!errors.lastName} className="sm:col-span-5">
               <AppFieldLabel htmlFor="owner-lastname">
-                <span>Last Name</span>
+                <span>นามสกุล</span>
                 <span className="font-bold text-destructive">*</span>
               </AppFieldLabel>
               <Input
                 id="owner-lastname"
                 value={values.lastName}
                 onChange={handleLastNameChange}
-                placeholder="e.g., Srisuwan"
+                placeholder="เช่น ศรีสุวรรณ"
                 aria-invalid={!!errors.lastName}
                 className="placeholder:text-sm"
               />
@@ -207,7 +207,9 @@ export function OwnerStepIdentityContact() {
           {/* Citizen / Tax ID */}
           <Field data-invalid={!!errors.taxId} className="col-span-full">
             <AppFieldLabel htmlFor="owner-taxid">
-              {isJuristic ? "Tax Identification Number" : "Citizen / Tax ID"}
+              {isJuristic
+                ? "เลขประจำตัวผู้เสียภาษีนิติบุคคล"
+                : "เลขบัตรประชาชน / เลขประจำตัวผู้เสียภาษี"}
               <span className="font-bold text-destructive">*</span>
             </AppFieldLabel>
             <Input
@@ -228,7 +230,7 @@ export function OwnerStepIdentityContact() {
         {!isJuristic && (
           <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
             <Field data-invalid={!!errors.dateOfBirth}>
-              <AppFieldLabel htmlFor="owner-dob">Date of Birth</AppFieldLabel>
+              <AppFieldLabel htmlFor="owner-dob">วันเกิด</AppFieldLabel>
               <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
                 <PopoverTrigger
                   id="owner-dob"
@@ -243,15 +245,13 @@ export function OwnerStepIdentityContact() {
                   }
                 >
                   <CalendarIcon className="mr-2 size-4 text-muted-foreground" />
-                  {formattedDobLabel ?? (
-                    <span className="text-muted-foreground">Select date of birth</span>
-                  )}
+                  {formattedDobLabel ?? <span className="text-muted-foreground">เลือกวันเกิด</span>}
                 </PopoverTrigger>
                 <PopoverContent
                   className="w-auto bg-transparent p-0 backdrop-blur-md"
                   align="start"
                 >
-                  <Calendar
+                  <AppCalendar
                     mode="single"
                     captionLayout="dropdown"
                     selected={selectedDobDate}
@@ -266,8 +266,12 @@ export function OwnerStepIdentityContact() {
             </Field>
 
             <Field data-invalid={!!errors.gender}>
-              <AppFieldLabel htmlFor="owner-gender">Gender</AppFieldLabel>
-              <Select value={values.gender} onValueChange={handleGenderChange}>
+              <AppFieldLabel htmlFor="owner-gender">เพศ</AppFieldLabel>
+              <Select
+                value={values.gender}
+                items={GENDER_SELECT_ITEMS}
+                onValueChange={handleGenderChange}
+              >
                 <SelectTrigger id="owner-gender" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
@@ -275,10 +279,11 @@ export function OwnerStepIdentityContact() {
                   alignItemWithTrigger={false}
                   className="bg-transparent backdrop-blur-md"
                 >
-                  <SelectItem value="Not Specified">Not Specified</SelectItem>
-                  <SelectItem value="Female">Female</SelectItem>
-                  <SelectItem value="Male">Male</SelectItem>
-                  <SelectItem value="LGBTQ+">LGBTQ+</SelectItem>
+                  {GENDER_SELECT_ITEMS.map((item) => (
+                    <SelectItem key={item.value} value={item.value}>
+                      {item.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               {errors.gender && <AppFieldError>{errors.gender}</AppFieldError>}
@@ -291,26 +296,26 @@ export function OwnerStepIdentityContact() {
       <AppFieldSet>
         <AppFieldLegend>
           <Phone />
-          <span>Contact Channels</span>
+          <span>ช่องทางการติดต่อ</span>
         </AppFieldLegend>
         <FieldContent className="flex flex-col gap-4">
           {duplicateOwner && (
             <Alert variant="destructive">
               <AlertTriangle className="size-4" />
-              <AlertTitle>Duplicate Phone Number</AlertTitle>
+              <AlertTitle>พบเบอร์โทรศัพท์ซ้ำในระบบ</AlertTitle>
               <AlertDescription>
-                Phone number matches an existing customer:{" "}
+                เบอร์โทรศัพท์นี้ตรงกับลูกค้าที่มีอยู่แล้วในระบบ:{" "}
                 <strong>
                   {duplicateOwner.prefix} {duplicateOwner.firstName} {duplicateOwner.lastName}
                 </strong>{" "}
-                ({duplicateOwner.customerCode}). Please verify before creating a new profile.
+                ({duplicateOwner.customerCode}) กรุณาตรวจสอบก่อนสร้างข้อมูลใหม่
               </AlertDescription>
             </Alert>
           )}
           <FieldGroup className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
             <Field data-invalid={!!errors.phonePrimary}>
               <AppFieldLabel htmlFor="owner-phone1">
-                Primary Phone
+                เบอร์โทรศัพท์หลัก
                 <span className="font-bold text-destructive">*</span>
               </AppFieldLabel>
               <Input
@@ -328,7 +333,7 @@ export function OwnerStepIdentityContact() {
             </Field>
 
             <Field data-invalid={!!errors.phoneSecondary}>
-              <AppFieldLabel htmlFor="owner-phone2">Secondary Phone / Home</AppFieldLabel>
+              <AppFieldLabel htmlFor="owner-phone2">เบอร์โทรศัพท์สำรอง / เบอร์บ้าน</AppFieldLabel>
               <Input
                 id="owner-phone2"
                 type="tel"
@@ -336,7 +341,7 @@ export function OwnerStepIdentityContact() {
                 maxLength={12}
                 value={formatPhoneNumber(values.phoneSecondary)}
                 onChange={handlePhoneSecondaryChange}
-                placeholder="02-XXX-XXXX or 08X-XXX-XXXX"
+                placeholder="02-XXX-XXXX หรือ 08X-XXX-XXXX"
                 className="tracking-wide placeholder:text-sm"
               />
             </Field>
@@ -347,12 +352,12 @@ export function OwnerStepIdentityContact() {
                 id="owner-line"
                 value={values.lineId}
                 onChange={handleLineIdChange}
-                placeholder="e.g., @username"
+                placeholder="เช่น @username"
               />
             </Field>
 
             <Field data-invalid={!!errors.email}>
-              <AppFieldLabel htmlFor="owner-email">Email Address</AppFieldLabel>
+              <AppFieldLabel htmlFor="owner-email">อีเมล</AppFieldLabel>
               <Input
                 id="owner-email"
                 type="email"

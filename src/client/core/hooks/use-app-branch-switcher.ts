@@ -3,17 +3,17 @@ import { useState } from "react";
 
 const MOCK_SELECT_ITEMS = [
   {
-    label: "Khonkaen (HQ)",
+    label: "ขอนแก่น (สำนักงานใหญ่)",
     value: "jb8oit6kz4rjy6vb4btboi0i",
     icon: BuildingComplex,
   },
   {
-    label: "Thonglor-Sukhumvit 71",
+    label: "ทองหล่อ-สุขุมวิท 71",
     value: "xvy0hr8jdscpjazjao0el8wb",
     icon: Store,
   },
   {
-    label: "Bangna-Trad KM.25",
+    label: "บางนา-ตราด กม.25",
     value: "otgdc6z9gk7ltdyc5o5igfoc",
     icon: Store,
   },

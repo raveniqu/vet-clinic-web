@@ -16,8 +16,8 @@ export function OwnersSearchInput() {
         ref={inputRef}
         value={searchInput}
         onChange={handleSearchChange}
-        placeholder="Name, phone, LINE ID, or tax ID..."
-        aria-label="Search owners"
+        placeholder="ชื่อ, เบอร์โทร, LINE ID หรือเลขผู้เสียภาษี..."
+        aria-label="ค้นหาเจ้าของสัตว์เลี้ยง"
       />
       <InputGroupAddon>
         <Search className="size-3.5 text-muted-foreground sm:size-4" aria-hidden="true" />
@@ -28,7 +28,7 @@ export function OwnersSearchInput() {
             type="button"
             size="icon-xs"
             variant="ghost"
-            aria-label="Clear search"
+            aria-label="ล้างคำค้นหา"
             onClick={clearSearch}
           >
             <X aria-hidden="true" />

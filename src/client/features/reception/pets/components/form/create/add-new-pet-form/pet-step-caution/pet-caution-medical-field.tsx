@@ -25,38 +25,34 @@ export function PetCautionMedicalField() {
     <AppFieldSet>
       <AppFieldLegend>
         <Pill className="size-4 text-primary" />
-        <span>Medical Cautions & Allergies</span>
+        <span>ข้อควรระวังทางการแพทย์และประวัติการแพ้</span>
       </AppFieldLegend>
 
       {/* 1. Allergies & Known Sensitivities */}
       <Field data-invalid={!!allergiesError}>
-        <AppFieldLabel htmlFor="pet-allergies">
-          Known Drug & Food Allergies (Optional)
-        </AppFieldLabel>
+        <AppFieldLabel htmlFor="pet-allergies">ประวัติแพ้ยาและอาหาร (ไม่บังคับ)</AppFieldLabel>
         <Textarea
           id="pet-allergies"
           value={allergies}
           onChange={handleAllergiesChange}
-          placeholder="e.g., Penicillin, Cephalexin, Ivermectin, Chicken protein"
+          placeholder="เช่น ยาเพนิซิลลิน, เซฟาเลกซิน, ไอเวอร์เมกติน, โปรตีนจากไก่"
           className="min-h-18"
         />
-        <AppFieldDescription>
-          Critical safety information for clinical treatment
-        </AppFieldDescription>
+        <AppFieldDescription>ข้อมูลความปลอดภัยสำคัญสำหรับการตรวจและสั่งจ่ายยา</AppFieldDescription>
         {allergiesError && <AppFieldError>{allergiesError}</AppFieldError>}
       </Field>
 
       {/* 2. Pre-existing Conditions / Medical Notes */}
       <Field data-invalid={!!medicalNotesError}>
-        <AppFieldLabel htmlFor="pet-notes">Pre-existing Medical Notes (Optional)</AppFieldLabel>
+        <AppFieldLabel htmlFor="pet-notes">โรคประจำตัว / บันทึกทางการแพทย์ (ไม่บังคับ)</AppFieldLabel>
         <Textarea
           id="pet-notes"
           value={medicalNotes}
           onChange={handleMedicalNotesChange}
-          placeholder="e.g., Chronic kidney disease, previous leg fracture, sensitive skin"
+          placeholder="เช่น โรคไตเรื้อรัง, เคยขาหักมาก่อน, ผิวหนังแพ้ง่าย"
           className="min-h-18"
         />
-        <AppFieldDescription>Prior chronic conditions or clinical observations</AppFieldDescription>
+        <AppFieldDescription>โรคประจำตัว ประวัติการรักษาเดิม หรือข้อสังเกตทางคลินิก</AppFieldDescription>
         {medicalNotesError && <AppFieldError>{medicalNotesError}</AppFieldError>}
       </Field>
     </AppFieldSet>

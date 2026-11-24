@@ -24,7 +24,7 @@ export function OwnerPdpaPopover() {
             variant="ghost"
             size="xs"
             className="h-auto rounded-full p-0 hover:bg-transparent aria-expanded:bg-transparent"
-            aria-label={`Inspect PDPA consent details for ${displayName}`}
+            aria-label={`ตรวจสอบรายละเอียดความยินยอม PDPA ของ ${displayName}`}
           />
         }
       >
@@ -42,9 +42,9 @@ export function OwnerPdpaPopover() {
       </PopoverTrigger>
       <PopoverContent align="start" className="w-72 gap-3">
         <PopoverHeader>
-          <PopoverTitle className="text-sm">PDPA Consent Status</PopoverTitle>
+          <PopoverTitle className="text-sm">สถานะความยินยอม PDPA</PopoverTitle>
           <PopoverDescription className="text-xs">
-            {pdpa.grantedCount} of {pdpa.totalCount} permissions granted
+            ยินยอมแล้ว {pdpa.grantedCount} จาก {pdpa.totalCount} รายการ
           </PopoverDescription>
         </PopoverHeader>
         <Separator />
@@ -62,7 +62,7 @@ export function OwnerPdpaPopover() {
               <span
                 className={item.granted ? "font-medium text-foreground" : "text-muted-foreground"}
               >
-                {item.granted ? "Granted" : "Declined"}
+                {item.granted ? "ยินยอม" : "ไม่ยินยอม"}
               </span>
             </li>
           ))}
@@ -76,7 +76,7 @@ export function OwnerPdpaPopover() {
           onClick={handleEditConsent}
         >
           <Pencil data-icon="inline-start" aria-hidden="true" />
-          <span>Edit Consent</span>
+          <span>แก้ไขความยินยอม</span>
         </Button>
       </PopoverContent>
     </Popover>

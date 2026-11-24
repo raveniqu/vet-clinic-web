@@ -22,11 +22,11 @@ export function PetCautionMicrochipField() {
     <AppFieldSet>
       <AppFieldLegend>
         <QrCode className="size-4 text-primary" />
-        <span>Microchip Identification</span>
+        <span>รหัสไมโครชิประบุตัวตน</span>
       </AppFieldLegend>
 
       <Field data-invalid={!!microchipNumberError}>
-        <AppFieldLabel htmlFor="pet-microchip">Microchip Number (Optional)</AppFieldLabel>
+        <AppFieldLabel htmlFor="pet-microchip">หมายเลขไมโครชิป (ไม่บังคับ)</AppFieldLabel>
         <InputGroup>
           <InputGroupAddon align="inline-start">
             <QrCode className="size-4 text-muted-foreground" />
@@ -36,7 +36,7 @@ export function PetCautionMicrochipField() {
             type="text"
             inputMode="numeric"
             maxLength={19}
-            placeholder="e.g., 900-115-000-123-456"
+            placeholder="เช่น 900-115-000-123-456"
             value={formatMicrochipNumber(microchipNumber)}
             onChange={handleMicrochipChange}
             className="tracking-wider placeholder:text-xs placeholder:tracking-normal"
@@ -46,7 +46,7 @@ export function PetCautionMicrochipField() {
           <AppFieldError>{microchipNumberError}</AppFieldError>
         ) : (
           <AppFieldDescription>
-            Standard 15-digit ISO 11784/11785 RFID microchip identification
+            หมายเลขไมโครชิป RFID มาตรฐาน ISO 11784/11785 จำนวน 15 หลัก
           </AppFieldDescription>
         )}
       </Field>

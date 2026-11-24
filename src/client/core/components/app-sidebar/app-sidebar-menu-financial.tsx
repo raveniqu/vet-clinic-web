@@ -10,14 +10,14 @@ import type { AppSidebarMenusProps } from "./app-sidebar-menus";
 const financialMenus: AppSidebarMenusProps[] = [
   {
     id: "cashier",
-    title: "Cashier",
+    title: "การเงิน / แคชเชียร์",
     href: "/cashier",
     icon: HandCoins,
     items: [],
   },
   {
     id: "reminders",
-    title: "Care / CRM",
+    title: "ติดตามอาการ / CRM",
     href: "/reminders",
     icon: BellRing,
     items: [],
@@ -27,7 +27,7 @@ const financialMenus: AppSidebarMenusProps[] = [
 export function AppSidebarMenuFinancial() {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Financial</SidebarGroupLabel>
+      <SidebarGroupLabel>การเงินและลูกค้าสัมพันธ์</SidebarGroupLabel>
       <SidebarGroupContent>
         <AppSidebarMenus menus={financialMenus} />
       </SidebarGroupContent>

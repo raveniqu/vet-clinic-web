@@ -26,7 +26,7 @@ export function PetMedicalNotesPopover() {
             variant="ghost"
             size="xs"
             className="h-auto max-w-48 justify-start px-1.5 py-0.5 text-left font-normal"
-            aria-label={`Read medical notes for ${pet.petName}`}
+            aria-label={`ดูบันทึกทางการแพทย์ของ ${pet.petName}`}
           />
         }
       >
@@ -34,7 +34,7 @@ export function PetMedicalNotesPopover() {
       </PopoverTrigger>
       <PopoverContent align="start" className="w-80">
         <PopoverHeader>
-          <PopoverTitle className="text-sm">Medical Notes — {pet.petName}</PopoverTitle>
+          <PopoverTitle className="text-sm">บันทึกทางการแพทย์ — {pet.petName}</PopoverTitle>
           <PopoverDescription className="text-xs whitespace-pre-wrap text-foreground">
             {pet.medicalNotes}
           </PopoverDescription>
