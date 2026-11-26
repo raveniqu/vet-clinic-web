@@ -1,17 +1,15 @@
 {
   "$schema": "https://ui.shadcn.com/schema.json",
-  "style": "base-luma",
+  "style": "base-maia",
   "rsc": false,
   "tsx": true,
   "tailwind": {
-    "config": "",
-    "css": "src/client/styles/global.css",
+    "config": "tailwind.config.js",
+    "css": "src\\client\\styles\\global.css",
     "baseColor": "zinc",
     "cssVariables": true,
     "prefix": ""
   },
-  "iconLibrary": "lucide",
-  "rtl": false,
   "aliases": {
     "components": "#/client/shared/shadcn/components",
     "utils": "#/client/shared/shadcn/lib/utils",
@@ -19,7 +17,9 @@
     "lib": "#/client/shared/shadcn/lib",
     "hooks": "#/client/shared/shadcn/hooks"
   },
-  "menuColor": "default-translucent",
+  "iconLibrary": "lucide",
+  "rtl": false,
+  "menuColor": "default",
   "menuAccent": "subtle",
   "registries": {}
 }

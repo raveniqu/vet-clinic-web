@@ -3,30 +3,35 @@
   "skills": {
     "bug-fixer": {
       "source": "ravenique/skills",
+      "commit": "4f1a4e145ec9893bf16122ae07e96bdc656859a7",
       "sourceType": "github",
       "skillPath": "bug-fixer/SKILL.md",
       "computedHash": "24f9f49ab17cb9fda76ef4ec8031fae7ddc5bfcebd9340623b707b6420a555a7"
     },
     "mindful-feature-engineer": {
       "source": "ravenique/skills",
+      "commit": "4f1a4e145ec9893bf16122ae07e96bdc656859a7",
       "sourceType": "github",
       "skillPath": "mindful-feature-engineer/SKILL.md",
       "computedHash": "b02aff36e8a0976674872abc60236e80b4ed22906c51f2793f26bc6960333665"
     },
     "repo-performance-refactor": {
       "source": "ravenique/skills",
+      "commit": "4f1a4e145ec9893bf16122ae07e96bdc656859a7",
       "sourceType": "github",
       "skillPath": "repo-performance-refactor/SKILL.md",
       "computedHash": "3ac7f9de8b37f71c599dab2ff3e7208e37ebee3428dd2f38eac4c0d41dcd4520"
     },
-    "shadcn": {
-      "source": "shadcn/ui",
+    "solution-advisor": {
+      "source": "ravenique/skills",
+      "commit": "495b3d18597d2053683e2fe566ddcffe4e7b4805",
       "sourceType": "github",
-      "skillPath": "skills/shadcn/SKILL.md",
-      "computedHash": "388962d16c7a4f13aaeee0d8f128e50a87df8553d42ef7988c39c0e1c74a40e8"
+      "skillPath": "solution-advisor/SKILL.md",
+      "computedHash": "17de2760d754c843b1418d4b520a6e7349e10c7cae12e9f507f61a3be59c086b"
     },
     "ux-architect": {
       "source": "ravenique/skills",
+      "commit": "4f1a4e145ec9893bf16122ae07e96bdc656859a7",
       "sourceType": "github",
       "skillPath": "ux-architect/SKILL.md",
       "computedHash": "3746610f162b9c5999f280b09e371248c7b4f2000a6b4506195d98eac90400b9"

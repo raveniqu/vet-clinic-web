@@ -1,10 +1,12 @@
-import { getOwnerByIdUseCase } from "#/server/composition/owners.container";
-import { getOwnerByIdSchema } from "#/shared/schemas/owner.schema";
-import type { OwnerDto } from "#/shared/schemas/owner.schema";
 import { createServerFn } from "@tanstack/react-start";
+import { getOwnerByIdUseCase } from "#/server/composition/owners.container";
+import type { OwnerDetailsResponse } from "#/shared/schemas/owners.schema";
+import { getOwnerByIdInputSchema } from "#/shared/schemas/owners.schema";
+import { apiContextMiddleware } from "../middlewares/api-context.middleware";
 
 export const getOwnerByIdFn = createServerFn({ method: "GET" })
-  .validator(getOwnerByIdSchema)
-  .handler(async ({ data }): Promise<OwnerDto | null> => {
-    return getOwnerByIdUseCase.execute(data.id);
-  });
+	.middleware([apiContextMiddleware])
+	.validator(getOwnerByIdInputSchema)
+	.handler(async ({ data }): Promise<OwnerDetailsResponse> => {
+		return getOwnerByIdUseCase.execute({ ownerId: data.ownerId });
+	});

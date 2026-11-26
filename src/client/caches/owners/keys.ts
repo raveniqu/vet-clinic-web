@@ -1,7 +1,9 @@
-export const ownerKeys = {
-  all: ["owners"] as const,
-  lists: () => [...ownerKeys.all, "list"] as const,
-  list: (filters?: Record<string, unknown>) => [...ownerKeys.lists(), filters] as const,
-  details: () => [...ownerKeys.all, "detail"] as const,
-  detail: (id: string) => [...ownerKeys.details(), id] as const,
+import type { OwnersSearchParams } from "#/shared/schemas/owners.schema";
+
+export const ownersKeys = {
+	all: ["owners"] as const,
+	lists: () => [...ownersKeys.all, "list"] as const,
+	list: (params: OwnersSearchParams) =>
+		[...ownersKeys.lists(), "list", params] as const,
+	detail: (ownerId: number) => [...ownersKeys.all, "detail", ownerId] as const,
 };

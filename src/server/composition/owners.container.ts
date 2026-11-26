@@ -1,10 +1,13 @@
-import { CreateOwnerUseCase } from "#/server/application/owners/create-owner.use-case";
+import "@tanstack/react-start/server-only";
 import { GetOwnerByIdUseCase } from "#/server/application/owners/get-owner-by-id.use-case";
-import { GetOwnersUseCase } from "#/server/application/owners/get-owners.use-case";
-import { UpdateOwnerUseCase } from "#/server/application/owners/update-owner.use-case";
-import { ownerRepository } from "./repositories";
+import { ListOwnersUseCase } from "#/server/application/owners/list-owners.use-case";
+import { DeleteOwnerUseCase } from "../application/owners/delete-owner.use-case";
+import { RegisterOwnerUseCase } from "../application/owners/register-owner.use-case";
+import { UpdateOwnerUseCase } from "../application/owners/update-owner.use-case";
+import { ownerQueryAdapter, ownerRepository } from "./repositories";
 
-export const getOwnersUseCase = new GetOwnersUseCase(ownerRepository);
+export const listOwnersUseCase = new ListOwnersUseCase(ownerQueryAdapter);
 export const getOwnerByIdUseCase = new GetOwnerByIdUseCase(ownerRepository);
-export const createOwnerUseCase = new CreateOwnerUseCase(ownerRepository);
+export const registerOwnerUseCase = new RegisterOwnerUseCase(ownerRepository);
 export const updateOwnerUseCase = new UpdateOwnerUseCase(ownerRepository);
+export const deleteOwnerUseCase = new DeleteOwnerUseCase(ownerRepository);
