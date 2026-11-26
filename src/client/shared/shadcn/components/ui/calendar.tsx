@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import { cn } from "cn"
 import {
@@ -9,7 +7,7 @@ import {
   type Locale,
 } from "react-day-picker"
 
-import { Button, buttonVariants } from "#/client/shared/shadcn/components/ui/button"
+import { Button, buttonVariants } from "#/client/shared/shadcn/components/ui/button.tsx"
 import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from "lucide-react"
 
 function Calendar({

@@ -60,12 +60,6 @@ trigger: always_on
 - 🚫 ห้ามใช้ `pnpm`, `npm`, `yarn`, `npx` หรือ `node` ในการติดตั้ง จัดการ dependencies หรือรันสคริปต์โดยเด็ดขาด เพื่อป้องกัน `node_modules` พังและป้องกันความขัดแย้งกับ `bun.lock`
 - WHY: โปรเจกต์นี้ผูกพันกับ Bun ecosystem อย่างสมบูรณ์ผ่าน `bun.lock` การใช้ package manager หรือ runtime อื่นจะสร้างความเสียหายต่อโครงสร้าง dependencies และ `node_modules` ทันที
 
-### 12. 1 ไฟล์ต่อ 1 Component (One Component per File) ในระดับ Client
-
-- ✅ บังคับใช้หลักการ 1 Component ต่อ 1 ไฟล์ใน `src/client/**` เสมอ (ยกเว้นเฉพาะ Shared Primitives ใน `src/client/shared/components/*` และ `shadcn/**`)
-- 🚫 ห้ามรวม Wrapper/Provider Component เข้ากับ Body/Content Component ในไฟล์เดียวกัน (เช่น ห้ามรวม `*SheetContent` ไว้ใน `*Form`) เพื่อรักษา Single Responsibility และสอดคล้องกับ Rule 19 ใน `client.md`
-- WHY: เพื่อป้องกันการแอบส่ง Props ขัดกับ Zero Props Architecture, ลดความซับซ้อน และรักษาความสะอาดของ Component Hierarchy
-
 # Shared Schemas
 
 ### 1. `shared/schemas/**` คือ Source of Truth กลางของ Data Contract ระหว่าง Server และ Client

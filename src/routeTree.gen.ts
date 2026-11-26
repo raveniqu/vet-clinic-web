@@ -10,26 +10,19 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PrivateRouteRouteImport } from './routes/_private/route'
+import { Route as PublicRouteRouteImport } from './routes/_public/route'
 import { Route as PrivateIndexRouteImport } from './routes/_private/index'
-import { Route as PrivateclinicalConsultationsIndexRouteImport } from './routes/_private/(clinical)/consultations/index'
-import { Route as PrivateclinicalDiagnosticsIndexRouteImport } from './routes/_private/(clinical)/diagnostics/index'
-import { Route as PrivateclinicalSurgeryIndexRouteImport } from './routes/_private/(clinical)/surgery/index'
-import { Route as PrivatefinancialCashierIndexRouteImport } from './routes/_private/(financial)/cashier/index'
-import { Route as PrivatefinancialRemindersIndexRouteImport } from './routes/_private/(financial)/reminders/index'
-import { Route as PrivatemanagementSettingsIndexRouteImport } from './routes/_private/(management)/settings/index'
-import { Route as PrivatemanagementStaffIndexRouteImport } from './routes/_private/(management)/staff/index'
-import { Route as PrivatepharmacyDispenseIndexRouteImport } from './routes/_private/(pharmacy)/dispense/index'
-import { Route as PrivatepharmacyInventoryIndexRouteImport } from './routes/_private/(pharmacy)/inventory/index'
-import { Route as PrivatepharmacyProcurementIndexRouteImport } from './routes/_private/(pharmacy)/procurement/index'
-import { Route as PrivatereceptionAppointmentsIndexRouteImport } from './routes/_private/(reception)/appointments/index'
-import { Route as PrivatereceptionOwnersIndexRouteImport } from './routes/_private/(reception)/owners/index'
-import { Route as PrivatereceptionOwnersOwnerIdRouteImport } from './routes/_private/(reception)/owners/$ownerId'
-import { Route as PrivatereceptionPetsIndexRouteImport } from './routes/_private/(reception)/pets/index'
-import { Route as PrivatereceptionPetsPetIdRouteImport } from './routes/_private/(reception)/pets/$petId'
-import { Route as PrivatereceptionQueueIndexRouteImport } from './routes/_private/(reception)/queue/index'
+import { Route as PublicSignInRouteImport } from './routes/_public/sign-in'
+import { Route as PrivateOwnersIndexRouteImport } from './routes/_private/owners/index'
+import { Route as PrivateOwnersOwnerIdRouteImport } from './routes/_private/owners/$ownerId'
+import { Route as PrivatePetsIndexRouteImport } from './routes/_private/pets/index'
 
 const PrivateRouteRoute = PrivateRouteRouteImport.update({
   id: '/_private',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicRouteRoute = PublicRouteRouteImport.update({
+  id: '/_public',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivateIndexRoute = PrivateIndexRouteImport.update({
@@ -37,225 +30,70 @@ const PrivateIndexRoute = PrivateIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PrivateRouteRoute,
 } as any)
-const PrivateclinicalConsultationsIndexRoute =
-  PrivateclinicalConsultationsIndexRouteImport.update({
-    id: '/(clinical)/consultations/',
-    path: '/consultations/',
-    getParentRoute: () => PrivateRouteRoute,
-  } as any)
-const PrivateclinicalDiagnosticsIndexRoute =
-  PrivateclinicalDiagnosticsIndexRouteImport.update({
-    id: '/(clinical)/diagnostics/',
-    path: '/diagnostics/',
-    getParentRoute: () => PrivateRouteRoute,
-  } as any)
-const PrivateclinicalSurgeryIndexRoute =
-  PrivateclinicalSurgeryIndexRouteImport.update({
-    id: '/(clinical)/surgery/',
-    path: '/surgery/',
-    getParentRoute: () => PrivateRouteRoute,
-  } as any)
-const PrivatefinancialCashierIndexRoute =
-  PrivatefinancialCashierIndexRouteImport.update({
-    id: '/(financial)/cashier/',
-    path: '/cashier/',
-    getParentRoute: () => PrivateRouteRoute,
-  } as any)
-const PrivatefinancialRemindersIndexRoute =
-  PrivatefinancialRemindersIndexRouteImport.update({
-    id: '/(financial)/reminders/',
-    path: '/reminders/',
-    getParentRoute: () => PrivateRouteRoute,
-  } as any)
-const PrivatemanagementSettingsIndexRoute =
-  PrivatemanagementSettingsIndexRouteImport.update({
-    id: '/(management)/settings/',
-    path: '/settings/',
-    getParentRoute: () => PrivateRouteRoute,
-  } as any)
-const PrivatemanagementStaffIndexRoute =
-  PrivatemanagementStaffIndexRouteImport.update({
-    id: '/(management)/staff/',
-    path: '/staff/',
-    getParentRoute: () => PrivateRouteRoute,
-  } as any)
-const PrivatepharmacyDispenseIndexRoute =
-  PrivatepharmacyDispenseIndexRouteImport.update({
-    id: '/(pharmacy)/dispense/',
-    path: '/dispense/',
-    getParentRoute: () => PrivateRouteRoute,
-  } as any)
-const PrivatepharmacyInventoryIndexRoute =
-  PrivatepharmacyInventoryIndexRouteImport.update({
-    id: '/(pharmacy)/inventory/',
-    path: '/inventory/',
-    getParentRoute: () => PrivateRouteRoute,
-  } as any)
-const PrivatepharmacyProcurementIndexRoute =
-  PrivatepharmacyProcurementIndexRouteImport.update({
-    id: '/(pharmacy)/procurement/',
-    path: '/procurement/',
-    getParentRoute: () => PrivateRouteRoute,
-  } as any)
-const PrivatereceptionAppointmentsIndexRoute =
-  PrivatereceptionAppointmentsIndexRouteImport.update({
-    id: '/(reception)/appointments/',
-    path: '/appointments/',
-    getParentRoute: () => PrivateRouteRoute,
-  } as any)
-const PrivatereceptionOwnersIndexRoute =
-  PrivatereceptionOwnersIndexRouteImport.update({
-    id: '/(reception)/owners/',
-    path: '/owners/',
-    getParentRoute: () => PrivateRouteRoute,
-  } as any)
-const PrivatereceptionOwnersOwnerIdRoute =
-  PrivatereceptionOwnersOwnerIdRouteImport.update({
-    id: '/(reception)/owners/$ownerId',
-    path: '/owners/$ownerId',
-    getParentRoute: () => PrivateRouteRoute,
-  } as any)
-const PrivatereceptionPetsIndexRoute =
-  PrivatereceptionPetsIndexRouteImport.update({
-    id: '/(reception)/pets/',
-    path: '/pets/',
-    getParentRoute: () => PrivateRouteRoute,
-  } as any)
-const PrivatereceptionPetsPetIdRoute =
-  PrivatereceptionPetsPetIdRouteImport.update({
-    id: '/(reception)/pets/$petId',
-    path: '/pets/$petId',
-    getParentRoute: () => PrivateRouteRoute,
-  } as any)
-const PrivatereceptionQueueIndexRoute =
-  PrivatereceptionQueueIndexRouteImport.update({
-    id: '/(reception)/queue/',
-    path: '/queue/',
-    getParentRoute: () => PrivateRouteRoute,
-  } as any)
+const PublicSignInRoute = PublicSignInRouteImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
+const PrivateOwnersIndexRoute = PrivateOwnersIndexRouteImport.update({
+  id: '/owners/',
+  path: '/owners/',
+  getParentRoute: () => PrivateRouteRoute,
+} as any)
+const PrivateOwnersOwnerIdRoute = PrivateOwnersOwnerIdRouteImport.update({
+  id: '/owners/$ownerId',
+  path: '/owners/$ownerId',
+  getParentRoute: () => PrivateRouteRoute,
+} as any)
+const PrivatePetsIndexRoute = PrivatePetsIndexRouteImport.update({
+  id: '/pets/',
+  path: '/pets/',
+  getParentRoute: () => PrivateRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof PrivateIndexRoute
-  '/owners/$ownerId': typeof PrivatereceptionOwnersOwnerIdRoute
-  '/pets/$petId': typeof PrivatereceptionPetsPetIdRoute
-  '/consultations/': typeof PrivateclinicalConsultationsIndexRoute
-  '/diagnostics/': typeof PrivateclinicalDiagnosticsIndexRoute
-  '/surgery/': typeof PrivateclinicalSurgeryIndexRoute
-  '/cashier/': typeof PrivatefinancialCashierIndexRoute
-  '/reminders/': typeof PrivatefinancialRemindersIndexRoute
-  '/settings/': typeof PrivatemanagementSettingsIndexRoute
-  '/staff/': typeof PrivatemanagementStaffIndexRoute
-  '/dispense/': typeof PrivatepharmacyDispenseIndexRoute
-  '/inventory/': typeof PrivatepharmacyInventoryIndexRoute
-  '/procurement/': typeof PrivatepharmacyProcurementIndexRoute
-  '/appointments/': typeof PrivatereceptionAppointmentsIndexRoute
-  '/owners/': typeof PrivatereceptionOwnersIndexRoute
-  '/pets/': typeof PrivatereceptionPetsIndexRoute
-  '/queue/': typeof PrivatereceptionQueueIndexRoute
+  '/sign-in': typeof PublicSignInRoute
+  '/owners/$ownerId': typeof PrivateOwnersOwnerIdRoute
+  '/owners/': typeof PrivateOwnersIndexRoute
+  '/pets/': typeof PrivatePetsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof PrivateIndexRoute
-  '/owners/$ownerId': typeof PrivatereceptionOwnersOwnerIdRoute
-  '/pets/$petId': typeof PrivatereceptionPetsPetIdRoute
-  '/consultations': typeof PrivateclinicalConsultationsIndexRoute
-  '/diagnostics': typeof PrivateclinicalDiagnosticsIndexRoute
-  '/surgery': typeof PrivateclinicalSurgeryIndexRoute
-  '/cashier': typeof PrivatefinancialCashierIndexRoute
-  '/reminders': typeof PrivatefinancialRemindersIndexRoute
-  '/settings': typeof PrivatemanagementSettingsIndexRoute
-  '/staff': typeof PrivatemanagementStaffIndexRoute
-  '/dispense': typeof PrivatepharmacyDispenseIndexRoute
-  '/inventory': typeof PrivatepharmacyInventoryIndexRoute
-  '/procurement': typeof PrivatepharmacyProcurementIndexRoute
-  '/appointments': typeof PrivatereceptionAppointmentsIndexRoute
-  '/owners': typeof PrivatereceptionOwnersIndexRoute
-  '/pets': typeof PrivatereceptionPetsIndexRoute
-  '/queue': typeof PrivatereceptionQueueIndexRoute
+  '/sign-in': typeof PublicSignInRoute
+  '/owners/$ownerId': typeof PrivateOwnersOwnerIdRoute
+  '/owners': typeof PrivateOwnersIndexRoute
+  '/pets': typeof PrivatePetsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_private': typeof PrivateRouteRouteWithChildren
+  '/_public': typeof PublicRouteRouteWithChildren
+  '/_public/sign-in': typeof PublicSignInRoute
   '/_private/': typeof PrivateIndexRoute
-  '/_private/(reception)/owners/$ownerId': typeof PrivatereceptionOwnersOwnerIdRoute
-  '/_private/(reception)/pets/$petId': typeof PrivatereceptionPetsPetIdRoute
-  '/_private/(clinical)/consultations/': typeof PrivateclinicalConsultationsIndexRoute
-  '/_private/(clinical)/diagnostics/': typeof PrivateclinicalDiagnosticsIndexRoute
-  '/_private/(clinical)/surgery/': typeof PrivateclinicalSurgeryIndexRoute
-  '/_private/(financial)/cashier/': typeof PrivatefinancialCashierIndexRoute
-  '/_private/(financial)/reminders/': typeof PrivatefinancialRemindersIndexRoute
-  '/_private/(management)/settings/': typeof PrivatemanagementSettingsIndexRoute
-  '/_private/(management)/staff/': typeof PrivatemanagementStaffIndexRoute
-  '/_private/(pharmacy)/dispense/': typeof PrivatepharmacyDispenseIndexRoute
-  '/_private/(pharmacy)/inventory/': typeof PrivatepharmacyInventoryIndexRoute
-  '/_private/(pharmacy)/procurement/': typeof PrivatepharmacyProcurementIndexRoute
-  '/_private/(reception)/appointments/': typeof PrivatereceptionAppointmentsIndexRoute
-  '/_private/(reception)/owners/': typeof PrivatereceptionOwnersIndexRoute
-  '/_private/(reception)/pets/': typeof PrivatereceptionPetsIndexRoute
-  '/_private/(reception)/queue/': typeof PrivatereceptionQueueIndexRoute
+  '/_private/owners/$ownerId': typeof PrivateOwnersOwnerIdRoute
+  '/_private/owners/': typeof PrivateOwnersIndexRoute
+  '/_private/pets/': typeof PrivatePetsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/owners/$ownerId'
-    | '/pets/$petId'
-    | '/consultations/'
-    | '/diagnostics/'
-    | '/surgery/'
-    | '/cashier/'
-    | '/reminders/'
-    | '/settings/'
-    | '/staff/'
-    | '/dispense/'
-    | '/inventory/'
-    | '/procurement/'
-    | '/appointments/'
-    | '/owners/'
-    | '/pets/'
-    | '/queue/'
+  fullPaths: '/' | '/sign-in' | '/owners/$ownerId' | '/owners/' | '/pets/'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/owners/$ownerId'
-    | '/pets/$petId'
-    | '/consultations'
-    | '/diagnostics'
-    | '/surgery'
-    | '/cashier'
-    | '/reminders'
-    | '/settings'
-    | '/staff'
-    | '/dispense'
-    | '/inventory'
-    | '/procurement'
-    | '/appointments'
-    | '/owners'
-    | '/pets'
-    | '/queue'
+  to: '/' | '/sign-in' | '/owners/$ownerId' | '/owners' | '/pets'
   id:
     | '__root__'
     | '/_private'
+    | '/_public'
+    | '/_public/sign-in'
     | '/_private/'
-    | '/_private/(reception)/owners/$ownerId'
-    | '/_private/(reception)/pets/$petId'
-    | '/_private/(clinical)/consultations/'
-    | '/_private/(clinical)/diagnostics/'
-    | '/_private/(clinical)/surgery/'
-    | '/_private/(financial)/cashier/'
-    | '/_private/(financial)/reminders/'
-    | '/_private/(management)/settings/'
-    | '/_private/(management)/staff/'
-    | '/_private/(pharmacy)/dispense/'
-    | '/_private/(pharmacy)/inventory/'
-    | '/_private/(pharmacy)/procurement/'
-    | '/_private/(reception)/appointments/'
-    | '/_private/(reception)/owners/'
-    | '/_private/(reception)/pets/'
-    | '/_private/(reception)/queue/'
+    | '/_private/owners/$ownerId'
+    | '/_private/owners/'
+    | '/_private/pets/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   PrivateRouteRoute: typeof PrivateRouteRouteWithChildren
+  PublicRouteRoute: typeof PublicRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -267,6 +105,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_public': {
+      id: '/_public'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof PublicRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_private/': {
       id: '/_private/'
       path: '/'
@@ -274,116 +119,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateIndexRouteImport
       parentRoute: typeof PrivateRouteRoute
     }
-    '/_private/(clinical)/consultations/': {
-      id: '/_private/(clinical)/consultations/'
-      path: '/consultations'
-      fullPath: '/consultations/'
-      preLoaderRoute: typeof PrivateclinicalConsultationsIndexRouteImport
-      parentRoute: typeof PrivateRouteRoute
+    '/_public/sign-in': {
+      id: '/_public/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof PublicSignInRouteImport
+      parentRoute: typeof PublicRouteRoute
     }
-    '/_private/(clinical)/diagnostics/': {
-      id: '/_private/(clinical)/diagnostics/'
-      path: '/diagnostics'
-      fullPath: '/diagnostics/'
-      preLoaderRoute: typeof PrivateclinicalDiagnosticsIndexRouteImport
-      parentRoute: typeof PrivateRouteRoute
-    }
-    '/_private/(clinical)/surgery/': {
-      id: '/_private/(clinical)/surgery/'
-      path: '/surgery'
-      fullPath: '/surgery/'
-      preLoaderRoute: typeof PrivateclinicalSurgeryIndexRouteImport
-      parentRoute: typeof PrivateRouteRoute
-    }
-    '/_private/(financial)/cashier/': {
-      id: '/_private/(financial)/cashier/'
-      path: '/cashier'
-      fullPath: '/cashier/'
-      preLoaderRoute: typeof PrivatefinancialCashierIndexRouteImport
-      parentRoute: typeof PrivateRouteRoute
-    }
-    '/_private/(financial)/reminders/': {
-      id: '/_private/(financial)/reminders/'
-      path: '/reminders'
-      fullPath: '/reminders/'
-      preLoaderRoute: typeof PrivatefinancialRemindersIndexRouteImport
-      parentRoute: typeof PrivateRouteRoute
-    }
-    '/_private/(management)/settings/': {
-      id: '/_private/(management)/settings/'
-      path: '/settings'
-      fullPath: '/settings/'
-      preLoaderRoute: typeof PrivatemanagementSettingsIndexRouteImport
-      parentRoute: typeof PrivateRouteRoute
-    }
-    '/_private/(management)/staff/': {
-      id: '/_private/(management)/staff/'
-      path: '/staff'
-      fullPath: '/staff/'
-      preLoaderRoute: typeof PrivatemanagementStaffIndexRouteImport
-      parentRoute: typeof PrivateRouteRoute
-    }
-    '/_private/(pharmacy)/dispense/': {
-      id: '/_private/(pharmacy)/dispense/'
-      path: '/dispense'
-      fullPath: '/dispense/'
-      preLoaderRoute: typeof PrivatepharmacyDispenseIndexRouteImport
-      parentRoute: typeof PrivateRouteRoute
-    }
-    '/_private/(pharmacy)/inventory/': {
-      id: '/_private/(pharmacy)/inventory/'
-      path: '/inventory'
-      fullPath: '/inventory/'
-      preLoaderRoute: typeof PrivatepharmacyInventoryIndexRouteImport
-      parentRoute: typeof PrivateRouteRoute
-    }
-    '/_private/(pharmacy)/procurement/': {
-      id: '/_private/(pharmacy)/procurement/'
-      path: '/procurement'
-      fullPath: '/procurement/'
-      preLoaderRoute: typeof PrivatepharmacyProcurementIndexRouteImport
-      parentRoute: typeof PrivateRouteRoute
-    }
-    '/_private/(reception)/appointments/': {
-      id: '/_private/(reception)/appointments/'
-      path: '/appointments'
-      fullPath: '/appointments/'
-      preLoaderRoute: typeof PrivatereceptionAppointmentsIndexRouteImport
-      parentRoute: typeof PrivateRouteRoute
-    }
-    '/_private/(reception)/owners/': {
-      id: '/_private/(reception)/owners/'
+    '/_private/owners/': {
+      id: '/_private/owners/'
       path: '/owners'
       fullPath: '/owners/'
-      preLoaderRoute: typeof PrivatereceptionOwnersIndexRouteImport
+      preLoaderRoute: typeof PrivateOwnersIndexRouteImport
       parentRoute: typeof PrivateRouteRoute
     }
-    '/_private/(reception)/owners/$ownerId': {
-      id: '/_private/(reception)/owners/$ownerId'
+    '/_private/owners/$ownerId': {
+      id: '/_private/owners/$ownerId'
       path: '/owners/$ownerId'
       fullPath: '/owners/$ownerId'
-      preLoaderRoute: typeof PrivatereceptionOwnersOwnerIdRouteImport
+      preLoaderRoute: typeof PrivateOwnersOwnerIdRouteImport
       parentRoute: typeof PrivateRouteRoute
     }
-    '/_private/(reception)/pets/': {
-      id: '/_private/(reception)/pets/'
+    '/_private/pets/': {
+      id: '/_private/pets/'
       path: '/pets'
       fullPath: '/pets/'
-      preLoaderRoute: typeof PrivatereceptionPetsIndexRouteImport
-      parentRoute: typeof PrivateRouteRoute
-    }
-    '/_private/(reception)/pets/$petId': {
-      id: '/_private/(reception)/pets/$petId'
-      path: '/pets/$petId'
-      fullPath: '/pets/$petId'
-      preLoaderRoute: typeof PrivatereceptionPetsPetIdRouteImport
-      parentRoute: typeof PrivateRouteRoute
-    }
-    '/_private/(reception)/queue/': {
-      id: '/_private/(reception)/queue/'
-      path: '/queue'
-      fullPath: '/queue/'
-      preLoaderRoute: typeof PrivatereceptionQueueIndexRouteImport
+      preLoaderRoute: typeof PrivatePetsIndexRouteImport
       parentRoute: typeof PrivateRouteRoute
     }
   }
@@ -391,52 +152,37 @@ declare module '@tanstack/react-router' {
 
 interface PrivateRouteRouteChildren {
   PrivateIndexRoute: typeof PrivateIndexRoute
-  PrivatereceptionOwnersOwnerIdRoute: typeof PrivatereceptionOwnersOwnerIdRoute
-  PrivatereceptionPetsPetIdRoute: typeof PrivatereceptionPetsPetIdRoute
-  PrivateclinicalConsultationsIndexRoute: typeof PrivateclinicalConsultationsIndexRoute
-  PrivateclinicalDiagnosticsIndexRoute: typeof PrivateclinicalDiagnosticsIndexRoute
-  PrivateclinicalSurgeryIndexRoute: typeof PrivateclinicalSurgeryIndexRoute
-  PrivatefinancialCashierIndexRoute: typeof PrivatefinancialCashierIndexRoute
-  PrivatefinancialRemindersIndexRoute: typeof PrivatefinancialRemindersIndexRoute
-  PrivatemanagementSettingsIndexRoute: typeof PrivatemanagementSettingsIndexRoute
-  PrivatemanagementStaffIndexRoute: typeof PrivatemanagementStaffIndexRoute
-  PrivatepharmacyDispenseIndexRoute: typeof PrivatepharmacyDispenseIndexRoute
-  PrivatepharmacyInventoryIndexRoute: typeof PrivatepharmacyInventoryIndexRoute
-  PrivatepharmacyProcurementIndexRoute: typeof PrivatepharmacyProcurementIndexRoute
-  PrivatereceptionAppointmentsIndexRoute: typeof PrivatereceptionAppointmentsIndexRoute
-  PrivatereceptionOwnersIndexRoute: typeof PrivatereceptionOwnersIndexRoute
-  PrivatereceptionPetsIndexRoute: typeof PrivatereceptionPetsIndexRoute
-  PrivatereceptionQueueIndexRoute: typeof PrivatereceptionQueueIndexRoute
+  PrivateOwnersOwnerIdRoute: typeof PrivateOwnersOwnerIdRoute
+  PrivateOwnersIndexRoute: typeof PrivateOwnersIndexRoute
+  PrivatePetsIndexRoute: typeof PrivatePetsIndexRoute
 }
 
 const PrivateRouteRouteChildren: PrivateRouteRouteChildren = {
   PrivateIndexRoute: PrivateIndexRoute,
-  PrivatereceptionOwnersOwnerIdRoute: PrivatereceptionOwnersOwnerIdRoute,
-  PrivatereceptionPetsPetIdRoute: PrivatereceptionPetsPetIdRoute,
-  PrivateclinicalConsultationsIndexRoute:
-    PrivateclinicalConsultationsIndexRoute,
-  PrivateclinicalDiagnosticsIndexRoute: PrivateclinicalDiagnosticsIndexRoute,
-  PrivateclinicalSurgeryIndexRoute: PrivateclinicalSurgeryIndexRoute,
-  PrivatefinancialCashierIndexRoute: PrivatefinancialCashierIndexRoute,
-  PrivatefinancialRemindersIndexRoute: PrivatefinancialRemindersIndexRoute,
-  PrivatemanagementSettingsIndexRoute: PrivatemanagementSettingsIndexRoute,
-  PrivatemanagementStaffIndexRoute: PrivatemanagementStaffIndexRoute,
-  PrivatepharmacyDispenseIndexRoute: PrivatepharmacyDispenseIndexRoute,
-  PrivatepharmacyInventoryIndexRoute: PrivatepharmacyInventoryIndexRoute,
-  PrivatepharmacyProcurementIndexRoute: PrivatepharmacyProcurementIndexRoute,
-  PrivatereceptionAppointmentsIndexRoute:
-    PrivatereceptionAppointmentsIndexRoute,
-  PrivatereceptionOwnersIndexRoute: PrivatereceptionOwnersIndexRoute,
-  PrivatereceptionPetsIndexRoute: PrivatereceptionPetsIndexRoute,
-  PrivatereceptionQueueIndexRoute: PrivatereceptionQueueIndexRoute,
+  PrivateOwnersOwnerIdRoute: PrivateOwnersOwnerIdRoute,
+  PrivateOwnersIndexRoute: PrivateOwnersIndexRoute,
+  PrivatePetsIndexRoute: PrivatePetsIndexRoute,
 }
 
 const PrivateRouteRouteWithChildren = PrivateRouteRoute._addFileChildren(
   PrivateRouteRouteChildren,
 )
 
+interface PublicRouteRouteChildren {
+  PublicSignInRoute: typeof PublicSignInRoute
+}
+
+const PublicRouteRouteChildren: PublicRouteRouteChildren = {
+  PublicSignInRoute: PublicSignInRoute,
+}
+
+const PublicRouteRouteWithChildren = PublicRouteRoute._addFileChildren(
+  PublicRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   PrivateRouteRoute: PrivateRouteRouteWithChildren,
+  PublicRouteRoute: PublicRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

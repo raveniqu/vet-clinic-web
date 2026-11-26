@@ -1,11 +1,14 @@
 import { createLink } from "@tanstack/react-router";
-import { SidebarMenuButton, SidebarMenuSubButton } from "../shadcn/components/ui/sidebar";
-import {
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "../shadcn/components/ui/pagination";
 import { Button } from "../shadcn/components/ui/button";
+import {
+	PaginationLink,
+	PaginationNext,
+	PaginationPrevious,
+} from "../shadcn/components/ui/pagination";
+import {
+	SidebarMenuButton,
+	SidebarMenuSubButton,
+} from "../shadcn/components/ui/sidebar";
 
 export const AppButtonLink = createLink(Button);
 export const AppSidebarMenuButtonLink = createLink(SidebarMenuButton);

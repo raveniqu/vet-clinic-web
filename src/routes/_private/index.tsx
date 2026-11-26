@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { OverviewScreen } from "#/client/features/overview/screen";
+import { WorkSpaceScreen } from "#/client/features/workspace/screen";
 
 export const Route = createFileRoute("/_private/")({
-  component: OverviewScreen,
+	component: WorkSpaceScreen,
 });
