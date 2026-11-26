@@ -3,10 +3,12 @@ import {
 	AppCard,
 	AppCardContent,
 	AppCardDescription,
+	AppCardFooter,
 	AppCardHeader,
 	AppCardTitle,
 } from "#/client/shared/components/app-card";
 import { OwnersColumnPicker } from "./owners-column-picker";
+import { OwnersQuickFilters } from "./owners-quick-filters";
 import { OwnersSearchInput } from "./owners-search-input";
 
 export function OwnersToolbar() {
@@ -25,6 +27,9 @@ export function OwnersToolbar() {
 				<OwnersSearchInput />
 				<OwnersColumnPicker />
 			</AppCardContent>
+			<AppCardFooter>
+				<OwnersQuickFilters />
+			</AppCardFooter>
 		</AppCard>
 	);
 }
