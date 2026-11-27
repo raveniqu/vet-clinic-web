@@ -6,6 +6,7 @@ import { useUpdateOwnerMutation } from "#/client/caches/owners/mutates/update-ow
 import { getOwnerByIdQuery } from "#/client/caches/owners/queries/get-owner-by-id.query";
 import { parseRpcError } from "#/client/shared/helpers/rpc-error";
 import { useWizardForm } from "#/client/shared/hooks/use-wizard-form";
+import type { OwnerDetailsResponse } from "#/shared/schemas/owners.schema";
 import type { OwnerFormValues } from "../models/owner-form.model";
 import {
 	applyOwnerFormFieldSideEffects,
@@ -19,7 +20,11 @@ import {
 } from "../models/owner-form.model";
 import { ownersRouteSearchSchema } from "../models/owners-route-search.model";
 
-export function useOwnerForm() {
+export interface UseOwnerFormOptions {
+	onCreated?: (owner: OwnerDetailsResponse) => void;
+}
+
+export function useOwnerForm(options?: UseOwnerFormOptions) {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const rawSearch = useSearch({ strict: false });
@@ -64,6 +69,8 @@ export function useOwnerForm() {
 	const submitHandlerRef = useRef<
 		((values: OwnerFormValues) => Promise<void>) | null
 	>(null);
+	const onCreatedRef = useRef(options?.onCreated);
+	onCreatedRef.current = options?.onCreated;
 	const hydratedKeyRef = useRef<string | null>(null);
 
 	const handleControlledOpenChange = useCallback(
@@ -230,9 +237,10 @@ export function useOwnerForm() {
 				return;
 			}
 
-			await registerMutation.mutateAsync(payload);
+			const createdOwner = await registerMutation.mutateAsync(payload);
 			setIsOpen(false);
 			resetForm();
+			onCreatedRef.current?.(createdOwner);
 		} catch (error) {
 			const parsed = parseRpcError(error);
 			if (parsed?.code === "CONFLICT") {

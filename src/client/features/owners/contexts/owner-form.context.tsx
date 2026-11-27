@@ -4,6 +4,7 @@ import type {
 	WizardFormApi,
 	WizardStepNumber,
 } from "#/client/shared/hooks/use-wizard-form";
+import type { OwnerDetailsResponse } from "#/shared/schemas/owners.schema";
 import { useOwnerForm } from "../hooks/use-owner-form";
 import type { OwnerFormValues } from "../models/owner-form.model";
 
@@ -37,8 +38,16 @@ export interface OwnerFormContextValue {
 
 const OwnerFormContext = createContext<OwnerFormContextValue | null>(null);
 
-export function OwnerFormProvider({ children }: { children: ReactNode }) {
-	const formController = useOwnerForm();
+export interface OwnerFormProviderProps {
+	children: ReactNode;
+	onCreated?: (owner: OwnerDetailsResponse) => void;
+}
+
+export function OwnerFormProvider({
+	children,
+	onCreated,
+}: OwnerFormProviderProps) {
+	const formController = useOwnerForm({ onCreated });
 
 	const value = useMemo<OwnerFormContextValue>(
 		() => formController,
