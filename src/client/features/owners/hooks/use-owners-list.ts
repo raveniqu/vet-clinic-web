@@ -1,13 +1,13 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { ownersListQuery } from "#/client/caches/owners/queries/get-owners.query";
+import { getOwnersQuery } from "#/client/caches/owners/queries/get-owners.query";
 import { useOwnersSearch } from "./use-owners-search";
 
 export function useOwnersList() {
 	const { apiSearch } = useOwnersSearch();
 
 	const query = useQuery({
-		...ownersListQuery(apiSearch),
+		...getOwnersQuery(apiSearch),
 		placeholderData: keepPreviousData,
 	});
 
