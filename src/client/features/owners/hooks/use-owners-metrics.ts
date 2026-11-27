@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { ownersListQuery } from "#/client/caches/owners/queries/get-owners.query";
+import { getOwnersQuery } from "#/client/caches/owners/queries/get-owners.query";
 
 export function useOwnersMetrics() {
 	// Query lightweight count (limit: 1, unfiltered) so total count remains accurate even when searching table.
 	const summaryQuery = useQuery({
-		...ownersListQuery({
+		...getOwnersQuery({
 			page: 1,
 			limit: 1,
 			sort: "created_at:desc",

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import type { ChangeEvent } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ownersListQuery } from "#/client/caches/owners/queries/get-owners.query";
+import { getOwnersQuery } from "#/client/caches/owners/queries/get-owners.query";
 import { formatThaiShortDate } from "#/client/shared/helpers/formatters";
 import {
 	useFormErrors,
@@ -73,7 +73,7 @@ export function useOwnerIdentityContactForm() {
 	const isTaxIdSearchEnabled = isOpen && /^[0-9]{13}$/.test(debouncedTaxId);
 
 	const phoneCheckQuery = useQuery({
-		...ownersListQuery({
+		...getOwnersQuery({
 			page: 1,
 			limit: 5,
 			search: debouncedPhone,
@@ -84,7 +84,7 @@ export function useOwnerIdentityContactForm() {
 	});
 
 	const taxIdCheckQuery = useQuery({
-		...ownersListQuery({
+		...getOwnersQuery({
 			page: 1,
 			limit: 5,
 			search: debouncedTaxId,

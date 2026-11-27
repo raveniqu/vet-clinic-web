@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ownersListQuery } from "#/client/caches/owners/queries/get-owners.query";
+import { getOwnersQuery } from "#/client/caches/owners/queries/get-owners.query";
 import {
 	ownersRouteSearchSchema,
 	pickOwnersApiSearchParams,
@@ -13,11 +13,11 @@ export const Route = createFileRoute("/_private/owners/")({
 	loader: async ({ context, deps, cause }) => {
 		if (cause === "stay") {
 			void context.queryClient
-				.query(ownersListQuery(deps))
+				.query(getOwnersQuery(deps))
 				.catch(() => undefined);
 			return;
 		}
-		return context.queryClient.query(ownersListQuery(deps));
+		return context.queryClient.query(getOwnersQuery(deps));
 	},
 	component: OwnersScreen,
 	pendingComponent: OwnersScreenLoader,
